@@ -92,6 +92,32 @@ class PageController extends Controller
         }        
     }
 
+    public function formulaireUpdatePassword(){
+        return view('pages.password_update');
+    }
+
+    public function actionUpdatePassword(){
+        request()->validate([
+            'password' => ['required', 'confirmed', 'min:4'],
+            'password_confirmation' => ['required'],
+        ]);
+        $utilisateur = User::where('id',Auth::user()->personne_id)->first();
+        if ($utilisateur) {
+            $update = $utilisateur->update(['password' => bcrypt(request('password'))]);
+            if ($update) {
+                Flashy::success('Votre mot de passe a été changé avec succès');
+                return back();
+            } else {
+                Flashy::error('Echec lors de la modification du mot de passe !');
+                return back();
+            }
+        } else {
+            Flashy::warning('Utilisateur non reconnu');
+            return back();
+        }
+        return back();
+    }
+
     public function formulairePasswordForget(){
         return view('pages.password_forget');
     }

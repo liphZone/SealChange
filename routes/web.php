@@ -37,6 +37,12 @@ Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login'
 //Action connexion
 Route::post('connexion',[PageController::class,'actionConnexion'])->name('action_login');
 
+//Page formulaire de modification mot de passe
+Route::get('Modifier mot de passe',[PageController::class,'formulaireUpdatePassword'])->name('form_password_update');
+
+//Action modification mot de passe
+Route::post('modifier mot de passe',[PageController::class,'actionUpdatePassword'])->name('action_password_update');
+
 // Page formulaire de recup mot de passe 
 Route::get('mot de passe',[PageController::class,'formulairePasswordForget'])->name('form_password_forget');
 

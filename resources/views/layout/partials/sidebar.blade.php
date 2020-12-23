@@ -63,7 +63,7 @@
               <a class="nav-link" href="#"> <i class="fa fa-address-card"></i> &nbsp; Bonus Referral </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"> <i class="fa fa-gear"></i> &nbsp; Sécurité </a>
+              <a class="nav-link" href="{{ route('form_password_update') }}"> <i class="fa fa-gear"></i> &nbsp; Sécurité </a>
             </li>
           </ul>
         </div>
