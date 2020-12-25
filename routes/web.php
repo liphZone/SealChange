@@ -1,6 +1,9 @@
 <?php
+
+use App\Http\Controllers\CoinController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +17,37 @@ use App\Http\Controllers\PageController;
 */
 
 
-//Page index
+//Page index du client
 Route::get('index',[PageController::class,'index'])->name('index');
 
-//Page accueil 
+//Page accueil du client
 Route::get('accueil',[PageController::class,'accueil'])->name('accueil');
+
+//Page index de l'administrateur
+Route::get('index admin',[PageController::class,'indexAdmin'])->name('index_admin');
+
+//Page accueil de l'administrateur
+Route::get('accueil admin',[PageController::class,'accueilAdmin'])->name('accueil_admin');
+
+
+//Resource Type (Le type de monnaie)
+Route::resource('types',TypeController::class)->names(
+[
+    'index'  => 'list_types',
+    'create' => 'add_type',
+]);
+
+Route::resource('coins',CoinController::class)->names(
+[
+    'index'  => 'list_coins',
+    'create' => 'add_coin',
+]);
+
 //Page mon profil
 Route::get('Mon profil',[PageController::class,'monProfil'])->name('profile');
+
+//Page mon profil administrateur
+Route::get('profil admin',[PageController::class,'profilAdmin'])->name('profile_admin');
 
 //Page formulaire d'inscription
 Route::get('Inscription',[PageController::class,'formulaireInscription'])->name('form_register');

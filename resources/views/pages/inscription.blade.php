@@ -1,7 +1,7 @@
 @section('title','Inscription')
 <!DOCTYPE html>
 <html lang="en">
- @include('layout.partials.head')
+ @include('layout.client.partials.head')
   <body>
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
@@ -95,9 +95,9 @@
         </div>
         <!-- page-body-wrapper ends -->
       </div>
-      <script src="//code.jquery.com/jquery.js"></script>
+        <script src="//code.jquery.com/jquery.js"></script>
         @include('flashy::message')
 
-    @include('layout.partials.scriptjs')
+    @include('layout.client.partials.scriptjs')
   </body>
 </html>

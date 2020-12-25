@@ -1,4 +1,4 @@
-@extends('layout.index')
+@extends('layout.client.index')
 @section('content')
 @section('title','Modifier mot de passe')
 

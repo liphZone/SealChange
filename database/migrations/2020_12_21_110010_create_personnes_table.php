@@ -17,7 +17,7 @@ class CreatePersonnesTable extends Migration
             $table->id();
             $table->string('nom');
             $table->string('prenom');
-            $table->enum('sexe',['M','F'])->default('M');
+            $table->enum('sexe',['Masculin','Feminin'])->default('Masculin');
             $table->string('email');
             $table->string('contact')->nullable();
             $table->string('pays')->nullable();

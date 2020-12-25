@@ -2,27 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ConnexionFormRequest;
-use App\Http\Requests\InscriptionFormRequest;
-use App\Http\Requests\PasswordForgetFormRequest;
-use App\Http\Requests\PersonneFormRequest;
-use App\Mail\PasswordForgetMail;
-use App\Mail\RegisterMail;
-use App\Models\Personne;
 use App\Models\User;
+use App\Models\Personne;
+use App\Mail\RegisterMail;
 use Illuminate\Http\Request;
+use App\Mail\PasswordForgetMail;
+use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use MercurySeries\Flashy\Flashy;
+use App\Http\Requests\PersonneFormRequest;
+use App\Http\Requests\InscriptionFormRequest;
+use App\Http\Requests\PasswordForgetFormRequest;
 
 class PageController extends Controller
 {
     public function index(){
-        return view('layout.index');
+        return view('layout.client.index');
     }
 
     public function accueil(){
-        return view('layout.accueil');
+        return view('layout.client.accueil');
+    }
+
+    public function indexAdmin(){
+        return view('layout.admin.index');
+    }
+
+    public function accueilAdmin(){
+        return view('layout.admin.accueil');
+    }
+
+    public function profilAdmin(){
+        return view('pages.profil_admin');
     }
 
     public function monProfil(){
@@ -68,7 +79,7 @@ class PageController extends Controller
                 'email_verified_at' => now(),
                 'token' => null
             ]);
-            Flashy('Votre compte a été validé vous pouvez vous connecter');
+            Flashy('Votre compte a été validé, vous pouvez vous connecter');
             return redirect()->route('form_login');
         } else {
             Flashy::error("Echec de validation");
@@ -83,9 +94,19 @@ class PageController extends Controller
 
     public function actionConnexion(){
         $try_connexion = Auth::attempt(['email'=>request('email'),'password'=>request('password')]);
+        $user = Auth::user();
         if ($try_connexion) {
-            Flashy::success('Bienvenu sur votre page');
-            return redirect()->route('index');
+            if ($user->email_verified_at === null AND $user->token != null ) {
+                Flashy::error("Echec de validation");
+                return back();
+            }
+            if (auth()->user()->type_utilisateur === 'Super_admin' || auth()->user()->type_utilisateur === 'Admin') {
+                Flashy::success('Bienvenu sur votre page');
+                return redirect()->route('accueil_admin');
+            }elseif (auth()->user()->type_utilisateur === 'Client') {
+                Flashy::success('Bienvenu sur votre page');
+                return redirect()->route('accueil');
+            }
         } else {
             Flashy::error('Erreur! email ou mot de passe incorrect');
             return back();
@@ -139,7 +160,7 @@ class PageController extends Controller
 
     public function deconnexion(){
         $dec = Auth::logout();
-        // Flashy::success('Vous êtes déconnecté(e).');
+        Flashy::success('Vous êtes déconnecté(e).');
         return redirect('/');
     }
 }

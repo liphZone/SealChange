@@ -1,4 +1,4 @@
-@extends('layout.index')
+@extends('layout.client.index')
 @section('content')
 @section('title','Mon Profil')
 
@@ -18,8 +18,8 @@
     <div class="form-group">
         <label> Sexe </label>
         <select name="sexe" class="form-control" id="">
-            <option value="M"> M </option>
-            <option value="F"> F </option>
+            <option value="Masculin"> Masculin </option>
+            <option value="Feminin"> Féminin </option>
         </select>
     </div>
 

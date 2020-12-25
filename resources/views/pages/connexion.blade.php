@@ -1,7 +1,7 @@
 @section('title','Connexion')
 <!DOCTYPE html>
 <html lang="en">
- @include('layout.partials.head')
+ @include('layout.client.partials.head')
   <body>
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
@@ -70,7 +70,7 @@
       <script src="//code.jquery.com/jquery.js"></script>
   @include('flashy::message')
 
-    @include('layout.partials.scriptjs')
+    @include('layout.client.partials.scriptjs')
   </body>
  
 

@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('token')->nullable();
             $table->rememberToken();
             $table->unsignedBigInteger('personne_id')->index()->nullable();
+            $table->string('type_utilisateur')->default('Client');
             $table->timestamps();
 
             $table->foreign('personne_id')->references('id')->on('personnes')->onUpdate('cascade')->onDelete('cascade');
