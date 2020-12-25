@@ -29,7 +29,6 @@ Route::get('index admin',[PageController::class,'indexAdmin'])->name('index_admi
 //Page accueil de l'administrateur
 Route::get('accueil admin',[PageController::class,'accueilAdmin'])->name('accueil_admin');
 
-
 //Resource Type (Le type de monnaie)
 Route::resource('types',TypeController::class)->names(
 [

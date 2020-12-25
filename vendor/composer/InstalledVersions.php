@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'f33e7bba9302f200aff0084a7c98509e6a2c9cc0',
+    'reference' => '0bcc7551a3263dcb5b3724f6ab8a5d6087326335',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -227,6 +227,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '8c3d0a3f6af734494ad8f6fbbee0ba92422859f3',
+    ),
+    'hautelook/phpass' => 
+    array (
+      'pretty_version' => '0.3.5',
+      'version' => '0.3.5.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b4cbd9b67ed3ef5672ec79d8e0c46d24bd844abd',
     ),
     'illuminate/auth' => 
     array (
@@ -445,6 +454,24 @@ private static $installed = array (
         0 => 'v8.20.1',
       ),
     ),
+    'jgrossi/corcel' => 
+    array (
+      'pretty_version' => '5.0.x-dev',
+      'version' => '5.0.9999999.9999999-dev',
+      'aliases' => 
+      array (
+        0 => '9999999-dev',
+      ),
+      'reference' => 'c3ff0312ef21f7be38c2351c37dc7a296fe5d0f3',
+    ),
+    'juniorgrossi/corcel' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '5.0.x-dev',
+        1 => '9999999-dev',
+      ),
+    ),
     'kodova/hamcrest-php' => 
     array (
       'replaced' => 
@@ -477,7 +504,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'f33e7bba9302f200aff0084a7c98509e6a2c9cc0',
+      'reference' => '0bcc7551a3263dcb5b3724f6ab8a5d6087326335',
     ),
     'laravel/sail' => 
     array (
@@ -801,8 +828,8 @@ private static $installed = array (
     array (
       'provided' => 
       array (
-        0 => '1.0',
-        1 => '1.0.0',
+        0 => '1.0.0',
+        1 => '1.0',
       ),
     ),
     'psr/simple-cache' => 
@@ -1275,6 +1302,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '75a63c33a8577608444246075ea0af0d052e452a',
+    ),
+    'thunderer/shortcode' => 
+    array (
+      'pretty_version' => 'v0.7.4',
+      'version' => '0.7.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '79a219febd774ba1ee66a2992fee1145b4367561',
     ),
     'tijsverkoyen/css-to-inline-styles' => 
     array (
