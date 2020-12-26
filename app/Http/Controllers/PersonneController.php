@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Personne;
+use App\Mail\RegisterMail;
 use Illuminate\Http\Request;
+use MercurySeries\Flashy\Flashy;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\PersonneFormRequest;
+use App\Http\Requests\InscriptionFormRequest;
 
 class PersonneController extends Controller
 {
@@ -13,7 +21,12 @@ class PersonneController extends Controller
      */
     public function index()
     {
-        //
+        $personne = DB::table('personnes')
+        ->where('type_utilisateur','Super_admin')
+        ->Orwhere('type_utilisateur','Admin')
+        ->join('users','personnes.id','=','users.personne_id')
+        ->get();
+        return view('personnes.list_persons',compact('personne'));
     }
 
     /**
@@ -23,7 +36,7 @@ class PersonneController extends Controller
      */
     public function create()
     {
-        //
+        return view('personnes.add_person');
     }
 
     /**
@@ -32,9 +45,33 @@ class PersonneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InscriptionFormRequest $i,PersonneFormRequest $p)
     {
-        //
+        $personne = Personne::firstOrCreate([
+            'nom'    => $p->nom,
+            'prenom' => $p->prenom,
+            'email'  => $p->email,
+        ]);
+
+        $user = User::firstOrCreate([
+            'email'            => $personne->email,
+            'password'         => bcrypt($p->password),
+            'token'            => str_random(60),
+            'type_utilisateur' => 'Admin'
+        ],
+        [
+            'personne_id' => $personne->id,
+        ]);
+
+        Mail::to($user)->send(new RegisterMail($user));
+
+        if ($personne AND $user) {
+            Flashy::success('Inscription réussie , Vous avez reçu un mail');
+            return back();
+        } else {
+            Flashy::error("Echec d'inscription");
+            return back();
+        }
     }
 
     /**

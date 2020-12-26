@@ -8,5 +8,4 @@ $baseDir = dirname($vendorDir);
 return array(
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'MercurySeries\\Flashy' => array($vendorDir . '/mercuryseries/flashy/src'),
-    'Hautelook' => array($vendorDir . '/hautelook/phpass/src'),
 );

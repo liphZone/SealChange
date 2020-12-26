@@ -17,7 +17,8 @@ class CoinController extends Controller
      */
     public function index()
     {
-        //
+        $coin = Coin::all();
+        return view('coins.list_coins',compact('coin'));
     }
 
     /**

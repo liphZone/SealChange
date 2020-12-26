@@ -21,18 +21,18 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#Administrateurs" aria-expanded="false" aria-controls="Administrateurs">
+        <a class="nav-link" data-toggle="collapse" href="#Utilisateurs" aria-expanded="false" aria-controls="Utilisateurs">
           <i class="menu-icon typcn typcn-coffee"></i>
-          <span class="menu-title"> <i class="fa fa-users"></i> Administrateurs </span>
+          <span class="menu-title"> <i class="fa fa-users"></i> Utilisateurs </span>
           <i class="menu-arrow"></i>
         </a>
-        <div class="collapse" id="Administrateurs">
+        <div class="collapse" id="Utilisateurs">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item">
-              <a class="nav-link" href="#"> <i class="fa fa-plus"></i> &nbsp;  Ajouter administrateur </a>
+              <a class="nav-link" href="{{ route('list_persons') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des administrateurs </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"> <i class="fa fa-list-ul"></i> &nbsp; Liste des administrateurs </a>
+              <a class="nav-link" href="{{ route('list_users') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des utilisateurs </a>
             </li>
           </ul>
         </div>
@@ -47,10 +47,7 @@
         <div class="collapse" id="Monnaies">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('add_coin') }}"> <i class="fa fa-plus"></i> &nbsp;  Nouvelle monnaie </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('add_type') }}"> <i class="fa fa-plus"></i> &nbsp;  Ajouter une catégorie </a>
+              <a class="nav-link" href="{{ route('list_types') }}"> <i class="fa fa-list-ul"></i> &nbsp;  Liste des catégories </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ route('list_coins') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des monnaies </a>
@@ -64,6 +61,27 @@
           <i class="menu-icon typcn typcn-document-text"></i>
           <span class="menu-title"> <i class="fa fa-history"></i> Historique </span>
         </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+          <i class="menu-icon typcn typcn-coffee"></i>
+          <span class="menu-title"> <i class="fa fa-check-square-o"></i> Mon compte </span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-basic">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="#"> <i class="fa fa-list-ul"></i> &nbsp;  Liste des opérations </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> <i class="fa fa-address-card"></i> &nbsp; Bonus Referral </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('form_password_update_admin') }}"> <i class="fa fa-gear"></i> &nbsp; Sécurité </a>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
   </nav>

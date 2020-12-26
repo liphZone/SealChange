@@ -175,9 +175,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //Corcel
-        Corcel\Laravel\CorcelServiceProvider::class,
-
     ],
 
     /*

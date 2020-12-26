@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\PersonneFormRequest;
 use App\Http\Requests\InscriptionFormRequest;
 use App\Http\Requests\PasswordForgetFormRequest;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -33,16 +34,24 @@ class PageController extends Controller
     }
 
     public function profilAdmin(){
-        return view('pages.profil_admin');
+        $personne = Personne::where('id',auth()->user()->id)->first();
+        return view('layout.admin.profil',compact('personne'));
     }
 
     public function monProfil(){
         $personne = Personne::where('id',auth()->user()->id)->first();
-        return view('pages.profil',compact('personne'));
+        return view('layout.client.profil',compact('personne'));
     }
 
     public function formulaireInscription(){
         return view('pages.inscription');
+    }
+
+    public function listeUtilisateurs(){
+        $client = DB::table('personnes')
+        ->where('type_utilisateur','Client')
+        ->join('users','personnes.id','=','users.personne_id')->get();
+        return view('layout.admin.list_utilisateurs',compact('client'));
     }
 
     public function actionInscription(InscriptionFormRequest $i, PersonneFormRequest $p){
@@ -53,9 +62,9 @@ class PageController extends Controller
         ]);
 
         $user = User::firstOrCreate([
-            'email'       => $personne->email,
-            'password'    => bcrypt($p->password),
-            'token'       => str_random(60),
+            'email'    => $personne->email,
+            'password' => bcrypt($p->password),
+            'token'    => str_random(60),
         ],
         [
             'personne_id' => $personne->id,
@@ -70,7 +79,6 @@ class PageController extends Controller
             Flashy::error("Echec d'inscription");
             return back();
         }
-        
     }
 
     public function validationCompte(User $user,$token){
@@ -114,7 +122,11 @@ class PageController extends Controller
     }
 
     public function formulaireUpdatePassword(){
-        return view('pages.password_update');
+        return view('layout.client.password_update');
+    }
+
+    public function formulaireUpdatePasswordAdmin(){
+        return view('layout.admin.password_update');
     }
 
     public function actionUpdatePassword(){

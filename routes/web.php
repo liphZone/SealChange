@@ -3,6 +3,7 @@
 use App\Http\Controllers\CoinController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PersonneController;
 use App\Http\Controllers\TypeController;
 
 /*
@@ -29,6 +30,12 @@ Route::get('index admin',[PageController::class,'indexAdmin'])->name('index_admi
 //Page accueil de l'administrateur
 Route::get('accueil admin',[PageController::class,'accueilAdmin'])->name('accueil_admin');
 
+//Resource Personne
+Route::resource('personnes',PersonneController::class)->names([
+    'index'  => 'list_persons',
+    'create' => 'add_person'
+]);
+
 //Resource Type (Le type de monnaie)
 Route::resource('types',TypeController::class)->names(
 [
@@ -36,6 +43,7 @@ Route::resource('types',TypeController::class)->names(
     'create' => 'add_type',
 ]);
 
+//Resource coin
 Route::resource('coins',CoinController::class)->names(
 [
     'index'  => 'list_coins',
@@ -66,9 +74,14 @@ Route::post('connexion',[PageController::class,'actionConnexion'])->name('action
 //Page formulaire de modification mot de passe
 Route::get('Modifier mot de passe',[PageController::class,'formulaireUpdatePassword'])->name('form_password_update');
 
+//Page formulaire de modification mot de passe pour l'admin
+Route::get('Modifier mot de passe admin',[PageController::class,'formulaireUpdatePasswordAdmin'])->name('form_password_update_admin');
+
 //Action modification mot de passe
 Route::post('modifier mot de passe',[PageController::class,'actionUpdatePassword'])->name('action_password_update');
 
+//Liste des utilisateurs
+Route::get('Liste des utilisateurs',[PageController::class,'listeUtilisateurs'])->name('list_users');
 // Page formulaire de recup mot de passe 
 Route::get('mot de passe',[PageController::class,'formulairePasswordForget'])->name('form_password_forget');
 
