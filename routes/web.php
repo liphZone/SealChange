@@ -19,8 +19,7 @@ use App\Http\Middleware\Connection;
 */
 
 
-//Route token
-Route::get('confirm/{user}/{token}',[PageController::class,'validationCompte'])->name('confirm');
+
 
 //Page formulaire de connexion
 Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login');
@@ -28,6 +27,14 @@ Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login'
 //Action connexion
 Route::post('connexion',[PageController::class,'actionConnexion'])->name('action_login');
 
+//Page formulaire d'inscription
+Route::get('Inscription',[PageController::class,'formulaireInscription'])->name('form_register');
+
+//Action inscription
+Route::post('inscription',[PageController::class,'actionInscription'])->name('action_register');  
+
+//Route token
+Route::get('confirm/{user}/{token}',[PageController::class,'validationCompte'])->name('confirm');
 
 // Page formulaire de recup mot de passe 
 Route::get('mot de passe',[PageController::class,'formulairePasswordForget'])->name('form_password_forget');
@@ -37,7 +44,7 @@ Route::post('mot de passe',[PageController::class,'actionPasswordForget'])->name
 
 
 //Group Middleware
-Route::group(['middleware' => [Connection::class]], function () {
+Route::group(['middleware' => ['Connect']], function () {
     
 //Page index du client
 Route::get('index',[PageController::class,'index'])->name('index');
@@ -79,12 +86,6 @@ Route::get('profil admin',[PageController::class,'profilAdmin'])->name('profile_
 
 //Action profil
 Route::post('profil',[PageController::class,'actionProfil'])->name('action_profile');
-
-//Page formulaire d'inscription
-Route::get('Inscription',[PageController::class,'formulaireInscription'])->name('form_register');
-
-//Action inscription
-Route::post('inscription',[PageController::class,'actionInscription'])->name('action_register');   
 
 //Page formulaire de modification mot de passe
 Route::get('Modifier mot de passe',[PageController::class,'formulaireUpdatePassword'])->name('form_password_update');

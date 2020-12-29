@@ -31,6 +31,6 @@ class RegisterMail extends Mailable
     {
         return $this->markdown('emails.register')
         ->subject('Validation de mon compte')
-        ->from('hopesealchange@gmail.com','Seal Change');
+        ->from('infos@hopesealchange.com','Seal Change');
     }
 }
