@@ -624,8 +624,10 @@
   padding-top: 63px; }
 
 .purchase-banner-active .navbar.fixed-top {
+  display: none;
   top: 55px; }
   .purchase-banner-active .navbar.fixed-top + .page-body-wrapper {
+    display: none;
     padding-top: calc(63px + 55px); }
 
 .card {

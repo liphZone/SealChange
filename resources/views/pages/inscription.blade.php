@@ -1,7 +1,7 @@
 @section('title','Inscription')
 <!DOCTYPE html>
 <html lang="en">
- @include('layout.client.partials.head')
+@include('layout.client.partials.head')
   <body>
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">

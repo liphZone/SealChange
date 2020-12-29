@@ -56,6 +56,9 @@ Route::get('Mon profil',[PageController::class,'monProfil'])->name('profile');
 //Page mon profil administrateur
 Route::get('profil admin',[PageController::class,'profilAdmin'])->name('profile_admin');
 
+//Action profil
+Route::post('profil',[PageController::class,'actionProfil'])->name('action_profile');
+
 //Page formulaire d'inscription
 Route::get('Inscription',[PageController::class,'formulaireInscription'])->name('form_register');
 

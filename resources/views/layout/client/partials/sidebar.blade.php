@@ -3,7 +3,7 @@
       <li class="nav-item nav-profile">
         <a href="{{ route('logout') }}" class="nav-link">
           <div class="profile-image">
-            <img class="img-xs rounded-circle" src="AdminTemplate/assets/images/user.png" alt="profile image">
+            <img class="img-xs rounded-circle" src="{{ asset('AdminTemplate/assets/images/user.png') }}" alt="profile image">
             <div class="dot-indicator bg-success"></div>
           </div>
           <div class="text-wrapper">

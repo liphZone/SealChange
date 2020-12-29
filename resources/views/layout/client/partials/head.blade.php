@@ -4,24 +4,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> {{ config('app.name') }} - @yield('title') </title>
     <!-- plugins:css -->
-    <link rel="stylesheet" href="AdminTemplate/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="AdminTemplate/assets/vendors/iconfonts/ionicons/css/ionicons.css">
-    <link rel="stylesheet" href="AdminTemplate/assets/vendors/iconfonts/typicons/src/font/typicons.css">
-    <link rel="stylesheet" href="AdminTemplate/assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="AdminTemplate/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="AdminTemplate/assets/vendors/css/vendor.bundle.addons.css">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/vendors/iconfonts/ionicons/css/ionicons.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/vendors/iconfonts/typicons/src/font/typicons.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/vendors/css/vendor.bundle.base.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/vendors/css/vendor.bundle.addons.css') }}">
 
-    <link rel="stylesheet" href="AdminTemplate/assets/vendors/iconfonts/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/vendors/iconfonts/font-awesome/css/font-awesome.min.css') }}"/>
     <!-- endinject -->
     <!-- plugin css for this page -->
     <!-- End plugin css for this page -->
     <!-- inject:css -->
-    <link rel="stylesheet" href="AdminTemplate/assets/css/shared/style.css">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/css/shared/style.css') }}">
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="AdminTemplate/assets/css/demo_1/style.css">
+    <link rel="stylesheet" href="{{ asset('AdminTemplate/assets/css/demo_1/style.css') }}">
     <!-- End Layout styles -->
-    <link rel="shortcut icon" href="AdminTemplate/assets/images/favicon.png" />
+    <link rel="shortcut icon" href="{{ asset('AdminTemplate/assets/images/favicon.png') }}"/>
 
 <style>
     body {

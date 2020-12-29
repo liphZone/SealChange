@@ -3,7 +3,7 @@
 @section('title','Mon Profil')
 
 <h3> IDENTITE DE L'UTILISATEUR </h3>
-<form class="forms-sample" action="" method="POST">
+<form class="forms-sample" action="{{ route('action_profile') }}" method="POST">
   @csrf
     <div class="form-group">
       <label> Nom </label>
@@ -17,14 +17,14 @@
 
     <div class="form-group">
         <label> Sexe </label>
-        <select name="sexe" class="form-control" id="">
+        <select name="sexe" class="form-control">
             <option value="Masculin"> Masculin </option>
             <option value="Feminin"> Féminin </option>
         </select>
     </div>
 
     <div class="form-group">
-        <label> Date </label>
+        <label> Date de naissance </label>
         <input type="date" class="form-control" name="date" value="">
     </div>
 

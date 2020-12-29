@@ -43,6 +43,27 @@ class PageController extends Controller
         return view('layout.client.profil',compact('personne'));
     }
 
+    public function actionProfil(){
+        $utilisateur = Personne::where('id',Auth::user()->personne_id)->first();
+        $update = $utilisateur->update([
+            'sexe'    => request('sexe'),
+            'date'    => request('date'),
+            'contact' => request('contact'),
+            'pays'    =>  request('pays'),
+            'region'  => request('region'),
+            'ville'   => request('ville'),
+            'adresse' => request('adresse')
+            ]);
+
+        if ($update) {
+            Flashy::success('Mise à jour réussie');
+            return back();
+        }else{
+            Flashy::error('Echec !');
+            return back();
+        }
+    }
+
     public function formulaireInscription(){
         return view('pages.inscription');
     }
@@ -93,7 +114,6 @@ class PageController extends Controller
             Flashy::error("Echec de validation");
             return back();
         }
-        
     }
 
     public function formulaireConnexion(){
