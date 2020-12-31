@@ -3,6 +3,7 @@
 use App\Http\Controllers\CoinController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PayementController;
 use App\Http\Controllers\PersonneController;
 use App\Http\Controllers\TypeController;
 use App\Http\Middleware\Connection;
@@ -41,6 +42,15 @@ Route::get('mot de passe',[PageController::class,'formulairePasswordForget'])->n
 
 //Action mot de passe oublier
 Route::post('mot de passe',[PageController::class,'actionPasswordForget'])->name('action_password_forget');
+
+//Resource Payement
+Route::resource('payements',PayementController::class)->names([
+    'index'  => 'list_payments',
+    'create' => 'add_payment'
+]);
+
+//Confirmation payement
+Route::get('confirmer payement',[PageController::class,'confirmationPayement'])->name('payment_confirmation');
 
 
 //Group Middleware

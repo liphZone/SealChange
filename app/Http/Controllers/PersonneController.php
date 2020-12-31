@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\PersonneFormRequest;
 use App\Http\Requests\InscriptionFormRequest;
+use Illuminate\Support\Facades\Http;
 
 class PersonneController extends Controller
 {

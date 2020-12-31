@@ -190,17 +190,11 @@ class PageController extends Controller
             return back();
         }
     }
+    
+    public function confirmationPayement(){
 
-    public function payer(){
-        $url ='https://paygateglobal.com/api/v1/pay';
-        $auth_token = 'ae1e2c82-0e73-42fb-87f4-c63f2288ad4a';
-        $phone_number = request('telephone');
-        $amount = request('montant');
-        $description = request('details');
-        $identifier = request('id_transaction');
-        $nom = request('description');
-        
     }
+
 
     
 
