@@ -19,9 +19,6 @@ use App\Http\Middleware\Connection;
 |
 */
 
-
-
-
 //Page formulaire de connexion
 Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login');
 
@@ -52,8 +49,15 @@ Route::resource('payements',PayementController::class)->names([
 //Confirmation payement
 Route::get('confirmer payement',[PageController::class,'confirmationPayement'])->name('payment_confirmation');
 
+//Link Prices
+Route::get('prices',[PageController::class,'linkPrices'])->name('link_prices');
 
-//Group Middleware
+//Page prices
+Route::get('price page',[PageController::class,'pagePrices'])->name('page_prices');
+
+
+
+//GROUPE MIDDLEWARE **************************************
 Route::group(['middleware' => ['Connect']], function () {
     
 //Page index du client

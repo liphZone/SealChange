@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\PersonneFormRequest;
 use App\Http\Requests\InscriptionFormRequest;
 use App\Http\Requests\PasswordForgetFormRequest;
+use App\Models\Coin;
+use App\Models\Payement;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class PageController extends Controller
 {
@@ -23,7 +24,8 @@ class PageController extends Controller
     }
 
     public function accueil(){
-        return view('layout.client.accueil');
+        $monnaie = Coin::all();
+        return view('layout.client.accueil',compact('monnaie'));
     }
 
     public function indexAdmin(){
@@ -67,13 +69,6 @@ class PageController extends Controller
 
     public function formulaireInscription(){
         return view('pages.inscription');
-    }
-
-    public function listeUtilisateurs(){
-        $client = DB::table('personnes')
-        ->where('type_utilisateur','Client')
-        ->join('users','personnes.id','=','users.personne_id')->get();
-        return view('layout.admin.list_utilisateurs',compact('client'));
     }
 
     public function actionInscription(InscriptionFormRequest $i, PersonneFormRequest $p){
@@ -190,13 +185,27 @@ class PageController extends Controller
             return back();
         }
     }
-    
-    public function confirmationPayement(){
 
+    public function listeUtilisateurs(){
+        $client = DB::table('personnes')
+        ->where('type_utilisateur','Client')
+        ->join('users','personnes.id','=','users.personne_id')->get();
+        return view('layout.admin.list_utilisateurs',compact('client'));
     }
 
+    public function confirmationPayement(Request $request){
+        $utilisateur = Payement::where()->get();
+    }
 
-    
+    public function linkPrices(){
+        $price = json_decode(file_get_contents("https://blockchain.info/ticker"));
+        dd($price);
+        return view('pages.price',compact('price'));
+    }
+
+    public function pagePrices(){
+        return view('pages.price');
+    }
 
     public function deconnexion(){
         $dec = Auth::logout();

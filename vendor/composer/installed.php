@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'f2ee90c298a01e8907d7de686727a721ba4fc131',
+    'reference' => '4b5da64207cb1a453b00f28e9ac018804e2ff186',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -42,6 +42,24 @@
       array (
         0 => '*',
       ),
+    ),
+    'denpa/laravel-bitcoinrpc' => 
+    array (
+      'pretty_version' => 'v1.2.11',
+      'version' => '1.2.11.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '89d6f10da4c7b71caaca0b8c9d1b419177c36a80',
+    ),
+    'denpa/php-bitcoinrpc' => 
+    array (
+      'pretty_version' => 'v2.1.3',
+      'version' => '2.1.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '578dab84e713225b91105c54ee3485a078285788',
     ),
     'dnoegel/php-xdg-base-dir' => 
     array (
@@ -90,12 +108,12 @@
     ),
     'egulias/email-validator' => 
     array (
-      'pretty_version' => '2.1.24',
-      'version' => '2.1.24.0',
+      'pretty_version' => '2.1.25',
+      'version' => '2.1.25.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ca90a3291eee1538cd48ff25163240695bd95448',
+      'reference' => '0dbf5d78455d4d6a41d186da50adc1122ec066f4',
     ),
     'facade/flare-client-php' => 
     array (
@@ -108,12 +126,12 @@
     ),
     'facade/ignition' => 
     array (
-      'pretty_version' => '2.5.3',
-      'version' => '2.5.3.0',
+      'pretty_version' => '2.5.8',
+      'version' => '2.5.8.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'd8dc4f90ed469f9f9313b976fb078c20585d5c99',
+      'reference' => '8e907d81244649c5ea746e2ec30c32c5f59df472',
     ),
     'facade/ignition-contracts' => 
     array (
@@ -454,7 +472,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'f2ee90c298a01e8907d7de686727a721ba4fc131',
+      'reference' => '4b5da64207cb1a453b00f28e9ac018804e2ff186',
     ),
     'laravel/sail' => 
     array (
