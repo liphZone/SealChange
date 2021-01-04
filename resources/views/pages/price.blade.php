@@ -1,12 +1,19 @@
 @extends('layout.client.index')
 @section('content')
 @section('title','Price')
+
+
+
 <form class="forms-sample" action="#" method="POST">
   @csrf
     {{-- <div class="form-group">
       <label> Ce que j'envoie </label>
       <input type="text" class="form-control" name="coin_enter" value="{{ request('id') }}" readonly>
     </div> --}}
+    <div class="form-group">
+      <label for=""> Envoie </label>
+      <input type="text" class="form-control" name="coin_enter" value="{{ request('id') }}" readonly>
+    </div>
     <div class="form-group">
         <label> COMMENT VOULEZ-VOUS RECEVOIR? </label>
         <select class="form-control" name="coint_out" id="">
@@ -20,6 +27,18 @@
             @endforeach
         </select>
       </div>
+      <div class="form-group">
+        <label for=""> Saisir le montant </label>
+        <input type="number" min="1" class="form-control" name="montant">
+      </div>
+      <div class="form-group">
+        <label for=""> Contact </label>
+        <div class="pd-telephone-input">
+          <input type="tel" class="form-control" name="contact">
+        </div>
+       
+      </div>
+
     <button type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
   </form>
 @endsection

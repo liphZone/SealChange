@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '5537e82934054202118891716e12994e6db820e6',
+    'reference' => '25eb6a45265faac27d42bff17936502924eb6933',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -42,24 +42,6 @@
       array (
         0 => '*',
       ),
-    ),
-    'denpa/laravel-bitcoinrpc' => 
-    array (
-      'pretty_version' => 'v1.2.11',
-      'version' => '1.2.11.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '89d6f10da4c7b71caaca0b8c9d1b419177c36a80',
-    ),
-    'denpa/php-bitcoinrpc' => 
-    array (
-      'pretty_version' => 'v2.1.3',
-      'version' => '2.1.3.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '578dab84e713225b91105c54ee3485a078285788',
     ),
     'dnoegel/php-xdg-base-dir' => 
     array (
@@ -472,7 +454,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '5537e82934054202118891716e12994e6db820e6',
+      'reference' => '25eb6a45265faac27d42bff17936502924eb6933',
     ),
     'laravel/sail' => 
     array (

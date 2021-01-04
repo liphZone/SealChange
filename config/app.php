@@ -175,9 +175,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //Bitcoin avec Denpa
-        Denpa\Bitcoin\Providers\ServiceProvider::class,
-
     ],
 
     /*
@@ -229,9 +226,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        
-        //Bitcoin avec Denpa
-        'Bitcoind' => Denpa\Bitcoin\Facades\Bitcoind::class,
 
     ],
 

@@ -20,7 +20,7 @@
                 </div>
               </div>
               <div class="col-md-12">
-               @yield('content')
+                @yield('content')
               </div>
             </div>
            

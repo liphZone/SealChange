@@ -63,7 +63,6 @@ class PersonneController extends Controller
         [
             'personne_id' => $personne->id,
         ]);
-
         Mail::to($user)->send(new RegisterMail($user));
 
         if ($personne AND $user) {

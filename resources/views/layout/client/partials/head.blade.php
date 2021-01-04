@@ -23,6 +23,8 @@
     <!-- End Layout styles -->
     <link rel="shortcut icon" href="{{ asset('AdminTemplate/assets/images/favicon.png') }}"/>
 
+    <link href="{{ asset('Pidie/pidie-0.0.8.css') }}" rel="stylesheet"/>
+
 <style>
     body {
     font-family: Open Sans;
