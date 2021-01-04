@@ -12,22 +12,3 @@
     <!-- Custom js for this page-->
     <script src="{{ asset('AdminTemplate/assets/js/demo_1/dashboard.js') }}"></script>
     <!-- End custom js for this page-->
-
-<script>
-        function closeModal() {
-    var modal = document.getElementById('modal');
-    modal.style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-function showModal() {
-    var modal = document.getElementById('modal');
-    modal.style.display = "block";
-}
-
-</script>

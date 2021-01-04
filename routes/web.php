@@ -53,7 +53,8 @@ Route::get('confirmer payement',[PageController::class,'confirmationPayement'])-
 Route::get('prices',[PageController::class,'linkPrices'])->name('link_prices');
 
 //Page prices
-Route::get('price page',[PageController::class,'pagePrices'])->name('page_prices');
+Route::get('pricepage/{id}',[PageController::class,'pagePrices'])->name('page_prices');
+
 
 
 

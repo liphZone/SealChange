@@ -59,7 +59,6 @@
                   </form>
                 </div>
                
-                <p class="footer-text text-center">copyright © {{ date('Y') }} Bootstrapdash. All rights reserved.</p>
               </div>
             </div>
           </div>

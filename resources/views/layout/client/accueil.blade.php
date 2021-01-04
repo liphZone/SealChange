@@ -1,7 +1,6 @@
 @extends('layout.client.index')
 @section('content')
 @section('title','Accueil')
-
 <div class="row">
     <div class="col-md-12 grid-margin">
       <div class="card">
@@ -60,48 +59,56 @@
       </div>
     </div>
   </div>
-  <a href="{{ route('link_prices') }}" class="btn btn-outline-primary"> Prices</a>
+<h2 class="text-center"> QUE DESIREZ-VOUS RECUPERER ?</h2>
+  <div>
+    <ul>
+      @foreach ($categorie as $categories)
+        <h6 class="dropdown-header"> <b>{{ $categories->libelle_type }}</b> </h6>
+        @foreach ($monnaie as $monnaies)
+          @if ($monnaies->type_id === $categories->id)
+            <li>  
+              <a class="dropdown-item" id="coin_enter" data-toggle="modal" data-target="#coin" href="{{ $monnaies->id }}"> 
+                <img src="{{ $monnaies->image }}" height="40px;" width="40px;" style="border-radius: 20px;" alt=""> 
+                {{ $monnaies->libelle }}  
+              </a>
+            </li>
+            <hr>
+          @endif
+        @endforeach
+      @endforeach
+    </ul>
+  </div>
 
-  
-
-  <h3> FORMULAIRE DE CHANGE  </h3>
-
-<form class="forms-sample" action="" method="POST">
-    @csrf
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <select name="send" class="form-control" required>
-                        <option value=""> Ce que j'envoie</option>
-                            @foreach ($monnaie as $monnaies)
-                                <option value="">  {{ $monnaies->libelle }} </option>
-                            @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <select name="send" class="form-control" required>
-                        <option value=""> Ce que je reçois </option>
-                        <option value=""></option>
-                        <option value=""></option>
-                    </select>
-                </div>
-            </div>
+  <div class="modal fade" id="coin">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> PAR QUEL MOYEN ? </h4>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <ul>
+            <li id="coint_out">Envoie : {{ request('id') }} </li>
+            @foreach ($categorie as $categories)
+            <h6 class="dropdown-header"> <b>{{ $categories->libelle_type }}</b> </h6>
+            @foreach ($monnaie as $monnaies)
+              @if ($monnaies->type_id === $categories->id)
+                <li>  
+                  <a class="dropdown-item" data-toggle="modal" data-target="#infos" href="{{ route('page_prices',$monnaies->id) }}"> 
+                    <img src="{{ $monnaies->image }}" height="40px;" width="40px;" style="border-radius: 20px;" alt=""> 
+                    {{ $monnaies->libelle }}  
+                  </a>
+                </li>
+                <hr>
+              @endif
+            @endforeach
+          @endforeach
+          </ul>
+        </div>
+      </div>
     </div>
-
-    
-    <div class="row">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-7">
-            <button type="submit" class="btn btn-danger mr-2"> Valider </button>
-        </div>
-        <div class="col-md-1">
-        </div>
-    </div>
-  </form>
+  </div>
 
 @endsection

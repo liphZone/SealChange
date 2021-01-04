@@ -32,14 +32,14 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
+        'ef3d9dab4f9e36ea1b6959f291959656' => __DIR__ . '/..' . '/denpa/php-bitcoinrpc/src/functions.php',
         '9cdd7b9056abc3081735233ba9dd9c7f' => __DIR__ . '/..' . '/facade/flare-client-php/src/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        'ef3d9dab4f9e36ea1b6959f291959656' => __DIR__ . '/..' . '/denpa/php-bitcoinrpc/src/functions.php',
+        'f528dcf5762c65f7e76056e5c09d0467' => __DIR__ . '/..' . '/denpa/laravel-bitcoinrpc/src/helpers.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
         '17d016dc52a631c1e74d2eb8fdd57342' => __DIR__ . '/..' . '/laravel/helpers/src/helpers.php',
         '974ce3986b2f81344d3ce484b96c08e6' => __DIR__ . '/..' . '/mercuryseries/flashy/src/MercurySeries/Flashy/functions.php',
-        'f528dcf5762c65f7e76056e5c09d0467' => __DIR__ . '/..' . '/denpa/laravel-bitcoinrpc/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -470,8 +470,8 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         ),
         'Denpa\\Bitcoin\\' => 
         array (
-            0 => __DIR__ . '/..' . '/denpa/php-bitcoinrpc/src',
-            1 => __DIR__ . '/..' . '/denpa/laravel-bitcoinrpc/src',
+            0 => __DIR__ . '/..' . '/denpa/laravel-bitcoinrpc/src',
+            1 => __DIR__ . '/..' . '/denpa/php-bitcoinrpc/src',
         ),
         'DeepCopy\\' => 
         array (

@@ -3,7 +3,7 @@
 @section('title','Mon Profil')
 
 <h3> IDENTITE DE L'UTILISATEUR </h3>
-<form class="forms-sample" action="{{ route('action_profile') }}" method="POST">
+<form class="forms-sample" action="{{ route('action_profile') }}" method="POST" enctype="multipart/form-data">
   @csrf
     <div class="form-group">
       <label> Nom </label>
@@ -313,7 +313,25 @@
       <label> Adresse </label>
       <input type="text" class="form-control" name="adresse">
     </div>
+
+    <h3> VALIDATION IDENTITE </h3>
+    <div class="form-group">
+      <label> Carte d'identité (Recto et Verso) </label>
+      <input multiple type="file" class="form-control" name="identity">
+    </div>
+
+    <div class="form-group">
+      <label> Photo selfie</label>
+      <input type="file" class="form-control" name="selfie">
+    </div>
+
+    <div class="form-group">
+      <label> Justificatif domicile </label>
+      <input type="file" class="form-control" name="image_justificative">
+    </div>
+
   
     <button type="submit" class="btn btn-success btn-block mr-2"> Sauvegarder </button>
   </form>
+
 @endsection

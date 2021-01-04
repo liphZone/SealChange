@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coin;
 use App\Models\User;
+use App\Models\Payement;
 use App\Models\Personne;
 use App\Mail\RegisterMail;
 use Illuminate\Http\Request;
 use App\Mail\PasswordForgetMail;
 use MercurySeries\Flashy\Flashy;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\PersonneFormRequest;
 use App\Http\Requests\InscriptionFormRequest;
 use App\Http\Requests\PasswordForgetFormRequest;
-use App\Models\Coin;
-use App\Models\Payement;
-use Illuminate\Support\Facades\DB;
+use App\Models\Type;
 
 class PageController extends Controller
 {
@@ -24,8 +25,9 @@ class PageController extends Controller
     }
 
     public function accueil(){
-        $monnaie = Coin::all();
-        return view('layout.client.accueil',compact('monnaie'));
+        $categorie = Type::all();
+        $monnaie =Coin::all();
+        return view('layout.client.accueil',compact('categorie','monnaie'));
     }
 
     public function indexAdmin(){
@@ -199,12 +201,13 @@ class PageController extends Controller
 
     public function linkPrices(){
         $price = json_decode(file_get_contents("https://blockchain.info/ticker"));
-        dd($price);
         return view('pages.price',compact('price'));
     }
 
-    public function pagePrices(){
-        return view('pages.price');
+    public function pagePrices($id){
+        $categorie = Type::all();
+        $monnaie =Coin::all();
+        return view('pages.price',compact('categorie','monnaie'));
     }
 
     public function deconnexion(){

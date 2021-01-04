@@ -24,6 +24,9 @@ class CreatePersonnesTable extends Migration
             $table->string('region')->nullable();
             $table->string('ville')->nullable();
             $table->string('adresse')->nullable();
+            $table->string('identity')->nullable();
+            $table->string('selfie')->nullable();
+            $table->string('image_justificative')->nullable();
             $table->timestamps();
         });
     }

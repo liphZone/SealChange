@@ -10,7 +10,7 @@
     <div class="navbar-menu-wrapper d-flex align-items-center">
       <form class="ml-auto search-form d-none d-md-block" action="#">
         <div class="form-group">
-          <input type="search" class="form-control" placeholder="Search Here">
+          <input type="search" class="form-control" placeholder="Chercher ...">
         </div>
       </form>
       <ul class="navbar-nav ml-auto">
