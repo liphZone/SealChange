@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coin;
+use App\Models\Type;
 use App\Models\User;
+use Aloha\Twilio\Twilio;
 use App\Models\Payement;
 use App\Models\Personne;
-use App\Mail\RegisterMail;
 use Illuminate\Http\Request;
 use App\Mail\PasswordForgetMail;
 use MercurySeries\Flashy\Flashy;
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\PersonneFormRequest;
 use App\Http\Requests\InscriptionFormRequest;
 use App\Http\Requests\PasswordForgetFormRequest;
-use App\Models\Type;
 
 class PageController extends Controller
 {
@@ -75,9 +75,9 @@ class PageController extends Controller
 
     public function actionInscription(InscriptionFormRequest $i, PersonneFormRequest $p){
         $personne = Personne::firstOrCreate([
-            'nom'    => $p->nom,
-            'prenom' => $p->prenom,
-            'email'  => $p->email,
+            'nom'     => $p->nom,
+            'prenom'  => $p->prenom,
+            'email'   => $p->email,
         ]);
 
         $user = User::firstOrCreate([
@@ -88,26 +88,28 @@ class PageController extends Controller
         [
             'personne_id' => $personne->id,
         ]);
-
-        Mail::to($user)->send(new RegisterMail($user));
-
         if ($personne AND $user) {
-            Flashy::success('Inscription réussie , Vous avez reçu un mail');
-            return redirect()->route('form_login');
+            Flashy::success('Inscription réussie');
+            return redirect()->route('form_confirm_account');
         } else {
             Flashy::error("Echec d'inscription");
             return back();
         }
     }
 
-    public function validationCompte(User $user,$token){
+    public function formulaireValidationCompte(){
+       return view('pages.validation_compte');
+    }
+
+    public function actionValidationCompte(){
+        $user = User::where('email',request('email'))->where('email_verified_at',null)->first();
         if ($user->exists) {
-            $user->update([
-                'email_verified_at' => now(),
-                'token' => null
-            ]);
-            Flashy('Votre compte a été validé, vous pouvez vous connecter');
-            return redirect()->route('form_login');
+        $user->update([
+            'email_verified_at' => now(),
+            'token' => null
+        ]);
+        Flashy('Votre compte a été validé, vous pouvez vous connecter');
+        return redirect()->route('form_login');
         } else {
             Flashy::error("Echec de validation");
             return back();
@@ -128,7 +130,7 @@ class PageController extends Controller
             }
             if (auth()->user()->type_utilisateur === 'Super_admin' || auth()->user()->type_utilisateur === 'Admin') {
                 Flashy::success('Bienvenu sur votre page');
-                return redirect()->route('accueil_admin');
+                return redirect()->route('add_payment');
             }elseif (auth()->user()->type_utilisateur === 'Client') {
                 Flashy::success('Bienvenu sur votre page');
                 return redirect()->route('accueil');
@@ -169,23 +171,64 @@ class PageController extends Controller
         return back();
     }
 
-    public function formulairePasswordForget(){
-        return view('pages.password_forget');
+    public function actionPasswordForgetOne(PasswordForgetFormRequest $pass){
+        $user= User::where('email',request('email'))->first();
+        if ($user) {
+            $token = str_random(60);
+            $pwd = str_random(8);
+            $user->update(['token'=>$token]);
+            Flashy::success('Un mot de passe a été généré');
+            return redirect()->route('form_password_forget',compact('user','pwd'));
+        } 
+        else {
+            Flashy::error("Vérification erronée");
+            return back();
+        }
+            
+        // $user = User::where('email',request('email'))->first();
+        // if ($user) {
+        //     $password = str_random(8);
+        //     $user->update(['password'=>bcrypt($password)]);
+        //     Mail::to($user)->send(new PasswordForgetMail($user,$password));
+        //     Flashy::success('Un lien vous a été envoyé dans votre boîte mail(spam)');
+        //     return redirect()->route('form_login');
+        // } 
+        // else {
+        //     Flashy::error("Vous n'avez pas de compte");
+        //     return back();
+        // }
     }
 
-    public function actionPasswordForget(PasswordForgetFormRequest $pass){
-        $user = User::where('email',request('email'))->first();
+    public function formulairePasswordForget(){
+        $user = User::where('email',request('email'))->where('id',request('user'))->where('token','!=',null)->first();
         if ($user) {
-            $password = str_random(8);
-            $user->update(['password'=>bcrypt($password)]);
-            Mail::to($user)->send(new PasswordForgetMail($user,$password));
-            Flashy::success('Un lien vous a été envoyé dans votre boîte mail(spam)');
+            return view('pages.password_forget');
+        } else {
+            Flashy::error("Vous n'êtes pas authorisé à acceder à cette page");
+            return back();
+        }
+    }
+
+    public function actionPasswordForgetTwo(){
+        $user = User::where('id',request('user'))->where('token','!=',null)->first();
+        if ($user) {
+            $password = request('password');
+            $user->update([
+                'password'=>bcrypt($password),
+                'token' => null
+            ]);
+            Flashy::success('Veuillez vous connecter');
             return redirect()->route('form_login');
         } 
         else {
-            Flashy::error("Vous n'avez pas de compte");
+            Flashy::error("Echec de modification");
             return back();
         }
+        return back();
+    }
+
+    public function miseAjourPassword(){
+        return view('pages.update_password');
     }
 
     public function listeUtilisateurs(){

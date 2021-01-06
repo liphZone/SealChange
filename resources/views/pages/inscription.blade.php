@@ -38,7 +38,7 @@
                             <div style="color: red;"> {{ $message }} </div>
                         @enderror
                     </div>
-                
+
                     <div class="form-group">
                         <div class="input-group">
                             <input type="email" class="form-control" name="email" placeholder="Votre adresse mail" required>

@@ -63,11 +63,10 @@ class PersonneController extends Controller
         [
             'personne_id' => $personne->id,
         ]);
-        Mail::to($user)->send(new RegisterMail($user));
 
         if ($personne AND $user) {
-            Flashy::success('Inscription réussie , Vous avez reçu un mail');
-            return back();
+            Flashy::success('Inscription réussie');
+            return redirect()->route('form_confirm_account');;
         } else {
             Flashy::error("Echec d'inscription");
             return back();

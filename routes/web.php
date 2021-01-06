@@ -32,13 +32,24 @@ Route::get('Inscription',[PageController::class,'formulaireInscription'])->name(
 Route::post('inscription',[PageController::class,'actionInscription'])->name('action_register');  
 
 //Route token
-Route::get('confirm/{user}/{token}',[PageController::class,'validationCompte'])->name('confirm');
+// Route::get('confirm/{user}/{token}',[PageController::class,'validationCompte'])->name('confirm');
+
+//Action mot de passe oublier Part I
+Route::post('mot de passe1',[PageController::class,'actionPasswordForgetOne'])->name('action_password_forget_one');
 
 // Page formulaire de recup mot de passe 
-Route::get('mot de passe',[PageController::class,'formulairePasswordForget'])->name('form_password_forget');
+Route::get('mot de passe/{user}/{pwd}',[PageController::class,'formulairePasswordForget'])->name('form_password_forget');
 
-//Action mot de passe oublier
-Route::post('mot de passe',[PageController::class,'actionPasswordForget'])->name('action_password_forget');
+//Action mot de passe oublier Part II
+Route::post('motdepasse2',[PageController::class,'actionPasswordForgetTwo'])->name('action_password_forget_two');
+
+//Page Mise a jour mot de passe 
+Route::get('Maj',[PageController::class,'miseAjourPassword'])->name('updt');
+//Page formulaire validation de compte
+Route::get('Validation',[PageController::class,'formulaireValidationCompte'])->name('form_confirm_account');
+
+//Route action validation de compte
+Route::post('validation',[PageController::class,'actionValidationCompte'])->name('action_confirm_account');
 
 //Resource Payement
 Route::resource('payements',PayementController::class)->names([

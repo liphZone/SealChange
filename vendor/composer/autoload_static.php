@@ -537,6 +537,8 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'App\\Http\\Requests\\PasswordForgetFormRequest' => __DIR__ . '/../..' . '/app/Http/Requests/PasswordForgetFormRequest.php',
         'App\\Http\\Requests\\PersonneFormRequest' => __DIR__ . '/../..' . '/app/Http/Requests/PersonneFormRequest.php',
         'App\\Http\\Requests\\TypeFormRequest' => __DIR__ . '/../..' . '/app/Http/Requests/TypeFormRequest.php',
+        'App\\Mail\\PasswordForgetMail' => __DIR__ . '/../..' . '/app/Mail/PasswordForgetMail.php',
+        'App\\Mail\\RegisterMail' => __DIR__ . '/../..' . '/app/Mail/RegisterMail.php',
         'App\\Models\\Coin' => __DIR__ . '/../..' . '/app/Models/Coin.php',
         'App\\Models\\Payement' => __DIR__ . '/../..' . '/app/Models/Payement.php',
         'App\\Models\\Personne' => __DIR__ . '/../..' . '/app/Models/Personne.php',

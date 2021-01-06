@@ -29,6 +29,8 @@ return array(
     'App\\Http\\Requests\\PasswordForgetFormRequest' => $baseDir . '/app/Http/Requests/PasswordForgetFormRequest.php',
     'App\\Http\\Requests\\PersonneFormRequest' => $baseDir . '/app/Http/Requests/PersonneFormRequest.php',
     'App\\Http\\Requests\\TypeFormRequest' => $baseDir . '/app/Http/Requests/TypeFormRequest.php',
+    'App\\Mail\\PasswordForgetMail' => $baseDir . '/app/Mail/PasswordForgetMail.php',
+    'App\\Mail\\RegisterMail' => $baseDir . '/app/Mail/RegisterMail.php',
     'App\\Models\\Coin' => $baseDir . '/app/Models/Coin.php',
     'App\\Models\\Payement' => $baseDir . '/app/Models/Payement.php',
     'App\\Models\\Personne' => $baseDir . '/app/Models/Personne.php',

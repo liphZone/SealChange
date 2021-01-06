@@ -42,23 +42,46 @@
                       <button class="btn btn-primary submit-btn btn-block">Connexion</button>
                     </div>
                     <div class="form-group d-flex justify-content-between">
-                      {{-- <div class="form-check form-check-flat mt-0">
-                        <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input" checked> Keep me signed in </label>
-                      </div> --}}
-                      <a href="{{ route('form_password_forget') }}" class="text-small forgot-password text-black">Mot de passe oublié ?</a>
+                      <a href="#" type="button" data-toggle="modal" data-target="#pwd" class="btn btn-light"
+                       class="text-small forgot-password text-black">Mot de passe oublié ?</a>
                     </div>
-                    {{-- <div class="form-group">
-                      <button class="btn btn-block g-login">
-                        <img class="mr-3" src="../../../assets/images/file-icons/icon-google.svg" alt="">Log in with Google</button>
-                    </div> --}}
                     <div class="text-block text-center my-3">
-                      {{-- <span class="text-small font-weight-semibold">Not a member ?</span> --}}
-                      <a href="{{ route('form_register') }}" class="text-black text-small">Créer un compte</a>
+                      <a href="{{ route('form_register') }}" style="text-decoration: none;" class="text-black text-small">Créer un compte</a>
                     </div>
                   </form>
                 </div>
-               
+              </div>
+            </div>
+
+            <div class="modal fade" id="pwd" style="margin-top: 10%;">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title"> Mot de passe oublié ?</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span>&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{ route('action_password_forget_one') }}" method="POST">
+                      @csrf
+                      <div class="form-group">
+                        <div class="input-group">
+                            <input type="email" class="form-control" name="email" placeholder="Saisissez votre adresse mail" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="mdi mdi-check-circle-outline"></i>
+                                </span>
+                            </div>
+                        </div>
+                        @error('email')
+                            <div style="color: red;"> {{ $message }} </div>
+                        @enderror
+                      </div>
+                      <button class="btn btn-primary submit-btn btn-block">Valider</button>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
