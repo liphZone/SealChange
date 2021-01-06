@@ -59,7 +59,6 @@ class PageController extends Controller
             'ville'   => request('ville'),
             'adresse' => request('adresse')
             ]);
-
         if ($update) {
             Flashy::success('Mise à jour réussie');
             return back();
@@ -124,7 +123,7 @@ class PageController extends Controller
         $try_connexion = Auth::attempt(['email'=>request('email'),'password'=>request('password')]);
         $user = Auth::user();
         if ($try_connexion) {
-            if ($user->email_verified_at === null AND $user->token != null ) {
+            if ($user->email_verified_at === null AND $user->token != null) {
                 Flashy::error("Echec de validation");
                 return back();
             }
@@ -201,12 +200,7 @@ class PageController extends Controller
 
     public function formulairePasswordForget(){
         $user = User::where('email',request('email'))->where('id',request('user'))->where('token','!=',null)->first();
-        if ($user) {
-            return view('pages.password_forget');
-        } else {
-            Flashy::error("Vous n'êtes pas authorisé à acceder à cette page");
-            return back();
-        }
+        return view('pages.password_forget');
     }
 
     public function actionPasswordForgetTwo(){
