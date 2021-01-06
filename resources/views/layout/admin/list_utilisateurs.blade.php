@@ -22,9 +22,10 @@
                             <td> {{ $clients->email }} </td>
                             <td> {{ $clients->contact }} </td>
                             <td> 
-                                <a href="#" class="btn btn-primary"> <i class="fa fa-eye" aria-hidden="true"></i> Voir </a> |
-                                <a href="#" class="btn btn-success"> <i class="fa fa-edit"></i>  Modifier </a> |
-                                <a href="#" class="btn btn-danger"> <i class="fa fa-trash-o" aria-hidden="true"></i> Supprimer </a>
+                                <a href="#" class="btn btn-outline-primary"> <i class="fa fa-eye" aria-hidden="true"></i> Voir </a> |
+                                <a href="#" class="btn btn-outline-success"> <i class="fa fa-edit"></i>  Modifier </a> |
+                                <a href="#" class="btn btn-outline-danger"> <i class="fa fa-trash-o" aria-hidden="true"></i> Supprimer </a>
+                                <a href="{{ route('upgrade',$clients->id) }}" onclick="return Action()" class="btn btn-outline-info"> <i class="fa fa-angle-double-up" aria-hidden="true"></i> Promouvoir </a>
                             </td>
                         </tr>
                     @endforeach
@@ -33,4 +34,12 @@
         </div>
     </div>
 </div>
+<script>            
+    function Action() {
+        var r = confirm("Vous allez promouvoir ce utilisateur au statut d'administrateur,voulez-vous continuer?");
+        if (r == false) {
+        return false;
+        }
+    }
+</script>
 @endsection

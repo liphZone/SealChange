@@ -6,13 +6,8 @@
 
 <form class="forms-sample" action="#" method="POST">
   @csrf
-    {{-- <div class="form-group">
-      <label> Ce que j'envoie </label>
-      <input type="text" class="form-control" name="coin_enter" value="{{ request('id') }}" readonly>
-    </div> --}}
     <div class="form-group">
-      <label for=""> Envoie </label>
-      <input type="text" class="form-control" name="coin_enter" value="{{ request('id') }}" readonly>
+      <input hidden type="text" class="form-control" name="coin_enter" value="{{ request('id') }}" readonly>
     </div>
     <div class="form-group">
         <label> COMMENT VOULEZ-VOUS RECEVOIR? </label>

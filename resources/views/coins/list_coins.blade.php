@@ -19,7 +19,7 @@
                 @foreach ($coin as $coins)
                     <tr>
                         <td class="py-1">
-                        <img src="{{ $coins->image }}" alt="coin"/> </td>
+                        <img src="{{ $coins->image }}" alt="{{ $coins->libelle }}"/> </td>
                         <td> {{ $coins->libelle }} </td>
                         <td> {{ substr($coins->description,0,25)}}... </td>
                         <td>

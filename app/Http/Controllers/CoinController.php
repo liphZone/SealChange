@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CoinFormRequest;
 use App\Models\Coin;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use MercurySeries\Flashy\Flashy;
+use App\Http\Requests\CoinFormRequest;
+use Illuminate\Support\Facades\Storage;
 
 class CoinController extends Controller
 {

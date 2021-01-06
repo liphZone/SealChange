@@ -22,6 +22,7 @@ class PersonneController extends Controller
      */
     public function index()
     {
+        //Liste des administrateurs
         $personne = DB::table('personnes')
         ->where('type_utilisateur','Super_admin')
         ->Orwhere('type_utilisateur','Admin')

@@ -31,9 +31,6 @@ Route::get('Inscription',[PageController::class,'formulaireInscription'])->name(
 //Action inscription
 Route::post('inscription',[PageController::class,'actionInscription'])->name('action_register');  
 
-//Route token
-// Route::get('confirm/{user}/{token}',[PageController::class,'validationCompte'])->name('confirm');
-
 //Action mot de passe oublier Part I
 Route::post('mot de passe1',[PageController::class,'actionPasswordForgetOne'])->name('action_password_forget_one');
 
@@ -43,8 +40,6 @@ Route::get('mot de passe/{user}/{pwd}',[PageController::class,'formulairePasswor
 //Action mot de passe oublier Part II
 Route::post('motdepasse2',[PageController::class,'actionPasswordForgetTwo'])->name('action_password_forget_two');
 
-//Page Mise a jour mot de passe 
-Route::get('Maj',[PageController::class,'miseAjourPassword'])->name('updt');
 //Page formulaire validation de compte
 Route::get('Validation',[PageController::class,'formulaireValidationCompte'])->name('form_confirm_account');
 
@@ -59,6 +54,12 @@ Route::resource('payements',PayementController::class)->names([
 
 //Confirmation payement
 Route::get('confirmer payement',[PageController::class,'confirmationPayement'])->name('payment_confirmation');
+
+//Action Promouvoir Utilisateur
+Route::get('Promotion/{id}',[PageController::class,'promouvoir'])->name('upgrade');
+
+//Action Promouvoir Utilisateur
+Route::get('Destitution/{id}',[PageController::class,'retrograder'])->name('retrograde');
 
 //Link Prices
 Route::get('prices',[PageController::class,'linkPrices'])->name('link_prices');
