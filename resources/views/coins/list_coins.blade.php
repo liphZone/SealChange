@@ -1,6 +1,7 @@
 @extends('layout.admin.index')
 @section('content')
 @section('title','Liste des monnaies')
+
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
@@ -11,24 +12,21 @@
             <tr>
               <th> Image </th>
               <th> Libelle </th>
-              <th> Description </th>
               <th> Action </th>
             </tr>
           </thead>
           <tbody>
-                @foreach ($coin as $coins)
-                    <tr>
-                        <td class="py-1">
-                        <img src="{{ $coins->image }}" alt="{{ $coins->libelle }}"/> </td>
-                        <td> {{ $coins->libelle }} </td>
-                        <td> {{ substr($coins->description,0,25)}}... </td>
-                        <td>
-                            <a href="#" class="btn btn-primary"> <i class="fa fa-eye" aria-hidden="true"></i> Voir </a> |
-                            <a href="#" class="btn btn-success"> <i class="fa fa-edit"></i>  Modifier </a> |
-                            <a href="#" class="btn btn-danger"> <i class="fa fa-trash-o" aria-hidden="true"></i> Supprimer </a>
-                        </td>
-                    </tr>
-                @endforeach
+            @foreach ($coin as $coins)
+              <tr>
+                <td class="py-1"> <img src="{{ asset('Zone') }}/{{ $coins->image }}" alt="{{ $coins->libelle }}"/> </td>
+                <td> {{ $coins->libelle }} </td>
+                <td>
+                  <a href="#" class="btn btn-outline-primary" title="voir"> <i class="fa fa-eye" aria-hidden="true"></i>  </a> |
+                  <a href="#" class="btn btn-outline-success" title="modifier"> <i class="fa fa-edit"></i>   </a> |
+                  <a href="#" class="btn btn-outline-danger" title="supprimer"> <i class="fa fa-trash-o" aria-hidden="true"></i>  </a>
+                </td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
       </div>

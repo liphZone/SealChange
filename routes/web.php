@@ -55,17 +55,12 @@ Route::resource('payements',PayementController::class)->names([
 //Confirmation payement
 Route::get('confirmer payement',[PageController::class,'confirmationPayement'])->name('payment_confirmation');
 
-//Action Promouvoir Utilisateur
-Route::get('Promotion/{id}',[PageController::class,'promouvoir'])->name('upgrade');
+//Page Test
+Route::get('Test',[PageController::class,'formulaireTest'])->name('form_test');
 
-//Action Promouvoir Utilisateur
-Route::get('Destitution/{id}',[PageController::class,'retrograder'])->name('retrograde');
+//Action test
+Route::post('test',[PageController::class,'actionTest'])->name('action_test');
 
-//Link Prices
-Route::get('prices',[PageController::class,'linkPrices'])->name('link_prices');
-
-//Page prices
-Route::get('pricepage/{id}',[PageController::class,'pagePrices'])->name('page_prices');
 
 
 
@@ -104,6 +99,12 @@ Route::resource('coins',CoinController::class)->names(
     'index'  => 'list_coins',
     'create' => 'add_coin',
 ]);
+
+//Page formulaire de transaction
+Route::get('Transaction/{id}',[PageController::class,'formulaireTransaction'])->name('form_deal');
+
+//Action Transaction
+Route::post('transaction',[PageController::class,'actionTransaction'])->name('action_deal');
     
 //Page mon profil
 Route::get('Mon profil',[PageController::class,'monProfil'])->name('profile');
@@ -125,6 +126,12 @@ Route::post('modifier mot de passe',[PageController::class,'actionUpdatePassword
 
 //Liste des utilisateurs
 Route::get('Liste des utilisateurs',[PageController::class,'listeUtilisateurs'])->name('list_users');
+
+//Action Promouvoir Utilisateur
+Route::get('Promotion/{id}',[PageController::class,'promouvoir'])->name('upgrade');
+
+//Action Promouvoir Utilisateur
+Route::get('Destitution/{id}',[PageController::class,'retrograder'])->name('retrograde');
 
 //Deconnexion
 Route::get('deconnexion',[PageController::class,'deconnexion'])->name('logout');

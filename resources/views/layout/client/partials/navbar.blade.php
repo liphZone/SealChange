@@ -14,9 +14,9 @@
         </div>
       </form>
       <ul class="navbar-nav ml-auto">
-          <li class="nav-item font-weight-semibold d-none d-lg-block"> A propos </li>
-          <li class="nav-item font-weight-semibold d-none d-lg-block"> Service </li>
-          <li class="nav-item font-weight-semibold d-none d-lg-block"> Contact </li>
+          <li class="nav-item font-weight-semibold d-none d-lg-block"> <a href="" style="color:black; text-decoration:none;"> A propos </a>  </li>
+          <li class="nav-item font-weight-semibold d-none d-lg-block"> <a href="" style="color:black; text-decoration:none;"> Service  </a> </li>
+          <li class="nav-item font-weight-semibold d-none d-lg-block"> <a href="" style="color:black; text-decoration:none;"> Contact </a>  </li>
         <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
           <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
             <img class="img-xs rounded-circle" src="{{ asset('AdminTemplate/assets/images/user.png') }}" alt="Profile image"> </a>

@@ -41,20 +41,27 @@ class CoinController extends Controller
      */
     public function store(CoinFormRequest $c)
     {
-        //Récuperation de l'image
+
+        $name = auth()->user()->id;
         $image = $c->file('image');
-        $random  = str_random(3);
-
-        //Nommmer l'image 
-        $image_name = auth()->user()->id. $random . $image->getExtension();
-
-        //Deplacer l'image dans le dossier public
+        $image_name = time().'.'.$image->extension();
         $image->move(public_path('Zone'),$image_name);
+
+
+        //Récuperation de l'image
+        // $image = $c->file('image');
+        // $random  = str_random(3);
+
+        // //Nommmer l'image 
+        // $image_name = auth()->user()->id. $random . $image->getExtension();
+
+        // //Deplacer l'image dans le dossier public
+        // $image->move(public_path('Zone'),$image_name);
 
         $insertion = Coin::firstOrCreate([
             'libelle'     => ucfirst($c->libelle),
             'description' => $c->description,
-            'image'       => "/Zone/{$image_name}",
+            'image'       => $image_name,
             'type_id'     => $c->type_id,
         ]);
 

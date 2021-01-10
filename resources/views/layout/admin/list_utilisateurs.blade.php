@@ -22,10 +22,10 @@
                             <td> {{ $clients->email }} </td>
                             <td> {{ $clients->contact }} </td>
                             <td> 
-                                <a href="#" class="btn btn-outline-primary"> <i class="fa fa-eye" aria-hidden="true"></i> Voir </a> |
-                                <a href="#" class="btn btn-outline-success"> <i class="fa fa-edit"></i>  Modifier </a> |
-                                <a href="#" class="btn btn-outline-danger"> <i class="fa fa-trash-o" aria-hidden="true"></i> Supprimer </a>
-                                <a href="{{ route('upgrade',$clients->id) }}" onclick="return Action()" class="btn btn-outline-info"> <i class="fa fa-angle-double-up" aria-hidden="true"></i> Promouvoir </a>
+                                <a href="#" class="btn btn-outline-primary" title="voir"> <i class="fa fa-eye" aria-hidden="true"></i> </a> |
+                                <a href="#" class="btn btn-outline-success" title="modifier"> <i class="fa fa-edit"></i> </a> |
+                                <a href="#" class="btn btn-outline-danger" title="supprimer"> <i class="fa fa-trash-o" aria-hidden="true"></i> </a>
+                                <a href="{{ route('upgrade',$clients->id) }}" title="promouvoir" onclick="return Action()" class="btn btn-outline-info"> <i class="fa fa-angle-double-up" aria-hidden="true"></i> </a>
                             </td>
                         </tr>
                     @endforeach
