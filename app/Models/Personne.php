@@ -9,4 +9,8 @@ class Personne extends Model
 {
     use HasFactory;
     protected $fillable = ['nom','prenom','sexe','email','contact','pays','region','ville','adresse'];
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
 }

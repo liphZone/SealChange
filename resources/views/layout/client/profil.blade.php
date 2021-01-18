@@ -36,7 +36,7 @@
 
     <div class="form-group">
         <label> Contact </label>
-        <input type="text" class="form-control" name="contact" id="exampleInputName1" value="">
+        <input type="text" class="form-control" name="contact" id="exampleInputName1" value="{{ $personne->contact }}">
     </div>
 <h3> ADRESSE UTILISATEUR </h3>
    
@@ -303,7 +303,7 @@
 
     <div class="form-group">
       <label> Région </label>
-      <input type="text" class="form-control" name="region">
+      <input type="text" class="form-control" name="region" value="{{ $personne->region }}">
     </div>
     <div class="form-group">
       <label> Ville </label>
@@ -329,7 +329,6 @@
       <label> Justificatif domicile </label>
       <input type="file" class="form-control" name="image_justificative">
     </div>
-
   
     <button type="submit" class="btn btn-success btn-block mr-2"> Sauvegarder </button>
   </form>

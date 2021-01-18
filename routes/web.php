@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PayementController;
 use App\Http\Controllers\PersonneController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TypeController;
 use App\Http\Middleware\Connection;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +21,8 @@ use App\Http\Middleware\Connection;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*Les transaction
+PM->P,B,L,E,F,T,Adv,M */
 //Page formulaire de connexion
 Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login');
 
@@ -52,8 +56,7 @@ Route::resource('payements',PayementController::class)->names([
     'create' => 'add_payment'
 ]);
 
-//Confirmation payement
-Route::get('confirmer payement',[PageController::class,'confirmationPayement'])->name('payment_confirmation');
+
 
 //Page Test
 Route::get('Test',[PageController::class,'formulaireTest'])->name('form_test');
@@ -100,11 +103,41 @@ Route::resource('coins',CoinController::class)->names(
     'create' => 'add_coin',
 ]);
 
+/* ********************************* LES TRANSACTIONS ******************************** */
 //Page formulaire de transaction
-Route::get('Transaction/{id}',[PageController::class,'formulaireTransaction'])->name('form_deal');
+Route::get('Transaction/{id}',[TransactionController::class,'formulaireTransaction'])->name('form_deal');
 
 //Action Transaction
-Route::post('transaction',[PageController::class,'actionTransaction'])->name('action_deal');
+Route::post('transaction',[TransactionController::class,'actionTransaction'])->name('action_deal');
+
+//Formulaire de transaction de perfect money vers autre
+Route::get('Perfectmoney/{id}',[TransactionController::class,'formulaireSendPerfectMoney'])->name('form_perfect_money');
+Route::post('perfect money',[TransactionController::class,'actionSendPerfectMoney'])->name('action_perfect_money');
+
+
+//Action envoie flooz
+Route::post('flooz',[TransactionController::class,'actionSendFlooz'])->name('action_flooz');
+
+//Confirmation payement Flooz
+Route::get('confirmer payement flooz',[TransactionController::class,'confirmationPayementFlooz'])->name('payment_confirmation');
+
+//Action envoie Advcash
+Route::post('Advcash',[TransactionController::class,'actionSendAdvcash'])->name('action_advcash');
+
+//Action envoie Payeer
+Route::post('Payeer',[TransactionController::class,'actionSendPayeer'])->name('action_payeer');
+
+//Formulaire de choix Historique d'une transaction
+Route::get('Choix',[TransactionController::class,'formulaireChoixHistorique'])->name('form_choix_historique');
+
+//Formulaire historique des transaction 
+Route::get('Historique/{id}',[TransactionController::class,'formulaireHistorique'])->name('form_historique');
+
+
+
+/* ********************************* FIN TRANSACTIONS ******************************** */
+
+
     
 //Page mon profil
 Route::get('Mon profil',[PageController::class,'monProfil'])->name('profile');

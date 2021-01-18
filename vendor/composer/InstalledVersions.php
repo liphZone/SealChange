@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '81ee9da6f0c9e4d5ef8d0868a6ebc102e87f902d',
+    'reference' => '1fcd4da073414b112e4832d7fbe38354fe46bcf0',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -51,6 +51,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '283a40c901101e66de7061bd359252c013dcc43c',
+    ),
+    'cknow/laravel-money' => 
+    array (
+      'pretty_version' => 'v6.1.0',
+      'version' => '6.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '3431fe3663efac5db883459b55949a269cb0880b',
     ),
     'cordoval/hamcrest-php' => 
     array (
@@ -477,7 +486,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '81ee9da6f0c9e4d5ef8d0868a6ebc102e87f902d',
+      'reference' => '1fcd4da073414b112e4832d7fbe38354fe46bcf0',
     ),
     'laravel/sail' => 
     array (
@@ -541,6 +550,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '20cab678faed06fac225193be281ea0fddb43b93',
+    ),
+    'moneyphp/money' => 
+    array (
+      'pretty_version' => 'v3.3.1',
+      'version' => '3.3.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '122664c2621a95180a13c1ac81fea1d2ef20781e',
     ),
     'monolog/monolog' => 
     array (

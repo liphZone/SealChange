@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Coin;
 use App\Models\Type;
 use App\Models\User;
-use Aloha\Twilio\Twilio;
 use App\Models\Payement;
 use App\Models\Personne;
 use Illuminate\Http\Request;
@@ -28,6 +27,11 @@ class PageController extends Controller
     public function accueil(){
         $categorie = Type::all();
         $monnaie =Coin::all();
+        //Affichage des fluctuations de  bitcoin
+        // $url = "https://bitpay.com/api/rates";
+      
+        // $btc = json_decode(file_get_contents($url));
+        
         return view('layout.client.accueil',compact('categorie','monnaie'));
     }
 
@@ -242,10 +246,6 @@ class PageController extends Controller
         return view('layout.admin.list_utilisateurs',compact('client'));
     }
 
-    public function confirmationPayement(Request $request){
-        $utilisateur = Payement::where()->get();
-    }
-
 
     public function Promouvoir(Request $request){
         $user = User::where('id',$request->id)->first();
@@ -275,15 +275,11 @@ class PageController extends Controller
         }
     }
 
-    public function test(){
-        return view('pages.test');
-    }
-
-    public function formulaireTransaction(Request $r){
-        $categorie = Type::all();
-        $monnaie =Coin::all();
-        return view('pages.transaction',compact('categorie','monnaie'));
-    }
+    // public function formulaireTransaction(Request $r){
+    //     $categorie = Type::all();
+    //     $monnaie =Coin::all();
+    //     return view('pages.transaction',compact('categorie','monnaie'));
+    // }
 
     public function actionTransaction(TransactionFormRequest $t){
         $user = Personne::where('id',auth()->user()->personne_id)->first();
@@ -300,18 +296,41 @@ class PageController extends Controller
         }
     }
 
+
     public function formulaireTest(){
         return view('pages.test');
     }
 
     public function actionTest(){
+        Money::USD(request('amount'));
+        $from = request('from');
+        $to = request('to');
+        $amount = request('amount');
+
+       return redirect("http://api.currencylayer.com/live?access_key=cb02a90efebf21ed25131178798b90aa&from="
+       .$from."&to=".$to."&amount=".$amount."&format=1");
         // compteUSD = U29194976
         // AccountID=2586914&PassPhrase=Azerty7p1960
-        $montant = request('montant');
-        $compte = request('compte');
-        $f = fopen('https://perfectmoney.com/acct/confirm.asp?AccountID=2586914&PassPhrase=Azert7p1960&Payer_Account='.$compte.'&Payee_Account='.$compte.'&Amount='.$montant.'&PAY_IN=1&PAYMENT_ID=1223', 'rb');
-        return $f;
+        // $montant = request('montant');
+        // $compte = request('compte');
+
+        // $params = array('AccountID' => '2586914',
+        // 'PassPhrase' => 'Azerty7p1960',
+        // 'Payer_Account' => 'U29194976',
+        // 'Payee_Account' => $compte,
+        // 'Amount' => $montant,
+        // 'PAY_IN' => 1,
+        // 'PAYMENT_ID' => 1223,
+        // );
+        // $query = http_build_query($params);
+        // $url = 'https://perfectmoney.is/acct/confirm.asp?' . $query;
+       
+        // //Pour voir la balance de son compte
+        // $f = redirect('https://perfectmoney.com/acct/balance.asp?AccountID=2586914&PassPhrase=Azerty7p1960');
+        
+        // $f = fopen('https://perfectmoney.com/acct/confirm.asp?AccountID=2586914&PassPhrase=Azert7p1960&Payer_Account='.$compte.'&Payee_Account='.$compte.'&Amount='.$montant.'&PAY_IN=1&PAYMENT_ID=1223', 'rb');
     }
+
 
     public function deconnexion(){
         $dec = Auth::logout();

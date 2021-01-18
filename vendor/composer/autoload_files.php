@@ -37,4 +37,5 @@ return array(
     'ed962a97bd972bc82007176b647d4e36' => $vendorDir . '/facade/ignition/src/helpers.php',
     '17d016dc52a631c1e74d2eb8fdd57342' => $vendorDir . '/laravel/helpers/src/helpers.php',
     '974ce3986b2f81344d3ce484b96c08e6' => $vendorDir . '/mercuryseries/flashy/src/MercurySeries/Flashy/functions.php',
+    'b1c568daa42ef00d6ac4f268ee6deb89' => $vendorDir . '/cknow/laravel-money/src/helpers.php',
 );
