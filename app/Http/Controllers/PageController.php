@@ -5,18 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Coin;
 use App\Models\Type;
 use App\Models\User;
-use App\Models\Payement;
 use App\Models\Personne;
 use Illuminate\Http\Request;
-use App\Mail\PasswordForgetMail;
 use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\PersonneFormRequest;
 use App\Http\Requests\InscriptionFormRequest;
-use App\Http\Requests\PasswordForgetFormRequest;
 use App\Http\Requests\TransactionFormRequest;
+use App\Http\Requests\PasswordForgetFormRequest;
+
 
 class PageController extends Controller
 {
@@ -26,12 +24,7 @@ class PageController extends Controller
 
     public function accueil(){
         $categorie = Type::all();
-        $monnaie =Coin::all();
-        //Affichage des fluctuations de  bitcoin
-        // $url = "https://bitpay.com/api/rates";
-      
-        // $btc = json_decode(file_get_contents($url));
-        
+        $monnaie = Coin::all();
         return view('layout.client.accueil',compact('categorie','monnaie'));
     }
 
@@ -147,7 +140,7 @@ class PageController extends Controller
             }
             if (auth()->user()->type_utilisateur === 'Super_admin' || auth()->user()->type_utilisateur === 'Admin') {
                 Flashy::success('Bienvenu sur votre page');
-                return redirect()->route('add_payment');
+                return redirect()->route('list_coins');
             }elseif (auth()->user()->type_utilisateur === 'Client') {
                 Flashy::success('Bienvenu sur votre page');
                 return redirect()->route('accueil');
@@ -296,41 +289,34 @@ class PageController extends Controller
         }
     }
 
-
     public function formulaireTest(){
         return view('pages.test');
     }
 
     public function actionTest(){
-        Money::USD(request('amount'));
         $from = request('from');
         $to = request('to');
         $amount = request('amount');
 
-       return redirect("http://api.currencylayer.com/live?access_key=cb02a90efebf21ed25131178798b90aa&from="
-       .$from."&to=".$to."&amount=".$amount."&format=1");
-        // compteUSD = U29194976
-        // AccountID=2586914&PassPhrase=Azerty7p1960
-        // $montant = request('montant');
-        // $compte = request('compte');
-
-        // $params = array('AccountID' => '2586914',
-        // 'PassPhrase' => 'Azerty7p1960',
-        // 'Payer_Account' => 'U29194976',
-        // 'Payee_Account' => $compte,
-        // 'Amount' => $montant,
-        // 'PAY_IN' => 1,
-        // 'PAYMENT_ID' => 1223,
-        // );
-        // $query = http_build_query($params);
-        // $url = 'https://perfectmoney.is/acct/confirm.asp?' . $query;
-       
-        // //Pour voir la balance de son compte
-        // $f = redirect('https://perfectmoney.com/acct/balance.asp?AccountID=2586914&PassPhrase=Azerty7p1960');
+        //API de nomics.com : 57885c3b723ea4a5c7f2591740e4c996
+        // $url = "https://api.exchangeratesapi.io/latest?base=USD";
+        $url = "https://bitpay.com/api/rates";
         
-        // $f = fopen('https://perfectmoney.com/acct/confirm.asp?AccountID=2586914&PassPhrase=Azert7p1960&Payer_Account='.$compte.'&Payee_Account='.$compte.'&Amount='.$montant.'&PAY_IN=1&PAYMENT_ID=1223', 'rb');
-    }
+        // $json = json_decode(file_get_contents($url));
 
+        // foreach ($json as $val) {
+        //     if ($val->code == 'EUR') {
+        //         $r = $val->rate;
+        //         $code = $val->code;
+        //     }
+        // }
+
+        // echo  "1 Btc = ".$r." $";
+        // return redirect("https://api.exchangeratesapi.io/latest");
+
+        // return redirect("https://v6.exchangerate-api.com/v6/c83262a4989f679e20128313/pair/".$from."/".$to."/".$amount);
+
+    }
 
     public function deconnexion(){
         $dec = Auth::logout();

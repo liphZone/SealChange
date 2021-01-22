@@ -93,7 +93,9 @@ class CoinController extends Controller
      */
     public function edit($id)
     {
-        //
+        $coin = Coin::findOrFail($id);
+        $type = Type::all();
+        return view('coins.edit_coin',compact('coin','type'));
     }
 
     /**
@@ -105,7 +107,25 @@ class CoinController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $name = auth()->user()->id;
+        $image = $request->file('image');
+        $image_name = time().'.'.$image->extension();
+        $image->move(public_path('Zone'),$image_name);
+
+        $coin = Coin::findOrFail($id);
+        $update = $coin->update([
+            'libelle'     => ucfirst($request->libelle),
+            'description' => $request->description,
+            'image'       => $image_name,
+            'type_id'     => $request->type_id,
+        ]);
+        if ($update) {
+           Flashy::success('Modification réussie');
+           return redirect()->route('list_coins');
+        }else{
+            Flashy::error("Echec de modification !");
+            return back();
+        }
     }
 
     /**

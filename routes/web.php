@@ -3,7 +3,6 @@
 use App\Http\Controllers\CoinController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PayementController;
 use App\Http\Controllers\PersonneController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TypeController;
@@ -50,22 +49,12 @@ Route::get('Validation',[PageController::class,'formulaireValidationCompte'])->n
 //Route action validation de compte
 Route::post('validation',[PageController::class,'actionValidationCompte'])->name('action_confirm_account');
 
-//Resource Payement
-Route::resource('payements',PayementController::class)->names([
-    'index'  => 'list_payments',
-    'create' => 'add_payment'
-]);
-
-
 
 //Page Test
 Route::get('Test',[PageController::class,'formulaireTest'])->name('form_test');
 
 //Action test
 Route::post('test',[PageController::class,'actionTest'])->name('action_test');
-
-
-
 
 
 //GROUPE MIDDLEWARE **************************************
@@ -94,6 +83,7 @@ Route::resource('types',TypeController::class)->names(
 [
     'index'  => 'list_types',
     'create' => 'add_type',
+    'edit'   => 'edit_type',
 ]);
 
 //Resource coin
@@ -101,31 +91,38 @@ Route::resource('coins',CoinController::class)->names(
 [
     'index'  => 'list_coins',
     'create' => 'add_coin',
+    'edit'   => 'edit_coin',
 ]);
 
 /* ********************************* LES TRANSACTIONS ******************************** */
-//Page formulaire de transaction
-Route::get('Transaction/{id}',[TransactionController::class,'formulaireTransaction'])->name('form_deal');
 
-//Action Transaction
-Route::post('transaction',[TransactionController::class,'actionTransaction'])->name('action_deal');
+//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente flooz',[TransactionController::class,'actionWaitingSendFlooz'])->name('action_waiting_flooz');
 
-//Formulaire de transaction de perfect money vers autre
-Route::get('Perfectmoney/{id}',[TransactionController::class,'formulaireSendPerfectMoney'])->name('form_perfect_money');
-Route::post('perfect money',[TransactionController::class,'actionSendPerfectMoney'])->name('action_perfect_money');
+//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente t money',[TransactionController::class,'actionWaitingSendTMoney'])->name('action_waiting_t_money');
 
+//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente perfect money',[TransactionController::class,'actionWaitingSendPerfectMoney'])->name('action_waiting_perfect_money');
+
+//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente payeer',[TransactionController::class,'actionWaitingSendPayeer'])->name('action_waiting_payeer');
 
 //Action envoie flooz
 Route::post('flooz',[TransactionController::class,'actionSendFlooz'])->name('action_flooz');
 
+//Action envoie t money
+Route::post('t money',[TransactionController::class,'actionSendTMoney'])->name('action_t_money');
+
+//Action envoie Perfect Money
+Route::post('perfect money',[TransactionController::class,'actionSendPerfectMoney'])->name('action_perfect_money');
+
+//Action envoie Payeer
+Route::post('payeer',[TransactionController::class,'actionSendPayeer'])->name('action_payeer');
+
 //Confirmation payement Flooz
 Route::get('confirmer payement flooz',[TransactionController::class,'confirmationPayementFlooz'])->name('payment_confirmation');
 
-//Action envoie Advcash
-Route::post('Advcash',[TransactionController::class,'actionSendAdvcash'])->name('action_advcash');
-
-//Action envoie Payeer
-Route::post('Payeer',[TransactionController::class,'actionSendPayeer'])->name('action_payeer');
 
 //Formulaire de choix Historique d'une transaction
 Route::get('Choix',[TransactionController::class,'formulaireChoixHistorique'])->name('form_choix_historique');

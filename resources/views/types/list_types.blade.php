@@ -14,15 +14,15 @@
             </tr>
           </thead>
           <tbody>
-              @foreach ($type as $types)
-                <tr>
-                    <td> {{ $types->libelle_type }} </td>
-                    <td>
-                      <a href="#" class="btn btn-outline-success" title="modifier"> <i class="fa fa-edit"></i>  </a> |
-                      <a href="#" class="btn btn-outline-danger" title="supprimer"> <i class="fa fa-trash-o" aria-hidden="true"></i>  </a>
-                    </td>
-                </tr>
-              @endforeach
+            @foreach ($type as $types)
+              <tr>
+                <td> {{ $types->libelle_type }} </td>
+                <td>
+                  <a href="{{ route('edit_type',$types->id) }}" class="btn btn-outline-success" title="modifier"> <i class="fa fa-edit"></i>  </a> |
+                  <a href="#" class="btn btn-outline-danger" title="supprimer"> <i class="fa fa-trash-o" aria-hidden="true"></i>  </a>
+                </td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
       </div>

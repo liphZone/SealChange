@@ -14,7 +14,7 @@
 
       <li class="nav-item nav-category"> Menu Principal </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('add_payment') }}">
+        <a class="nav-link" href="{{ route('list_coins') }}">
           <i class="menu-icon typcn typcn-document-text"></i>
           <span class="menu-title"> <i class="fa fa-dashboard"></i> Accueil </span> 
         </a>

@@ -38,7 +38,6 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
         '17d016dc52a631c1e74d2eb8fdd57342' => __DIR__ . '/..' . '/laravel/helpers/src/helpers.php',
         '974ce3986b2f81344d3ce484b96c08e6' => __DIR__ . '/..' . '/mercuryseries/flashy/src/MercurySeries/Flashy/functions.php',
-        'b1c568daa42ef00d6ac4f268ee6deb89' => __DIR__ . '/..' . '/cknow/laravel-money/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -122,7 +121,6 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'M' => 
         array (
             'Monolog\\' => 8,
-            'Money\\' => 6,
         ),
         'L' => 
         array (
@@ -170,7 +168,6 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'C' => 
         array (
             'Cron\\' => 5,
-            'Cknow\\Money\\' => 12,
             'Carbon\\' => 7,
         ),
         'B' => 
@@ -379,10 +376,6 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'Money\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/moneyphp/money/src',
-        ),
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
@@ -487,10 +480,6 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'Cron\\' => 
         array (
             0 => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron',
-        ),
-        'Cknow\\Money\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/cknow/laravel-money/src',
         ),
         'Carbon\\' => 
         array (
@@ -651,15 +640,6 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'Carbon\\Traits\\Units' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Units.php',
         'Carbon\\Traits\\Week' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Week.php',
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
-        'Cknow\\Money\\BladeExtension' => __DIR__ . '/..' . '/cknow/laravel-money/src/BladeExtension.php',
-        'Cknow\\Money\\CurrenciesTrait' => __DIR__ . '/..' . '/cknow/laravel-money/src/CurrenciesTrait.php',
-        'Cknow\\Money\\LocaleTrait' => __DIR__ . '/..' . '/cknow/laravel-money/src/LocaleTrait.php',
-        'Cknow\\Money\\Money' => __DIR__ . '/..' . '/cknow/laravel-money/src/Money.php',
-        'Cknow\\Money\\MoneyCast' => __DIR__ . '/..' . '/cknow/laravel-money/src/MoneyCast.php',
-        'Cknow\\Money\\MoneyFactory' => __DIR__ . '/..' . '/cknow/laravel-money/src/MoneyFactory.php',
-        'Cknow\\Money\\MoneyFormatterTrait' => __DIR__ . '/..' . '/cknow/laravel-money/src/MoneyFormatterTrait.php',
-        'Cknow\\Money\\MoneyParserTrait' => __DIR__ . '/..' . '/cknow/laravel-money/src/MoneyParserTrait.php',
-        'Cknow\\Money\\MoneyServiceProvider' => __DIR__ . '/..' . '/cknow/laravel-money/src/MoneyServiceProvider.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/AbstractField.php',
         'Cron\\CronExpression' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/CronExpression.php',
@@ -1665,6 +1645,7 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'Illuminate\\Bus\\Dispatcher' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Dispatcher.php',
         'Illuminate\\Bus\\Events\\BatchDispatched' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Events/BatchDispatched.php',
         'Illuminate\\Bus\\PendingBatch' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/PendingBatch.php',
+        'Illuminate\\Bus\\PrunableBatchRepository' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/PrunableBatchRepository.php',
         'Illuminate\\Bus\\Queueable' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/Queueable.php',
         'Illuminate\\Bus\\UpdatedBatchJobCounts' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Bus/UpdatedBatchJobCounts.php',
         'Illuminate\\Cache\\ApcStore' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Cache/ApcStore.php',
@@ -2259,6 +2240,7 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'Illuminate\\Queue\\Console\\ForgetFailedCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/Console/ForgetFailedCommand.php',
         'Illuminate\\Queue\\Console\\ListFailedCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/Console/ListFailedCommand.php',
         'Illuminate\\Queue\\Console\\ListenCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/Console/ListenCommand.php',
+        'Illuminate\\Queue\\Console\\PruneBatchesCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/Console/PruneBatchesCommand.php',
         'Illuminate\\Queue\\Console\\RestartCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/Console/RestartCommand.php',
         'Illuminate\\Queue\\Console\\RetryBatchCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/Console/RetryBatchCommand.php',
         'Illuminate\\Queue\\Console\\RetryCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/Console/RetryCommand.php',
@@ -2907,46 +2889,6 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'Mockery\\Undefined' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Undefined.php',
         'Mockery\\VerificationDirector' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationDirector.php',
         'Mockery\\VerificationExpectation' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationExpectation.php',
-        'Money\\Calculator' => __DIR__ . '/..' . '/moneyphp/money/src/Calculator.php',
-        'Money\\Calculator\\BcMathCalculator' => __DIR__ . '/..' . '/moneyphp/money/src/Calculator/BcMathCalculator.php',
-        'Money\\Calculator\\GmpCalculator' => __DIR__ . '/..' . '/moneyphp/money/src/Calculator/GmpCalculator.php',
-        'Money\\Calculator\\PhpCalculator' => __DIR__ . '/..' . '/moneyphp/money/src/Calculator/PhpCalculator.php',
-        'Money\\Converter' => __DIR__ . '/..' . '/moneyphp/money/src/Converter.php',
-        'Money\\Currencies' => __DIR__ . '/..' . '/moneyphp/money/src/Currencies.php',
-        'Money\\Currencies\\AggregateCurrencies' => __DIR__ . '/..' . '/moneyphp/money/src/Currencies/AggregateCurrencies.php',
-        'Money\\Currencies\\BitcoinCurrencies' => __DIR__ . '/..' . '/moneyphp/money/src/Currencies/BitcoinCurrencies.php',
-        'Money\\Currencies\\CachedCurrencies' => __DIR__ . '/..' . '/moneyphp/money/src/Currencies/CachedCurrencies.php',
-        'Money\\Currencies\\CurrencyList' => __DIR__ . '/..' . '/moneyphp/money/src/Currencies/CurrencyList.php',
-        'Money\\Currencies\\ISOCurrencies' => __DIR__ . '/..' . '/moneyphp/money/src/Currencies/ISOCurrencies.php',
-        'Money\\Currency' => __DIR__ . '/..' . '/moneyphp/money/src/Currency.php',
-        'Money\\CurrencyPair' => __DIR__ . '/..' . '/moneyphp/money/src/CurrencyPair.php',
-        'Money\\Exception' => __DIR__ . '/..' . '/moneyphp/money/src/Exception.php',
-        'Money\\Exception\\FormatterException' => __DIR__ . '/..' . '/moneyphp/money/src/Exception/FormatterException.php',
-        'Money\\Exception\\ParserException' => __DIR__ . '/..' . '/moneyphp/money/src/Exception/ParserException.php',
-        'Money\\Exception\\UnknownCurrencyException' => __DIR__ . '/..' . '/moneyphp/money/src/Exception/UnknownCurrencyException.php',
-        'Money\\Exception\\UnresolvableCurrencyPairException' => __DIR__ . '/..' . '/moneyphp/money/src/Exception/UnresolvableCurrencyPairException.php',
-        'Money\\Exchange' => __DIR__ . '/..' . '/moneyphp/money/src/Exchange.php',
-        'Money\\Exchange\\ExchangerExchange' => __DIR__ . '/..' . '/moneyphp/money/src/Exchange/ExchangerExchange.php',
-        'Money\\Exchange\\FixedExchange' => __DIR__ . '/..' . '/moneyphp/money/src/Exchange/FixedExchange.php',
-        'Money\\Exchange\\IndirectExchange' => __DIR__ . '/..' . '/moneyphp/money/src/Exchange/IndirectExchange.php',
-        'Money\\Exchange\\ReversedCurrenciesExchange' => __DIR__ . '/..' . '/moneyphp/money/src/Exchange/ReversedCurrenciesExchange.php',
-        'Money\\Exchange\\SwapExchange' => __DIR__ . '/..' . '/moneyphp/money/src/Exchange/SwapExchange.php',
-        'Money\\Formatter\\AggregateMoneyFormatter' => __DIR__ . '/..' . '/moneyphp/money/src/Formatter/AggregateMoneyFormatter.php',
-        'Money\\Formatter\\BitcoinMoneyFormatter' => __DIR__ . '/..' . '/moneyphp/money/src/Formatter/BitcoinMoneyFormatter.php',
-        'Money\\Formatter\\DecimalMoneyFormatter' => __DIR__ . '/..' . '/moneyphp/money/src/Formatter/DecimalMoneyFormatter.php',
-        'Money\\Formatter\\IntlLocalizedDecimalFormatter' => __DIR__ . '/..' . '/moneyphp/money/src/Formatter/IntlLocalizedDecimalFormatter.php',
-        'Money\\Formatter\\IntlMoneyFormatter' => __DIR__ . '/..' . '/moneyphp/money/src/Formatter/IntlMoneyFormatter.php',
-        'Money\\Money' => __DIR__ . '/..' . '/moneyphp/money/src/Money.php',
-        'Money\\MoneyFactory' => __DIR__ . '/..' . '/moneyphp/money/src/MoneyFactory.php',
-        'Money\\MoneyFormatter' => __DIR__ . '/..' . '/moneyphp/money/src/MoneyFormatter.php',
-        'Money\\MoneyParser' => __DIR__ . '/..' . '/moneyphp/money/src/MoneyParser.php',
-        'Money\\Number' => __DIR__ . '/..' . '/moneyphp/money/src/Number.php',
-        'Money\\PHPUnit\\Comparator' => __DIR__ . '/..' . '/moneyphp/money/src/PHPUnit/Comparator.php',
-        'Money\\Parser\\AggregateMoneyParser' => __DIR__ . '/..' . '/moneyphp/money/src/Parser/AggregateMoneyParser.php',
-        'Money\\Parser\\BitcoinMoneyParser' => __DIR__ . '/..' . '/moneyphp/money/src/Parser/BitcoinMoneyParser.php',
-        'Money\\Parser\\DecimalMoneyParser' => __DIR__ . '/..' . '/moneyphp/money/src/Parser/DecimalMoneyParser.php',
-        'Money\\Parser\\IntlLocalizedDecimalParser' => __DIR__ . '/..' . '/moneyphp/money/src/Parser/IntlLocalizedDecimalParser.php',
-        'Money\\Parser\\IntlMoneyParser' => __DIR__ . '/..' . '/moneyphp/money/src/Parser/IntlMoneyParser.php',
         'Monolog\\DateTimeImmutable' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/DateTimeImmutable.php',
         'Monolog\\ErrorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/ErrorHandler.php',
         'Monolog\\Formatter\\ChromePHPFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
@@ -3062,6 +3004,7 @@ class ComposerStaticInit01ded2d61521b179d5fcdfbd301e2661
         'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\Commands\\TestCommand' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/Commands/TestCommand.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\ExceptionHandler' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php',
+        'NunoMaduro\\Collision\\Adapters\\Laravel\\Exceptions\\RequirementsException' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/Exceptions/RequirementsException.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\IgnitionSolutionsRepository' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\Inspector' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/Inspector.php',
         'NunoMaduro\\Collision\\Adapters\\Phpunit\\ConfigureIO' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Phpunit/ConfigureIO.php',

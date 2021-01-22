@@ -21,8 +21,7 @@
                 <td class="py-1"> <img src="{{ asset('Zone') }}/{{ $coins->image }}" alt="{{ $coins->libelle }}"/> </td>
                 <td> {{ $coins->libelle }} </td>
                 <td>
-                  <a href="#" class="btn btn-outline-primary" title="voir"> <i class="fa fa-eye" aria-hidden="true"></i>  </a> |
-                  <a href="#" class="btn btn-outline-success" title="modifier"> <i class="fa fa-edit"></i>   </a> |
+                  <a href="{{route('edit_coin',$coins->id)}}" class="btn btn-outline-success" title="modifier"> <i class="fa fa-edit"></i>   </a> |
                   <a href="#" class="btn btn-outline-danger" title="supprimer"> <i class="fa fa-trash-o" aria-hidden="true"></i>  </a>
                 </td>
               </tr>

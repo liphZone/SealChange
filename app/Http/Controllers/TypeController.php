@@ -71,7 +71,8 @@ class TypeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $type = Type::findOrFail($id);
+        return view('types.edit_type',compact('type'));
     }
 
     /**
@@ -83,7 +84,17 @@ class TypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $type = Type::findOrFail($id);
+        $update = $type->update([
+            'libelle_type' => ucfirst($request->libelle_type),
+        ]);
+        if ($update) {
+           Flashy::success('Modification réussie');
+           return redirect()->route('list_types');
+        }else{
+            Flashy::error("Echec de modification !");
+            return back();
+        }
     }
 
     /**
