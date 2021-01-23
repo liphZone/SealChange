@@ -48,15 +48,31 @@ class PageController extends Controller
 
     public function actionProfil(){
         $utilisateur = Personne::where('id',Auth::user()->personne_id)->first();
-        $update = $utilisateur->update([
-            'sexe'    => request('sexe'),
-            'date'    => request('date'),
-            'contact' => request('contact'),
-            'pays'    =>  request('pays'),
-            'region'  => request('region'),
-            'ville'   => request('ville'),
-            'adresse' => request('adresse')
+        if ($utilisateur->identity === null || $utilisateur->selfie === null || $utilisateur->image_justificative === null) {
+            $update = $utilisateur->update([
+                'sexe'                => request('sexe'),
+                'date'                => request('date'),
+                'contact'             => request('contact'),
+                'pays'                =>  request('pays'),
+                'region'              => request('region'),
+                'ville'               => request('ville'),
+                'identity'            => request('identity'),
+                'selfie'              => request('selfie'),
+                'image_justificative' => request('image_justificative'),
             ]);
+        } else {
+            $update = $utilisateur->update([
+                'sexe'    => request('sexe'),
+                'date'    => request('date'),
+                'contact' => request('contact'),
+                'pays'    =>  request('pays'),
+                'region'  => request('region'),
+                'ville'   => request('ville'),
+                'adresse' => request('adresse'),
+            ]);
+        }
+        
+       
         if ($update) {
             Flashy::success('Mise à jour réussie');
             return back();

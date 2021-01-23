@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '51b3dbd52d801881ed2f409a19add710cde2ea87',
+    'reference' => '7e302153eceb7b1c3c0edc5a9007f955b0f89528',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -477,7 +477,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '51b3dbd52d801881ed2f409a19add710cde2ea87',
+      'reference' => '7e302153eceb7b1c3c0edc5a9007f955b0f89528',
     ),
     'laravel/sail' => 
     array (
@@ -1266,6 +1266,16 @@ private static $installed = array (
       array (
       ),
       'reference' => '13e7e882eaa55863faa7c4ad7c60f12f1a8b5089',
+    ),
+    'technocrats/laravel-perfectmoney' => 
+    array (
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
+      'aliases' => 
+      array (
+        0 => '1.0.x-dev',
+      ),
+      'reference' => 'fba482e40dafd4d6286750383aeb48406170949f',
     ),
     'theseer/tokenizer' => 
     array (

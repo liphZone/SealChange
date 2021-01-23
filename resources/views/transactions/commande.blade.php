@@ -315,19 +315,25 @@
                 <form action="{{ route('action_perfect_money') }}" method="POST">
                   @csrf
                   <div class="form-group" hidden>
-                    <input class="form-control" type="text" name="id" value="{{ $id }}" readonly>
                     <input class="form-control" type="text" name="account_receive" value="{{ $account_receive }}" readonly>
-                    <input class="form-control" type="text" name="montant" value="{{ $montant }}" readonly>
                     <input class="form-control" type="text" name="coin_enter" value="{{ $coin_enter }}" readonly>
                     <input class="form-control" type="text" name="coin_out" value="{{ $coin_out }}" readonly>
+                    <input type="hidden" name="PAYEE_ACCOUNT" value="{{ $moncompte }}" readonly>
+                    <input type="hidden" name="PAYEE_NAME" value="{{ $payeer_name }}">
+                    <input type="text" name="PAYMENT_AMOUNT" value="{{ $montant }}" placeholder="Amount">
+                    <input type="hidden" name="PAYMENT_UNITS" value="{{ $devise_enter }}" readonly>
+                    <input type="hidden" name="devise_out" value="{{ $devise_out }}" readonly>
+                    <input type="hidden" name="PAYMENT_URL" value="http://hopesealchange.com/success.php">
+                    <input type="hidden" name="NOPAYMENT_URL" value="http://hopesealchange.com/fail.php">
+                    <input type="hidden" name="PAYMENT_ID" value="{{ $id }}">
                   </div>
-                  {{-- @if ($personne->pays === null || $personne->ville === null || $personne->identity === null || 
+                  @if ($personne->pays === null || $personne->ville === null || $personne->identity === null || 
                     $personne->selfie === null || $personne->image_justivicative === null)
                     <h4 style="color:red;"> Veuillez valider votre identité ! </h4>
                     <button disabled class="btn btn-outline-danger btn-lg" title="payement" type="submit"> Regler Payement avec Perfect Money</button>
-                  @else --}}
+                  @else
                     <button class="btn btn-outline-danger btn-lg" type="submit" title="payement"> Regler Payement avec Perfect Money </button>
-                  {{-- @endif --}}
+                  @endif
                 </form>
               
               </div>

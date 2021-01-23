@@ -2,19 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SendFloozFormRequest;
 use App\Models\Coin;
 use App\Models\Type;
 use App\Models\Personne;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use MercurySeries\Flashy\Flashy;
+use App\Http\Requests\SendFloozFormRequest;
 use App\Http\Requests\TransactionFormRequest;
+use charlesassets\LaravelPerfectMoney\PerfectMoney;
 
 class TransactionController extends Controller
 {
-    
-    /************************************ ACTION WAITING ************************************/
+
+    /****************************** PERFECT MONEY *************************************/
+
+    public function actionWaitingSendPerfectMoney(){   
+        $id               = random_int(50000,90000);
+        $montant          = request('amount');
+        $coin_enter       = request('coin_enter_pm');
+        $coin_out         = request('coin_out_pm');
+        $accountid        = request('accountid');
+        $total            = request('total');
+        $password         = request('pwd');
+        $moncompte        = request('myaccount');
+        $devise_enter     = request('devise_enter_pm');
+        $devise_out       = request('devise_out_pm');
+        $account_receive  = request('accountreceive');
+        $user             = auth()->user()->personne_id;
+        $payeer_name      = auth()->user()->email;
+
+        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','moncompte',
+        'devise_enter','devise_out','account_receive','user','payeer_name'));
+    }
+
+    public function formulaireActionPerfectMoney(){
+        $account_receive  = request('accountreceive');
+        $montant          = request('amount');
+        $moncompte        = request('moncompte');
+        $devise_enter     = request('devise_enter');
+        $devise_out       = request('devise_out');
+        $id               = random_int(50000,90000);
+
+       
+
+
+
+        return view('transactions.perfectmoney',compact('account_receive','montant','payeer_name','moncompte','devise_enter','devise_out','id'));
+    }
+
+    public function actionSendPerfectMoney(){
+        $insertion = Transaction::firstOrCreate([
+            'reference'          => str_random(5),
+            'identifiant'        => request('PAYMENT_ID'),
+            'amount'             => request('amount'),
+            'coin_enter'         => request('coint_enter'),
+            'coin_out'           => request('coint_out'),
+            'account_sender'     => request('PAYEE_ACCOUNT'),
+            'account_receiver'   => request('account_receive'),
+            'devise_enter'       => request('PAYMENT_UNITS'),
+            'devise_out'         => request('devise_out'),
+            'payement_reference' => 'REF'.str_random(20),
+            'etat'               => 0,
+            'user'               => auth()->user()->id,
+        ]);
+
+        if ($insertion) {
+         return redirect("https://perfectmoney.is/api/step1.asp");
+
+        } else {
+            Flashy::error('Erreur');
+            return back();
+        }
+    }
+
+
+    /**************************** FIN PERFECT MONEY **********************************/
+
+    /****************************** FLOOZ *************************************/
 
     public function actionWaitingSendFlooz(){
 
@@ -33,76 +98,6 @@ class TransactionController extends Controller
         /*************** FIN FLOOZ ********************/
         return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
     }
-
-    public function actionWaitingSendTMoney(){
-
-        /***************** TMONEY **********************/
-
-        $id              = random_int(50000,90000);
-        $montant         = request('amount');
-        $coin_enter      = request('coin_enter_tm');
-        $coin_out        = request('coin_out_tm');
-        $total           = request('total');
-        $devise_enter    = request('devise_enter_tm');
-        $devise_out      = request('devise_out');
-        $account_receive = request('account_receiver');
-        $user            = auth()->user()->personne_id;
-
-        /*************** FIN TMONEY ********************/
-        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
-
-    }
-
-    public function actionWaitingSendPerfectMoney(){   
-
-        /***************** PERFECT MONEY ***********************/
-        
-        $id               = random_int(50000,90000);
-        $montant          = request('amount');
-        $coin_enter       = request('coin_enter_pm');
-        $coin_out         = request('coin_out_pm');
-        $accountid        = request('accountid');
-        $total            = request('total');
-        $password         = request('pwd');
-        $moncompte        = request('myaccount');
-        $devise_enter     = request('devise_enter_pm');
-        $devise_out       = request('devise_out_pm');
-        $account_receive  = request('accountreceive');
-        $user             = auth()->user()->personne_id;
-
-        /**************** FIN PERFECT MONEY ********************/
-
-        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
-        
-
-        // $f = redirect('https://perfectmoney.com/acct/confirm.asp?AccountID='.$accountid.'&PassPhrase='.$password.'&Payer_Account='.$moncompte.'&Payee_Account='.$recepteur.'&Amount='.$montant.'&PAY_IN=1&PAYMENT_ID='.$reference);
-        // return $f;
-    }
-
-    public function actionWaitingSendPayeer(){
-
-        /***************** PAYEER ***********************/
-        
-        $id               = random_int(50000,90000);
-        $montant          = request('amount');
-        $coin_enter       = request('coin_enter_pm');
-        $coin_out         = request('coin_out_pm');
-        $accountid        = request('accountid');
-        $total            = request('total');
-        $password         = request('pwd');
-        $moncompte        = request('myaccount');
-        $devise_enter     = request('devise_enter_pm');
-        $devise_out       = request('devise_out_pm');
-        $account_receive  = request('accountreceive');
-        $user             = auth()->user()->personne_id;
-
-        /**************** FIN PAYEER ********************/
-
-
-        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
-    }
-
-    /************************************ FIN ACTION WAITING ********************************/
 
     public function actionSendFlooz(){
         //Enregistrement dans la base de donnees:
@@ -125,6 +120,24 @@ class TransactionController extends Controller
         }
     }
 
+
+    /**************************** FIN FLOOZ **********************************/
+
+    /****************************** T MONEY *************************************/
+
+    public function actionWaitingSendTMoney(){
+        $id              = random_int(50000,90000);
+        $montant         = request('amount');
+        $coin_enter      = request('coin_enter_tm');
+        $coin_out        = request('coin_out_tm');
+        $total           = request('total');
+        $devise_enter    = request('devise_enter_tm');
+        $devise_out      = request('devise_out');
+        $account_receive = request('account_receiver');
+        $user            = auth()->user()->personne_id;
+        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
+    }
+
     public function actionSendTMoney(){
         $identifier = str_random(5);
         $insertion = Transaction::firstOrCreate([
@@ -145,54 +158,24 @@ class TransactionController extends Controller
         }
     }
 
-    public function actionSendPerfectMoney(){
-        // $insertion = Transaction::firstOrCreate([
-        //     'reference'        => str_random(5),
-        //     'identifiant'      => 'ID-'.random_int(50000,90000),
-        //     'amount'           => request('amount'),
-        //     'coin_enter'       => request('coint_enter'),
-        //     'coin_out'         => request('coint_out'),
-        //     'account_sender'   => request('myaccount'),
-        //     'account_receiver'   => request('accountreceive'),
-        //     'etat'             => 0,
-        //     'user'             => auth()->user()->id,
-        // ]);
+    /**************************** FIN T MONEY **********************************/
 
-        
-          /* Tester  perfectmoney.is/api/step1.asp  OU 
-        https://www.shop.com/orderpayment.asp OU
-        https://perfectmoney.is/api/step1.asp (POST) OU
-            https://perfectmoney.is/acct/confirm.asp OU 
-            https://perfectmoney.is/acct/acc_name .asp
-            OU http://perfectmoney.is /acct/rates.asp 
+    /****************************** PAYEER *************************************/
 
-            Chercher le formulaire de Perfect Money  Payment Order
-
-
-            Tester ceci : 
-            <form action="https://perfectmoney.is/api/step1.asp" method="POST">
-            <p>
-                <input type="hidden" name="PAYEE_ACCOUNT" value="U9007123">
-                <input type="hidden" name="PAYEE_NAME" value="My company">
-                <input type="hidden" name="PAYMENT_AMOUNT" value="109.99">
-                <input type="hidden" name="PAYMENT_UNITS" value="USD">
-                <input type="hidden" name="STATUS_URL" 
-                    value="https://www.myshop.com/cgi-bin/xact.cgi">
-                <input type="hidden" name="PAYMENT_URL" 
-                    value="https://www.myshop.com/cgi-bin/chkout1.cgi">
-                <input type="hidden" name="NOPAYMENT_URL" 
-                    value="https://www.myshop.com/cgi-bin/chkout2.cgi">
-                <input type="hidden" name="BAGGAGE_FIELDS" 
-                    value="ORDER_NUM CUST_NUM">
-                <input type="hidden" name="ORDER_NUM" value="9801121">
-                <input type="hidden" name="CUST_NUM" value="2067609">
-                <input type="submit" name="PAYMENT_METHOD" value="PerfectMoney account">
-            </p>
-            </form>
-
-           */
-
-       return redirect("https://perfectmoney.is/api/step1.asp");
+    public function actionWaitingSendPayeer(){
+        $id               = random_int(50000,90000);
+        $montant          = request('amount');
+        $coin_enter       = request('coin_enter_pm');
+        $coin_out         = request('coin_out_pm');
+        $accountid        = request('accountid');
+        $total            = request('total');
+        $password         = request('pwd');
+        $moncompte        = request('myaccount');
+        $devise_enter     = request('devise_enter_pm');
+        $devise_out       = request('devise_out_pm');
+        $account_receive  = request('accountreceive');
+        $user             = auth()->user()->personne_id;
+        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
     }
 
     public function actionSendPayeer(){
@@ -217,11 +200,20 @@ class TransactionController extends Controller
          'm_curr' => $m_curr,
          'm_desc' => $m_desc,
          'm_sign' => $m_sign,
-        
-         );
+        );
  
         return redirect("https://payeer.com/merchant/?".http_build_query($arGetParams));
-     }
+    }
+
+
+
+    /**************************** FIN PAYEER **********************************/
+
+
+
+    
+
+   
 
     public function confirmationPayementFlooz(Request $request){
         $utilisateur = Transaction::where('reference',request('identifier'))->first();

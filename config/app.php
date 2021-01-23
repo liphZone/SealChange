@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //PerfectMoney package
+        charlesassets\LaravelPerfectMoney\LaravelPerfectMoneyServiceProvider::class,
+
     ],
 
     /*
@@ -226,6 +229,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        //Perfect Money  Package
+        'PerfectMoney' => charlesassets\LaravelPerfectMoney\PerfectMoney::class,
 
     ],
 

@@ -114,6 +114,9 @@ Route::post('flooz',[TransactionController::class,'actionSendFlooz'])->name('act
 //Action envoie t money
 Route::post('t money',[TransactionController::class,'actionSendTMoney'])->name('action_t_money');
 
+//Page Perfect Money du serveur Perfect Money
+Route::post('perfect money payement',[TransactionController::class,'formulaireActionPerfectMoney'])->name('form_action_perfect_money');
+
 //Action envoie Perfect Money
 Route::post('perfect money',[TransactionController::class,'actionSendPerfectMoney'])->name('action_perfect_money');
 

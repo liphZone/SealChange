@@ -15,7 +15,8 @@
         "laravel/framework": "^8.12",
         "laravel/helpers": "^1.4",
         "laravel/tinker": "^2.5",
-        "mercuryseries/flashy": "^1.0"
+        "mercuryseries/flashy": "^1.0",
+        "technocrats/laravel-perfectmoney": "1.0.x-dev"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -11,15 +11,16 @@ class Transaction extends Model
 
     protected $fillable = [
         'reference',
-        'tx_reference_flooz',
+        'identifiant',
         'coin_enter',
         'coin_out',
         'amount',
-        'payement_method',
+        'devise_enter',
+        'devise_out',
         'payement_reference',
         'telephone',
-        'sender',
-        'receiver',
+        'account_sender',
+        'account_receiver',
         'user',
         'etat',
     ];
