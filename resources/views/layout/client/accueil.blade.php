@@ -124,28 +124,12 @@
           <input id="input_out_pm" class="form-control" type="text" name="coin_out_pm" placeholder="Sortie" required>
         </div>
 
-        {{-- <div class="form-group">
-          <label for=""> Id client</label>
-          <input type="text" class="form-control" name="accountid" placeholder="votre id client perfect money" autocomplete="off" required>
-          @error('accountid')
+        <div class="form-group">
+          <label for=""> Votre Compte Perfect Money </label>
+          <input type="text" class="form-control" name="myaccount" id="myaccount" autocomplete="off" required>
+          @error('myaccount')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
-        </div>
-  
-        <div class="form-group">
-            <label for=""> Mot de passe </label>
-            <input type="password" class="form-control" name="pwd" placeholder="votre mot de passe perfect money" required>
-            @error('pwd')
-                <div style="color: red;"> {{ $message }} </div>
-            @enderror
-        </div> --}}
-    
-        <div class="form-group">
-            <label for=""> Votre Compte Perfect Money </label>
-            <input type="text" class="form-control" name="myaccount" id="myaccount" autocomplete="off" required>
-            @error('myaccount')
-              <div style="color: red;"> {{ $message }} </div>
-            @enderror
         </div>
     
         <div class="form-group">
@@ -157,7 +141,7 @@
         </div>
     
         <div class="form-group">
-          <label for=""> Compte Récepteur </label>
+          <label for=""> Compte Récepteur ou numéro(avec l'indicatif) </label>
           <input type="text" class="form-control" name="accountreceive" id="account_receive" autocomplete="off" required>
           @error('accountreceive')
             <div style="color: red;"> {{ $message }} </div>
@@ -171,9 +155,10 @@
         <div class="form-group">
           <label for=""> Devise sortante </label>
           <select class="form-control" onchange="choixDeviseSortantePerfectMoney()" name="devise_out_pm" id="devise_out_pm" required>
-            <option value=""> Choisir  </option>
+            <option value=""> Choisir </option>
             <option value="EUR"> Euro </option>
             <option value="USD"> Dollar </option>
+            <option value="XOF"> F CFA </option>
           </select>
         </div>
 
@@ -295,6 +280,14 @@
         </div>
 
         <div class="form-group">
+          <label for=""> Votre Compte Payeer</label>
+          <input type="text" class="form-control" name="myaccount" id="myaccount" autocomplete="off" required>
+          @error('myaccount')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group">
           <label for=""> Saisir le montant </label>
           <input type="number" min="1" class="form-control" name="amount" id="amount_payeer" value="{{ old('montant') }}" required>
           @error('montant')
@@ -302,13 +295,12 @@
           @enderror
         </div>
 
-        <div class="form-group">
-          <label for=""> Devise ENtree </label>
-          <input  type="text" class="form-control" name="devise_enter_payeer" value="XOF" readonly>
+        <div class="form-group" hidden>
+          <input type="text" class="form-control" name="devise_enter_payeer" value="USD" readonly>
         </div>
 
         <div class="form-group">
-          <label for=""> Adresse receptrice </label>
+          <label for=""> Adresse receptrice ou  numéro</label>
           <input type="text" class="form-control" name="account_receiver" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
           @error('account_receiver')
             <div style="color: red;"> {{ $message }} </div>
@@ -321,6 +313,7 @@
             <option value=""> Choisir  </option>
             <option value="EUR"> Euro </option>
             <option value="USD"> Dollar </option>
+            <option value="XOF"> F CFA </option>
           </select>
         </div>
 
@@ -334,9 +327,6 @@
 
         <button id="operation_payeer" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
       </form>
-
-
-
     </div>
   </div>
 
@@ -350,7 +340,7 @@
       var mt =  amount_flooz*0.0015 - amount_flooz*0.0015*0.02
       document.getElementById('montant_total_flooz').value = mt;
     }else if(devise_out == 'USD'){
-      var mt =  amount_flooz*0.0018 - amount_flooz*0.0018*0.02
+      var mt =  amount_flooz*0.0019 - amount_flooz*0.0019*0.02
       document.getElementById('montant_total_flooz').value = mt;
     }
   }
@@ -362,7 +352,7 @@
       var mt =  amount_tm*0.0015 - amount_tm*0.0015*0.02
       document.getElementById('montant_total_tm').value = mt;
     }else if(devise_out == 'USD'){
-      var mt =  amount_tm*0.0018 - amount_tm*0.0018*0.02
+      var mt =  amount_tm*0.0019 - amount_tm*0.0019*0.02
       document.getElementById('montant_total_tm').value = mt;
     }
   }
@@ -372,17 +362,36 @@
     var first_letter_account_sender =  account_sender.substr(account_sender,1);
     if (first_letter_account_sender == 'U') {
       var devise_enter_pm = document.getElementById('devise_enter_pm').value = 'USD';
+      devise_out = document.getElementById('devise_out_pm').value
+      if (devise_out == 'EUR'){
+        var amount_pm = document.getElementById('amount_pm').value;
+        var mt =  (amount_pm*0.82 - amount_pm*0.82*0.02);
+        document.getElementById('montant_total_pm').value = mt;
+      }else if(devise_out == 'USD'){
+        var amount_pm = document.getElementById('amount_pm').value;
+        var mt =  amount_pm - amount_pm*0.02
+        document.getElementById('montant_total_pm').value = mt;
+      }
+      else if(devise_out == 'XOF'){
+        var mt =  amount_pm*539.22 - amount_pm*539.22*0.02
+        document.getElementById('montant_total_pm').value = mt;
+      }
     }else if(first_letter_account_sender == 'E'){
-      var devise_enter_pm = document.getElementById('devise_enter_pm').value = 'EUR';
-    }
-    devise_out = document.getElementById('devise_out_pm').value
-    var amount_pm = document.getElementById('amount_pm').value;
-    if (devise_out == 'EUR'){
-      var mt =  amount_pm*0.0015 - amount_pm*0.0015*0.02
-      document.getElementById('montant_total_pm').value = mt;
-    }else if(devise_out == 'USD'){
-      var mt =  amount_pm*0.0018 - amount_pm*0.0018*0.02
-      document.getElementById('montant_total_pm').value = mt;
+      var devise_enter_pm = document.getElementById('devise_enter_pm').value = 'USD';
+      devise_out = document.getElementById('devise_out_pm').value
+      if (devise_out == 'EUR'){
+        var amount_pm = document.getElementById('amount_pm').value;
+        var mt =  (amount_pm - amount_pm*0.02);
+        document.getElementById('montant_total_pm').value = mt;
+        alert(document.getElementById('montant_total_pm').value);
+      }else if(devise_out == 'USD'){
+        var mt =  amount_pm*1.22 - amount_pm*1.22*0.02
+        document.getElementById('montant_total_pm').value = mt;
+      }
+      else if(devise_out == 'XOF'){
+        var mt =  amount_pm*656.43 - amount_pm*656.43*0.02
+        document.getElementById('montant_total_pm').value = mt;
+      }
     }
   }
 
@@ -390,10 +399,10 @@
     devise_out = document.getElementById('devise_out_payeer').value;
     var amount_payeer = document.getElementById('amount_payeer').value;
     if (devise_out == 'EUR'){
-      var mt =  amount_payeer*0.0015 - amount_payeer*0.0015*0.02
+      var mt =  amount_payeer*0.82 - amount_payeer*0.82*0.02
       document.getElementById('montant_total_payeer').value = mt;
     }else if(devise_out == 'USD'){
-      var mt =  amount_payeer*0.0018 - amount_payeer*0.0018*0.02
+      var mt =  amount_payeer - amount_payeer*0.02
       document.getElementById('montant_total_payeer').value = mt;
     }
   }

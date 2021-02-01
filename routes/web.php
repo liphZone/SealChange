@@ -21,7 +21,16 @@ use App\Http\Middleware\Connection;
 |
 */
 /*Les transaction
-PM->P,B,L,E,F,T,Adv,M */
+PM->P,B,L,E,F,T,Adv,M 
+ Pays (indicatif):
+    Cote d'ivoire ( +225 )
+    Mali ( + )
+    Cameroun ( + )
+    Senegal ( + )
+    Togo ( +228 )
+    Burkina ( + )
+
+*/
 //Page formulaire de connexion
 Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login');
 
@@ -117,11 +126,8 @@ Route::post('t money',[TransactionController::class,'actionSendTMoney'])->name('
 //Page Perfect Money du serveur Perfect Money
 Route::post('perfect money payement',[TransactionController::class,'formulaireActionPerfectMoney'])->name('form_action_perfect_money');
 
-//Action envoie Perfect Money
-Route::post('perfect money',[TransactionController::class,'actionSendPerfectMoney'])->name('action_perfect_money');
-
-//Action envoie Payeer
-Route::post('payeer',[TransactionController::class,'actionSendPayeer'])->name('action_payeer');
+//Page Payeer du serveur Payeer
+Route::post('payeer payement',[TransactionController::class,'formulaireActionPayeer'])->name('form_action_payeer');
 
 //Confirmation payement Flooz
 Route::get('confirmer payement flooz',[TransactionController::class,'confirmationPayementFlooz'])->name('payment_confirmation');

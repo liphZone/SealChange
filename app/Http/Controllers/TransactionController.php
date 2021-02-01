@@ -8,8 +8,6 @@ use App\Models\Personne;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use MercurySeries\Flashy\Flashy;
-use App\Http\Requests\SendFloozFormRequest;
-use App\Http\Requests\TransactionFormRequest;
 use charlesassets\LaravelPerfectMoney\PerfectMoney;
 
 class TransactionController extends Controller
@@ -30,60 +28,53 @@ class TransactionController extends Controller
         $devise_out       = request('devise_out_pm');
         $account_receive  = request('accountreceive');
         $user             = auth()->user()->personne_id;
-        $payeer_name      = auth()->user()->email;
+        $payee_name       = auth()->user()->email;
 
         return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','moncompte',
-        'devise_enter','devise_out','account_receive','user','payeer_name'));
+        'devise_enter','devise_out','account_receive','user','payee_name'));
     }
 
     public function formulaireActionPerfectMoney(){
-        $account_receive  = request('accountreceive');
-        $montant          = request('amount');
+        $account_receive  = request('account_receive');
+        $montant          = request('montant');
         $moncompte        = request('moncompte');
         $devise_enter     = request('devise_enter');
         $devise_out       = request('devise_out');
         $id               = random_int(50000,90000);
+        $payee_name       = auth()->user()->email;
 
-       
-
-
-
-        return view('transactions.perfectmoney',compact('account_receive','montant','payeer_name','moncompte','devise_enter','devise_out','id'));
-    }
-
-    public function actionSendPerfectMoney(){
         $insertion = Transaction::firstOrCreate([
             'reference'          => str_random(5),
-            'identifiant'        => request('PAYMENT_ID'),
-            'amount'             => request('amount'),
-            'coin_enter'         => request('coint_enter'),
-            'coin_out'           => request('coint_out'),
-            'account_sender'     => request('PAYEE_ACCOUNT'),
-            'account_receiver'   => request('account_receive'),
-            'devise_enter'       => request('PAYMENT_UNITS'),
+            'identifiant'        => $id,
+            'coin_enter'         => request('coin_enter'),
+            'coin_out'           => request('coin_out'),
+            'amount'             => $montant,
+            'devise_enter'       => $devise_enter,
             'devise_out'         => request('devise_out'),
             'payement_reference' => 'REF'.str_random(20),
+            'account_sender'     => request('moncompte'),
+            'account_receiver'   => request('account_receive'),
             'etat'               => 0,
             'user'               => auth()->user()->id,
         ]);
-
-        if ($insertion) {
-         return redirect("https://perfectmoney.is/api/step1.asp");
-
+         if ($insertion) {
+            return view('transactions.perfectmoney',compact('account_receive','montant','moncompte','devise_enter','devise_out','id','payee_name'));
         } else {
             Flashy::error('Erreur');
             return back();
         }
     }
 
-
+    public function actionSendPerfectMoney(){
+        return redirect("https://perfectmoney.is/api/step1.asp");
+    }
     /**************************** FIN PERFECT MONEY **********************************/
+
+
 
     /****************************** FLOOZ *************************************/
 
     public function actionWaitingSendFlooz(){
-
-        /***************** FLOOZ **********************/
 
         $id              = random_int(50000,90000);
         $montant         = request('amount');
@@ -95,7 +86,6 @@ class TransactionController extends Controller
         $account_receive = request('account_receiver');
         $user            = auth()->user()->personne_id;
 
-        /*************** FIN FLOOZ ********************/
         return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
     }
 
@@ -119,9 +109,9 @@ class TransactionController extends Controller
             return back();
         }
     }
-
-
     /**************************** FIN FLOOZ **********************************/
+
+
 
     /****************************** T MONEY *************************************/
 
@@ -157,63 +147,66 @@ class TransactionController extends Controller
             return back();
         }
     }
-
     /**************************** FIN T MONEY **********************************/
+
+
 
     /****************************** PAYEER *************************************/
 
     public function actionWaitingSendPayeer(){
         $id               = random_int(50000,90000);
         $montant          = request('amount');
-        $coin_enter       = request('coin_enter_pm');
-        $coin_out         = request('coin_out_pm');
+        $coin_enter       = request('coin_enter_payeer');
+        $coin_out         = request('coin_out_payeer');
         $accountid        = request('accountid');
         $total            = request('total');
-        $password         = request('pwd');
         $moncompte        = request('myaccount');
-        $devise_enter     = request('devise_enter_pm');
-        $devise_out       = request('devise_out_pm');
-        $account_receive  = request('accountreceive');
+        $devise_enter     = request('devise_enter_payeer');
+        $devise_out       = request('devise_out');
+        $account_receive  = request('account_receiver');
         $user             = auth()->user()->personne_id;
-        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','devise_enter','devise_out','account_receive','user'));
+        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total',
+        'devise_enter','devise_out','account_receive','user','moncompte'));
     }
 
-    public function actionSendPayeer(){
-        //PayementID (m_orderid) : je vais le generer
-        //Payment Description(m_desc) : sera generer et encoder en Base64
-        //Electronic signature(m_sign) : je vais generer
- 
-        $m_shop = '1273579128';
-        $m_orderid = random_int(70000,150000);
-        $m_amount = request('montant');
-        $m_curr = request('currency');
-        $m_desc = base64_encode(str_random(20));
-        $m_key = 'RsBwe5ymQQ03UZvw';
-        $arHash[] = $m_key;
- 
-        $m_sign = strtoupper(hash('sha256', implode(':', $arHash)));
-     
-        $arGetParams = array(
-         'm_shop' => $m_shop,
-         'm_orderid' => $m_orderid,
-         'm_amount' => $m_amount,
-         'm_curr' => $m_curr,
-         'm_desc' => $m_desc,
-         'm_sign' => $m_sign,
-        );
- 
-        return redirect("https://payeer.com/merchant/?".http_build_query($arGetParams));
+    public function formulaireActionPayeer(){
+        $account_receive    = request('account_receive');
+        $montant            = request('montant');
+        $moncompte          = request('moncompte');
+        $devise_enter       = request('devise_enter');
+        $devise_out         = request('devise_out');
+        $id                 = '1285857258';
+        $payee_name         = auth()->user()->email;
+        $reference          = random_int(50000,90000);
+        $description        = base64_encode(str_random(5));
+        $payement_reference = strtoupper(str_random(50));
+
+        $insertion = Transaction::firstOrCreate([
+            'reference'          => $reference,
+            'identifiant'        => $id,
+            'coin_enter'         => request('coin_enter'),
+            'coin_out'           => request('coin_out'),
+            'amount'             => $montant,
+            'devise_enter'       => $devise_enter,
+            'devise_out'         => $devise_out,
+            'payement_reference' => 'REF'.str_random(20),
+            'account_sender'     => $moncompte,
+            'account_receiver'   => $account_receive ,
+            'etat'               => 0,
+            'user'               => auth()->user()->id,
+        ]);
+
+         if ($insertion) {
+            return view('transactions.payeer',compact('account_receive','montant','moncompte','devise_enter',
+            'devise_out','id','payee_name','reference','description','payement_reference'));
+        } else {
+            Flashy::error('Erreur');
+            return back();
+        }
     }
-
-
 
     /**************************** FIN PAYEER **********************************/
 
-
-
-    
-
-   
 
     public function confirmationPayementFlooz(Request $request){
         $utilisateur = Transaction::where('reference',request('identifier'))->first();

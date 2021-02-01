@@ -15,6 +15,7 @@
   $monnaie_sortie= \App\Models\Coin::where('id',$coin_out)->first();
 @endphp
 
+
 @if (strtolower($monnaie_entree->libelle) === 'flooz')
     
   <div class="accordion" id="accordionExample">
@@ -312,20 +313,19 @@
                   {{ $total }} <i class="fa fa-dollar"></i>
                 @endif </p>
 
-                <form action="{{ route('action_perfect_money') }}" method="POST">
+                <form action="{{ route('form_action_perfect_money') }}" method="POST">
                   @csrf
                   <div class="form-group" hidden>
+                    <input class="form-control" type="text" name="moncompte" value="{{ $moncompte }}" readonly>
                     <input class="form-control" type="text" name="account_receive" value="{{ $account_receive }}" readonly>
                     <input class="form-control" type="text" name="coin_enter" value="{{ $coin_enter }}" readonly>
                     <input class="form-control" type="text" name="coin_out" value="{{ $coin_out }}" readonly>
-                    <input type="hidden" name="PAYEE_ACCOUNT" value="{{ $moncompte }}" readonly>
-                    <input type="hidden" name="PAYEE_NAME" value="{{ $payeer_name }}">
-                    <input type="text" name="PAYMENT_AMOUNT" value="{{ $montant }}" placeholder="Amount">
-                    <input type="hidden" name="PAYMENT_UNITS" value="{{ $devise_enter }}" readonly>
+                    <input type="text" name="devise_out" value="{{ $devise_out }}" readonly>
+                    <input type="text" name="payee_name" value="{{ $payee_name }}">
+                    <input type="text" name="montant" value="{{ $montant }}">
+                    <input type="hidden" name="devise_enter" value="{{ $devise_enter }}" readonly>
                     <input type="hidden" name="devise_out" value="{{ $devise_out }}" readonly>
-                    <input type="hidden" name="PAYMENT_URL" value="http://hopesealchange.com/success.php">
-                    <input type="hidden" name="NOPAYMENT_URL" value="http://hopesealchange.com/fail.php">
-                    <input type="hidden" name="PAYMENT_ID" value="{{ $id }}">
+                    <input type="hidden" name="id" value="{{ $id }}">
                   </div>
                   @if ($personne->pays === null || $personne->ville === null || $personne->identity === null || 
                     $personne->selfie === null || $personne->image_justivicative === null)
@@ -420,13 +420,15 @@
                   
                 </ul>
                 <div style="float: right">
-                  <p class="text-light bg-dark pl-1"> TOTAL :  @if ($devise_out === 'EUR')
-                    {{ $total }}  <i class="fa fa-eur" aria-hidden="true"></i>
-                  @elseif($devise_out === 'USD')
-                    {{ $total }} <i class="fa fa-dollar"></i>
-                  @endif </p>
-
-                  <form action="{{ route('action_payeer') }}" method="POST">
+                  <p class="text-light bg-dark pl-1"> TOTAL : 
+                    @if ($devise_out === 'EUR')
+                      {{ $total }}  <i class="fa fa-eur" aria-hidden="true"></i>
+                    @elseif($devise_out === 'USD')
+                      {{ $total }} <i class="fa fa-dollar"></i> 
+                    @endif 
+                  </p>
+                  
+                  <form action="#" method="POST">
                     @csrf
                     <div class="form-group" hidden>
                       <input class="form-control" type="text" name="id" value="{{ $id }}" readonly>
@@ -434,14 +436,17 @@
                       <input class="form-control" type="text" name="montant" value="{{ $montant }}" readonly>
                       <input class="form-control" type="text" name="coin_enter" value="{{ $coin_enter }}" readonly>
                       <input class="form-control" type="text" name="coin_out" value="{{ $coin_out }}" readonly>
+                      <input class="form-control" type="text" name="devise_enter" value="{{ $devise_enter }}" readonly>
+                      <input class="form-control" type="text" name="devise_out" value="{{ $devise_out }}" readonly>
+                      <input class="form-control" type="text" name="moncompte" value="{{ $moncompte }}" readonly>
                     </div>
-                    {{-- @if ($personne->pays === null || $personne->ville === null || $personne->identity === null || 
+                    @if ($personne->pays === null || $personne->ville === null || $personne->identity === null || 
                       $personne->selfie === null || $personne->image_justivicative === null)
                       <h4 style="color:red;"> Veuillez valider votre identité ! </h4>
-                      <button disabled class="btn btn-outline-danger btn-lg" title="payement" type="submit"> Regler Payement avec Payeer</button>
-                    @else --}}
-                      <button class="btn btn-outline-primary btn-lg" type="submit" title="payement"> Regler Payement avec Payeer </button>
-                    {{-- @endif --}}
+                      <button disabled class="btn btn-outline-primary btn-lg" title="payement" type="submit"> Regler Payement avec Payeer</button>
+                    @else
+                      <button class="btn btn-outline-primary btn-lg" type="submit" title="payement"> Regler Payement avec Payeer (En cours de traitement ...) </button>
+                    @endif
                   </form>
                 
                 </div>

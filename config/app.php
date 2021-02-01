@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -175,8 +175,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //PerfectMoney package
+
+        //Perfect Money Package
         charlesassets\LaravelPerfectMoney\LaravelPerfectMoneyServiceProvider::class,
+
 
     ],
 
@@ -230,7 +232,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        //Perfect Money  Package
+        //Perfect Money Package
         'PerfectMoney' => charlesassets\LaravelPerfectMoney\PerfectMoney::class,
 
     ],
