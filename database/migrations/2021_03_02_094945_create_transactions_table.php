@@ -16,15 +16,15 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
-            $table->string('identifiant');
             $table->integer('coin_enter');
             $table->integer('coin_out');
             $table->double('amount');
+            $table->double('having_amount');
+            $table->string('id_transaction');
             $table->string('devise_enter');
             $table->string('devise_out');
-            $table->string('payement_reference')->nullable();
             $table->string('telephone')->nullable();
-            $table->string('account_sender')->nullable();
+            $table->string('myaccount')->nullable();
             $table->string('account_receiver')->nullable();
             $table->integer('user');
             $table->boolean('etat')->nullable();

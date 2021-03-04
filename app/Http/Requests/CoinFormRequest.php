@@ -24,8 +24,8 @@ class CoinFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'libelle'     => 'required|string|min:4',
-            'description' => 'required|string|min:4',
+            'libelle'     => 'required|string|min:3',
+            'description' => 'required|string|min:3',
             'image'       => 'required|file|image|mimes:jpeg,png,jpg'
         ];
     }

@@ -24,9 +24,10 @@ class PersonneFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom'     => 'required|string|min:3',
-            'prenom'  => 'required|string',
-            'email'   => 'required|email|unique:personnes',
+            'nom'                 => 'required|string|min:3',
+            'prenom'              => 'required|string',
+            'identity'            => 'sometimes|max:1000||mimes:jpeg,png,jpg',
+            'image_justificative' => 'sometimes|max:1000||mimes:jpeg,png,jpg',
         ];
     }
 }

@@ -11,15 +11,15 @@ class Transaction extends Model
 
     protected $fillable = [
         'reference',
-        'identifiant',
         'coin_enter',
         'coin_out',
         'amount',
+        'having_amount',
+        'id_transaction',
         'devise_enter',
         'devise_out',
-        'payement_reference',
         'telephone',
-        'account_sender',
+        'myaccount',
         'account_receiver',
         'user',
         'etat',

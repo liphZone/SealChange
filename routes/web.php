@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PersonneController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\TypeController;
 use App\Http\Middleware\Connection;
 
@@ -105,33 +106,48 @@ Route::resource('coins',CoinController::class)->names(
 
 /* ********************************* LES TRANSACTIONS ******************************** */
 
-//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+//Action waiting Flooz : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente flooz',[TransactionController::class,'actionWaitingSendFlooz'])->name('action_waiting_flooz');
 
-//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+//Action waiting TMoney : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente t money',[TransactionController::class,'actionWaitingSendTMoney'])->name('action_waiting_t_money');
 
-//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+//Action waiting Perfect Money : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente perfect money',[TransactionController::class,'actionWaitingSendPerfectMoney'])->name('action_waiting_perfect_money');
 
-//Action waiting : j'envoie les donnees passé dans l'URL vers la page commande
+//Action waiting Payeer : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente payeer',[TransactionController::class,'actionWaitingSendPayeer'])->name('action_waiting_payeer');
 
-//Action envoie flooz
-Route::post('flooz',[TransactionController::class,'actionSendFlooz'])->name('action_flooz');
+//Action waiting AdvCash : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente advcash',[TransactionController::class,'actionWaitingSendAdvCash'])->name('action_waiting_adv_cash');
+
+//Action waiting mtn : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente mtn',[TransactionController::class,'actionWaitingSendMtn'])->name('action_waiting_mtn');
+
+
+//Action envoie Mtn
+Route::post('Mtn',[TransactionController::class,'actionSendMtn'])->name('action_mtn');
+
+//Action envoie flooz/Mtn
+Route::post('Mobile Money',[TransactionController::class,'actionMobileMoney'])->name('action_mobile_money');
 
 //Action envoie t money
 Route::post('t money',[TransactionController::class,'actionSendTMoney'])->name('action_t_money');
 
+//Page Flooz
+Route::get('Transaction flooz',[TransactionController::class,'formulaireFlooz'])->name('form_action_flooz');
+
 //Page Perfect Money du serveur Perfect Money
 Route::post('perfect money payement',[TransactionController::class,'formulaireActionPerfectMoney'])->name('form_action_perfect_money');
 
-//Page Payeer du serveur Payeer
-Route::post('payeer payement',[TransactionController::class,'formulaireActionPayeer'])->name('form_action_payeer');
+//Action envoie payeer
+Route::post('payeer payement',[TransactionController::class,'actionSendPayeer'])->name('action_send_payeer');
+
+//Page AdvCash du serveur AdvCash
+Route::get('advCash',[TransactionController::class,'formulaireAdvCash'])->name('form_action_adv_cash');
 
 //Confirmation payement Flooz
 Route::get('confirmer payement flooz',[TransactionController::class,'confirmationPayementFlooz'])->name('payment_confirmation');
-
 
 //Formulaire de choix Historique d'une transaction
 Route::get('Choix',[TransactionController::class,'formulaireChoixHistorique'])->name('form_choix_historique');
@@ -139,6 +155,9 @@ Route::get('Choix',[TransactionController::class,'formulaireChoixHistorique'])->
 //Formulaire historique des transaction 
 Route::get('Historique/{id}',[TransactionController::class,'formulaireHistorique'])->name('form_historique');
 
+
+//Formulaire transaction
+Route::get('transaction',[TransactionController::class,'formulaireTransaction'])->name('form_transaction');
 
 
 /* ********************************* FIN TRANSACTIONS ******************************** */

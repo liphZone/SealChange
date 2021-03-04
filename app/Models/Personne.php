@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Personne extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom','prenom','sexe','email','contact','pays','region','ville','adresse','identity','selfie','image_justificative'];
+    protected $fillable = ['nom','prenom','sexe','email','contact','pays','region','ville','adresse',
+    'identity','image_justificative'];
 
     public function user(){
         return $this->belongsTo('App\Models\User');
