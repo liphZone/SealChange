@@ -143,16 +143,23 @@
           @enderror
         </div>
     
-        <div class="form-group">
-          <label for=""> Compte Récepteur ou numéro(avec l'indicatif) </label>
-          <input type="text" class="form-control" name="accountreceive" id="account_receive" autocomplete="off" required>
-          @error('accountreceive')
+        <div class="form-group" id="div_perfect_money" style="display: block;">
+          <label for=""> Compte Récepteur </label>
+          <input type="text" class="form-control" name="accountreceiver" id="account_receive_pm" value="0" autocomplete="off" required>
+          @error('accountreceiver')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_pm" id="devise_enter_pm" readonly>
+        </div>
+
+        <div class="form-group" hidden>
+          <input type="text" class="form-control" name="id_transaction" value="{{ $id_transaction }}" autocomplete="off" readonly>
+          @error('id_transaction')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
         </div>
 
         <div class="form-group">
@@ -167,7 +174,7 @@
 
         <div class="form-group">
           <label for=""> Montant à reçevoir </label>
-          <input type="number" class="form-control" name="total" id="montant_total_pm" readonly>
+          <input type="number" class="form-control" name="having_amount" id="montant_total_pm" readonly>
           @error('total')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -186,7 +193,7 @@
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="1" class="form-control" name="amount" id="amount_mtn" value="{{ old('montant') }}" required>
+          <input type="number" min="500" class="form-control" name="amount" id="amount_mtn" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -200,6 +207,13 @@
           <label for=""> Adresse receptrice </label>
           <input type="text" class="form-control" name="account_receiver" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
           @error('account_receiver')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group" hidden>
+          <input type="text" class="form-control" name="id_transaction" value="{{ $id_transaction }}" autocomplete="off" readonly>
+          @error('id_transaction')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
@@ -234,7 +248,7 @@
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="1" class="form-control" name="amount" id="amount_flooz" value="{{ old('montant') }}" required>
+          <input type="number" min="500" class="form-control" name="amount" id="amount_flooz" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -248,6 +262,13 @@
           <label for=""> Adresse receptrice </label>
           <input type="text" class="form-control" name="account_receiver" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
           @error('account_receiver')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group" hidden>
+          <input type="text" class="form-control" name="id_transaction" value="{{ $id_transaction }}" autocomplete="off" readonly>
+          @error('id_transaction')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
@@ -282,7 +303,7 @@
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="1" class="form-control" name="amount" id="amount_tm" value="{{ old('montant') }}" required>
+          <input type="number" min="500" class="form-control" name="amount" id="amount_tm" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -300,6 +321,13 @@
           @enderror
         </div>
 
+        <div class="form-group" hidden>
+          <input type="text" class="form-control" name="id_transaction" value="{{ $id_transaction }}" autocomplete="off" readonly>
+          @error('id_transaction')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
         <div class="form-group">
           <label for=""> Devise sortante </label>
           <select class="form-control" onchange="choixDeviseSortanteTMoney()" name="devise_out" id="devise_out_tm" required>
@@ -311,7 +339,7 @@
 
         <div class="form-group">
           <label for=""> Montant à reçevoir </label>
-          <input type="number" class="form-control" name="total" id="montant_total_tm" readonly>
+          <input type="number" class="form-control" name="having_amount" id="montant_total_tm" readonly>
           @error('total')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -358,7 +386,7 @@
 
         <div class="form-group">
           <label for=""> Id de la transaction </label>
-          <input type="text" class="form-control" name="id_transaction" autocomplete="off" required>
+          <input type="number" class="form-control" name="id_transaction" autocomplete="off" required>
           @error('id_transaction')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -591,11 +619,16 @@
   function choiceMoney(element){
     //Afficher adresse receptrice ou numero de telephone 
     if (element.name === 'coin_out') {
-        if (element.value.toLowerCase() === 'flooz' || element.value.toLowerCase() === 't money' 
-        || element.value.toLowerCase() === 'tmoney' || element.value.toLowerCase() === 'mtn' 
-        || element.value.toLowerCase() === 'mtn money' || element.value.toLowerCase() === 'mtn mobile money') {
+      if (element.value.toLowerCase() === 'flooz' || element.value.toLowerCase() === 't money' ||
+      element.value.toLowerCase() === 'tmoney' || element.value.toLowerCase() === 'mtn' ||
+      element.value.toLowerCase() === 'mtn money' || element.value.toLowerCase() === 'mtn mobile money') 
+      {
+        document.getElementById('div_perfect_money').style.display='none';
         document.getElementById('devise_out_payeer').value = 'XOF';
-      }else{
+      }
+      else
+      {
+        document.getElementById('div_perfect_money').style.display='block';
         document.getElementById('devise_out_payeer').value = 'USD';
       }
     }

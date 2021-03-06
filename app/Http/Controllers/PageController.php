@@ -25,7 +25,8 @@ class PageController extends Controller
     public function accueil(){
         $categorie = Type::all();
         $monnaie = Coin::all();
-        return view('layout.client.accueil',compact('categorie','monnaie'));
+        $id_transaction = rand();
+        return view('layout.client.accueil',compact('categorie','monnaie','id_transaction'));
     }
 
     public function indexAdmin(){

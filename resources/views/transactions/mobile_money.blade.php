@@ -5,7 +5,7 @@
 <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
 
 @php
-     $personne = \App\Models\Personne::where('id',$user)->first();
+     $personne = \App\Models\Personne::where('id',auth()->user()->personne_id)->first();
 @endphp
 
 

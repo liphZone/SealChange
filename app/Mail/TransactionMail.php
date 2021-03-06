@@ -19,6 +19,7 @@ class TransactionMail extends Mailable
     public $nom;
     public $prenom;
     public $email;
+    public $telephone = null;
    
 
     /**
@@ -26,7 +27,7 @@ class TransactionMail extends Mailable
      *
      * @return void
      */
-    public function __construct($monnaie_enter,$monnaie_out,$montant,$montant_r,$id_transaction,$nom,$prenom,$email)
+    public function __construct($monnaie_enter,$monnaie_out,$montant,$montant_r,$id_transaction,$nom,$prenom,$email,$telephone)
     {
         $this->monnaie_enter  = $monnaie_enter;
         $this->monnaie_out    = $monnaie_out;
@@ -36,6 +37,7 @@ class TransactionMail extends Mailable
         $this->nom            = $nom;
         $this->prenom         = $prenom;
         $this->email          = $email;
+        $this->telephone      = $telephone;
     }
 
     /**

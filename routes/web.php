@@ -124,18 +124,11 @@ Route::post('en attente advcash',[TransactionController::class,'actionWaitingSen
 //Action waiting mtn : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente mtn',[TransactionController::class,'actionWaitingSendMtn'])->name('action_waiting_mtn');
 
-
-//Action envoie Mtn
-Route::post('Mtn',[TransactionController::class,'actionSendMtn'])->name('action_mtn');
-
 //Action envoie flooz/Mtn
-Route::post('Mobile Money',[TransactionController::class,'actionMobileMoney'])->name('action_mobile_money');
+Route::post('Mobile Money',[TransactionController::class,'actionSendMobileMoney'])->name('action_mobile_money');
 
 //Action envoie t money
 Route::post('t money',[TransactionController::class,'actionSendTMoney'])->name('action_t_money');
-
-//Page Flooz
-Route::get('Transaction flooz',[TransactionController::class,'formulaireFlooz'])->name('form_action_flooz');
 
 //Page Perfect Money du serveur Perfect Money
 Route::post('perfect money payement',[TransactionController::class,'formulaireActionPerfectMoney'])->name('form_action_perfect_money');
@@ -159,6 +152,9 @@ Route::get('Historique/{id}',[TransactionController::class,'formulaireHistorique
 //Formulaire transaction
 Route::get('transaction',[TransactionController::class,'formulaireTransaction'])->name('form_transaction');
 
+
+//Action bouton valider transaction depuis la reception de mail
+Route::get('Valider transaction/{id_transaction}',[TransactionController::class,'actionValidateTransaction'])->name('action_validate_transaction');
 
 /* ********************************* FIN TRANSACTIONS ******************************** */
 

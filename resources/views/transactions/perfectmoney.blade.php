@@ -6,7 +6,7 @@
     <input type="hidden" name="PAYMENT_UNITS" value="{{ $devise_enter }}">
 	<input type="hidden" name="PAYMENT_URL" value="http://hopesealchange.com/success.php">
 	<input type="hidden" name="NOPAYMENT_URL" value="http://hopesealchange.com/fail.php">
-	<input type="hidden" name="PAYMENT_ID" value="{{ $id }}">
+	<input type="hidden" name="PAYMENT_ID" value="{{ $id_transaction }}">
 	{{-- @if($STATUS_URL)
 		<input type="hidden" name="STATUS_URL" value="{{ $STATUS_URL }}">
 	@endif
