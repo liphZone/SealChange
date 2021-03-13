@@ -27,7 +27,7 @@ class CreateTransactionsTable extends Migration
             $table->string('myaccount')->nullable();
             $table->string('account_receiver')->nullable();
             $table->integer('user');
-            $table->boolean('etat')->nullable();
+            $table->boolean('etat')->default(0);
             $table->timestamps();
         });
     }

@@ -58,7 +58,7 @@ class TransactionController extends Controller
         $id_transaction     = request('id_transaction');
         $devise_enter       = request('devise_enter');
         $devise_out         = request('devise_out');
-        $telephone          = request('indicatif')." ".request('telephone');
+        $telephone          = request('telephone');
         $moncompte          = request('myaccount');
         $coin_enter         = request('coin_enter');
         $coin_out           = request('coin_out');
@@ -92,7 +92,7 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
              if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
+             
                 return view('transactions.perfectmoney',compact('account_receive','montant','moncompte','devise_enter',
                 'devise_out','id_transaction','payee_name'));
             } else {
@@ -121,7 +121,7 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
              if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
+             
                 return view('transactions.perfectmoney',compact('account_receive','montant','moncompte','devise_enter',
                 'devise_out','id_transaction','payee_name'));
             } else {
@@ -139,6 +139,124 @@ class TransactionController extends Controller
        
     }
     /**************************** FIN PERFECT MONEY **********************************/
+
+
+    /****************************** PAYEER *************************************/
+
+    public function actionWaitingSendPayeer(){
+        $montant            = request('amount');
+        $montant_a_recevoir = request('having_amount');
+        $coin_enter         = request('coin_enter_payeer');
+        $coin_out           = request('coin_out_payeer');
+        $moncompte          = 'P1040648631';
+        $devise_enter       = request('devise_enter_payeer');
+        $devise_out         = request('devise_out');
+        $account_receiver   = request('account_receiver');
+        $id_transaction     = request('id_transaction');
+        $user               = auth()->user()->personne_id;
+
+        $phone = array(
+            "Sénégal"       => 221, 
+            "Mali"          => 223, 
+            "Guinée"        => 224, 
+            "Côte d'Ivoire" => 225, 
+            "Burkina Faso"  => 226, 
+            "Niger"         => 227, 
+            "Togo"          => 228, 
+            "Bénin"         => 229, 
+            "Ghana"         => 233, 
+            "Cameroun"      => 237, 
+            "Gabon"         => 241, 
+            ); 
+            $trie = ksort($phone);
+        return view('transactions.commande',compact('montant','montant_a_recevoir','coin_enter','coin_out','moncompte',
+        'devise_enter','devise_out','account_receiver','id_transaction','user','phone'));
+    }
+
+    public function actionSendPayeer(){
+
+        $reference          = Str::random(10);
+        $montant            = request('amount');
+        $montant_a_recevoir = request('having_amount');
+        $id_transaction     = request('id_transaction');
+        $devise_enter       = request('devise_enter');
+        $devise_out         = request('devise_out');
+        $telephone          = request('telephone');
+        $moncompte          = request('myaccount');
+        $coin_enter         = request('coin_enter');
+        $coin_out           = request('coin_out');
+        $account_receiver   = request('account_receiver');
+
+        $user          = Personne::where('id',auth()->user()->personne_id)->first();
+        $monnaie_enter = Coin::where('id',$coin_enter)->first();
+        $monnaie_out   = Coin::where('id',$coin_out)->first();
+        //Je recupere les informations de l'utilisateur pour utiliser 'id_transaction'
+        $transaction   = Transaction::where('user',auth()->user()->id)->first();
+
+        if ($transaction === null) 
+        {
+            $insertion = Transaction::firstOrCreate([
+                'id_transaction' => $id_transaction,
+            ],
+            [
+                'reference'        => $reference,
+                'coin_enter'       => $coin_enter,
+                'coin_out'         => $coin_out,
+                'amount'           => $montant,
+                'having_amount'    => $montant_a_recevoir,
+                'devise_enter'     => $devise_enter,
+                'devise_out'       => $devise_out,
+                'telephone'        => $telephone,
+                'myaccount'        => $moncompte,
+                'account_receiver' => $account_receiver,
+                'etat'             => 0,
+                'user'             => auth()->user()->id,
+            ]);
+            if ($insertion) {
+             
+                // Flashy::success('En cours de traitement ...');
+                return view('transactions.transaction',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out'));
+            } else {
+                Flashy::error('Erreur');
+                return back();
+            }
+        }
+        elseif ($transaction->id_transaction != $id_transaction) 
+        {
+            $insertion = Transaction::firstOrCreate([
+                'id_transaction' => $id_transaction,
+            ],
+            [
+                'reference'        => $reference,
+                'coin_enter'       => $coin_enter,
+                'coin_out'         => $coin_out,
+                'amount'           => $montant,
+                'having_amount'    => $montant_a_recevoir,
+                'devise_enter'     => $devise_enter,
+                'devise_out'       => $devise_out,
+                'telephone'        => $telephone,
+                'myaccount'        => $moncompte,
+                'account_receiver' => $account_receiver,
+                'etat'             => 0,
+                'user'             => auth()->user()->id,
+            ]);
+            if ($insertion) {
+             
+                Flashy::success('En cours de traitement ...');
+                return view('transactions.transaction',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction'));
+            } else {
+                Flashy::error('Erreur');
+                return back();
+            }
+        }
+        else
+        {
+            return view('transactions.transaction',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction'));
+        }
+    }
+
+    /**************************** FIN PAYEER **********************************/
+
 
     /****************************** MTN *************************************/
     public function  actionWaitingSendMtn(){
@@ -216,7 +334,7 @@ class TransactionController extends Controller
         $id_transaction     = request('id_transaction');
         $devise_enter       = request('devise_enter');
         $devise_out         = request('devise_out');
-        $telephone          = request('indicatif')." ".request('telephone');
+        $telephone          = request('telephone');
         $coin_enter         = request('coin_enter');
         $coin_out           = request('coin_out');
         $account_receive    = request('account_receive');
@@ -247,7 +365,7 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
             if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
+             
                 return view('transactions.mobile_money',compact('montant','user'));
             } else {
                 Flashy::error('Erreur');
@@ -274,7 +392,7 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
             if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
+             
                 Flashy::success('En cours de traitement ...');
                 return view('transactions.mobile_money',compact('montant','user'));
             } else {
@@ -334,7 +452,7 @@ class TransactionController extends Controller
         $id_transaction     = request('id_transaction');
         $devise_enter       = request('devise_enter');
         $devise_out         = request('devise_out');
-        $telephone          = request('indicatif')." ".request('telephone');
+        $telephone          = request('telephone');
         $coin_enter         = request('coin_enter');
         $coin_out           = request('coin_out');
         $account_receive    = request('account_receive');
@@ -357,13 +475,14 @@ class TransactionController extends Controller
                 'having_amount'    => $montant_a_recevoir,
                 'devise_enter'     => $devise_enter,
                 'devise_out'       => $devise_out,
-                'account_receiver' => request('account_receive'),
+                'telephone'        => $telephone,
+                'account_receiver' =>  $account_receive,
                 'etat'             => 0,
                 'user'             => auth()->user()->id,
             ]);
             if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
-                return redirect("https://paygateglobal.com/v1/page?token=93a934d5-557e-465d-99e3-ab0f821e419f&amount=".request('montant')."&description=".request('account_receive')."&identifier=".$id_transaction);
+             
+                return redirect("https://paygateglobal.com/v1/page?token=93a934d5-557e-465d-99e3-ab0f821e419f&amount=".$montant."&description=Retrait"."&identifier=".$id_transaction);
             } else {
                 Flashy::error('Erreur');
                 return back();
@@ -387,8 +506,8 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
             if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
-                return redirect("https://paygateglobal.com/v1/page?token=93a934d5-557e-465d-99e3-ab0f821e419f&amount=".request('montant')."&description=".request('account_receive')."&identifier=".$id_transaction);
+             
+                return redirect("https://paygateglobal.com/v1/page?token=93a934d5-557e-465d-99e3-ab0f821e419f&amount=".$montant."&description=Retrait"."&identifier=".$id_transaction);
             } else {
                 Flashy::error('Erreur');
                 return back();
@@ -399,45 +518,132 @@ class TransactionController extends Controller
             Flashy::error('Erreur survenue lors du transfert');
             return redirect()->route('accueil');
         }
-        
-        $insertion = Transaction::firstOrCreate([
-            'id_transaction' => $id_transaction,
-        ],
-        [
-            'reference'        => $reference ,
-            'coin_enter'       => $coin_enter,
-            'coin_out'         => $coin_out,
-            'amount'           => $montant,
-            'having_amount'    => $montant_a_recevoir,
-            'devise_enter'     => $devise_enter,
-            'devise_out'       => $devise_out,
-            'account_receiver' => request('account_receive'),
-            'etat'             => 0,
-            'user'             => auth()->user()->id,
-        ]);
-        if ($insertion) {
-            return redirect("https://paygateglobal.com/v1/page?token=93a934d5-557e-465d-99e3-ab0f821e419f&amount=".request('montant')."&description=".request('account_receive')."&identifier=".$id_transaction);
-        } else {
-            Flashy::error('Erreur');
-            return back();
-        }
     }
 
     /**************************** FIN T MONEY **********************************/
 
-
-
-    /****************************** PAYEER *************************************/
-
-    public function actionWaitingSendPayeer(){
+    
+    /**************************** FIN BITCOIN **********************************/
+    public function actionWaitingSendBtc(){
         $montant            = request('amount');
         $montant_a_recevoir = request('having_amount');
-        $coin_enter         = request('coin_enter_payeer');
-        $coin_out           = request('coin_out_payeer');
-        $moncompte          = request('myaccount');
-        $devise_enter       = request('devise_enter_payeer');
+        $coin_enter         = request('coin_enter_btc');
+        $coin_out           = request('coin_out_btc');
+        $devise_enter       = request('devise_enter_btc');
         $devise_out         = request('devise_out');
+        $id_transaction     = rand();
+        $user               = auth()->user()->personne_id;
+
+        $phone = array(
+            "Sénégal"       => 221, 
+            "Mali"          => 223, 
+            "Guinée"        => 224, 
+            "Côte d'Ivoire" => 225, 
+            "Burkina Faso"  => 226, 
+            "Niger"         => 227, 
+            "Togo"          => 228, 
+            "Bénin"         => 229, 
+            "Ghana"         => 233, 
+            "Cameroun"      => 237, 
+            "Gabon"         => 241, 
+            ); 
+            $trie = ksort($phone);
+        return view('transactions.commande',compact('montant','montant_a_recevoir','coin_enter','coin_out',
+        'devise_enter','devise_out','id_transaction','user','phone'));
+    }
+
+    public function actionSendBitcoin(){
+        $reference          = Str::random(10);
+        $montant            = request('amount');
+        $montant_a_recevoir = request('having_amount');
         $id_transaction     = request('id_transaction');
+        $devise_enter       = request('devise_enter');
+        $devise_out         = request('devise_out');
+        $telephone          = request('telephone');
+        $coin_enter         = request('coin_enter');
+        $coin_out           = request('coin_out');
+        $account_receiver   = request('account_receiver');
+
+        $adresse_bitcoin    = request('ttc');
+        
+        $user          = Personne::where('id',auth()->user()->personne_id)->first();
+        $monnaie_enter = Coin::where('id',$coin_enter)->first();
+        $monnaie_out   = Coin::where('id',$coin_out)->first();
+        //Je recupere les informations de l'utilisateur pour utiliser 'id_transaction'
+        $transaction   = Transaction::where('user',auth()->user()->id)->first();
+
+        if ($transaction === null) 
+        {
+            $insertion = Transaction::firstOrCreate([
+                'id_transaction' => $id_transaction,
+            ],
+            [
+                'reference'        => $reference,
+                'coin_enter'       => $coin_enter,
+                'coin_out'         => $coin_out,
+                'amount'           => $montant,
+                'having_amount'    => $montant_a_recevoir,
+                'devise_enter'     => $devise_enter,
+                'devise_out'       => $devise_out,
+                'telephone'        => $telephone,
+                'myaccount'        => $adresse_bitcoin,
+                'account_receiver' => $account_receiver,
+                'etat'             => 0,
+                'user'             => auth()->user()->id,
+            ]);
+            if ($insertion) {
+                // Flashy::success('En cours de traitement ...');
+                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','adresse_bitcoin'));
+            } else {
+                Flashy::error('Erreur');
+                return back();
+            }
+        }
+        elseif ($transaction->id_transaction != $id_transaction) 
+        {
+            $insertion = Transaction::firstOrCreate([
+                'id_transaction' => $id_transaction,
+            ],
+            [
+                'reference'        => $reference,
+                'coin_enter'       => $coin_enter,
+                'coin_out'         => $coin_out,
+                'amount'           => $montant,
+                'having_amount'    => $montant_a_recevoir,
+                'devise_enter'     => $devise_enter,
+                'devise_out'       => $devise_out,
+                'telephone'        => $telephone,
+                'myaccount'        => $adresse_bitcoin,
+                'account_receiver' => $account_receiver,
+                'etat'             => 0,
+                'user'             => auth()->user()->id,
+            ]);
+            if ($insertion) {
+                Flashy::success('En cours de traitement ...');
+                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction','adresse_bitcoin'));
+            } else {
+                Flashy::error('Erreur');
+                return back();
+            }
+        }
+        else
+        {
+            return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction','adresse_bitcoin'));
+        }
+    }
+    /**************************** FIN BITCOIN **********************************/
+
+    /****************************  ADVCASH **********************************/
+    public function actionWaitingSendAdvcash(){
+        $montant            = request('amount');
+        $montant_a_recevoir = request('having_amount');
+        $coin_enter         = request('coin_enter_advcash');
+        $coin_out           = request('coin_out_advcash');
+        $moncompte          = 'U033816068648';
+        $devise_enter       = request('devise_enter_advcash');
+        $devise_out         = request('devise_out');
+        $id_transaction     = rand();
+        $account_receiver   = request('account_receiver');
         $user               = auth()->user()->personne_id;
 
         $phone = array(
@@ -455,10 +661,10 @@ class TransactionController extends Controller
             ); 
             $trie = ksort($phone);
         return view('transactions.commande',compact('montant','montant_a_recevoir','coin_enter','coin_out','moncompte',
-        'devise_enter','devise_out','id_transaction','user','phone'));
+        'devise_enter','devise_out','id_transaction','account_receiver','user','phone'));
     }
 
-    public function actionSendPayeer(){
+    public function actionSendAdvcash(){
 
         $reference          = Str::random(10);
         $montant            = request('amount');
@@ -466,7 +672,7 @@ class TransactionController extends Controller
         $id_transaction     = request('id_transaction');
         $devise_enter       = request('devise_enter');
         $devise_out         = request('devise_out');
-        $telephone          = request('indicatif')." ".request('telephone');
+        $telephone          = request('telephone');
         $moncompte          = request('myaccount');
         $coin_enter         = request('coin_enter');
         $coin_out           = request('coin_out');
@@ -498,7 +704,7 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
             if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
+             
                 // Flashy::success('En cours de traitement ...');
                 return view('transactions.transaction',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out'));
             } else {
@@ -526,7 +732,7 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
             if ($insertion) {
-                Mail::to('philippesf3@gmail.com')->queue(new TransactionMail($monnaie_enter->libelle,$monnaie_out->libelle,$montant,$montant_a_recevoir,$id_transaction,$user->nom,$user->prenom,$user->email,$telephone));
+             
                 Flashy::success('En cours de traitement ...');
                 return view('transactions.transaction',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction'));
             } else {
@@ -538,66 +744,8 @@ class TransactionController extends Controller
         {
             return view('transactions.transaction',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction'));
         }
-    }
-
-    /**************************** FIN PAYEER **********************************/
-
-
-
-
-    /*****************************  ADVCASH ************************************/
-
-    public function actionWaitingSendAdvCash(){
-        $id               = random_int(50000,90000);
-        $montant          = request('amount');
-        $coin_enter       = request('coin_enter_adv');
-        $coin_out         = request('coin_out_adv');
-        $accountid        = request('accountid');
-        $total            = request('total');
-        $moncompte        = request('myaccount');
-        $devise_enter     = request('devise_enter_adv');
-        $devise_out       = request('devise_out');
-        $account_receive  = request('account_receiver');
-        $user             = auth()->user()->personne_id;
-        $email            = request('email') ;
-
-        return view('transactions.commande',compact('id','coin_enter','coin_out','montant','total','moncompte',
-        'devise_enter','devise_out','account_receive','user','email'));
-    }
-
-    public function formulaireAdvCash(){
-        $account_receive  = request('account_receive');
-        $montant          = request('montant');
-        $moncompte        = request('moncompte');
-        $devise_enter     = request('devise_enter');
-        $devise_out       = request('devise_out');
-        $id               = request('id');
-        $email            = auth()->user()->email;
-        // $reference        = str_random(50);
-
-        // $insertion = Transaction::firstOrCreate([
-        //     'reference'          => str_random(5),
-        //     'identifiant'        => $id,
-        //     'coin_enter'         => request('coin_enter'),
-        //     'coin_out'           => request('coin_out'),
-        //     'amount'             => $montant,
-        //     'devise_enter'       => $devise_enter,
-        //     'devise_out'         => request('devise_out'),
-        //     'payement_reference' => 'REF'.str_random(20),
-        //     'account_sender'     => request('moncompte'),
-        //     'account_receiver'   => request('account_receive'),
-        //     'etat'               => 0,
-        //     'user'               => auth()->user()->id,
-        // ]);
-        //  if ($insertion) {
-            return view('transactions.advcash',compact('account_receive','montant','moncompte','devise_enter','devise_out','id','email','reference'));
-        // } else {
-        //     Flashy::error('Erreur');
-        //     return back();
-        // }
-    }
-
-    /**************************** FIN ADVCASH **********************************/
+    }   
+    /**************************** FIN ADVCASH ******************************/
 
     public function confirmationPayementFlooz(Request $request){
         $utilisateur = Transaction::where('reference',request('identifier'))->first();
@@ -611,10 +759,6 @@ class TransactionController extends Controller
         if ($save) {
             Flashy::success('Envoie confirmé');
         }
-    }
-
-    public function  formulaireTransaction(){
-        return view('transactions.transaction');
     }
 
     public function actionValidateTransaction(Request $id_transaction){

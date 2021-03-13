@@ -69,6 +69,12 @@
   </div>
 </div>
 
+@php
+  $dollar_franc = \App\Models\Rate::where('monnaie_send','USD')->where('monnaie_receive','XOF')->first();
+  $franc_dollar = \App\Models\Rate::where('monnaie_send','XOF')->where('monnaie_receive','USD')->first();
+@endphp
+
+
   <div class="row">
 
     <div class="col-md-4">
@@ -137,14 +143,16 @@
     
         <div class="form-group">
           <label for=""> Montant à transferer </label>
-          <input type="number" min="1" class="form-control" name="amount" id="amount_pm" autocomplete="off" required>
+          <input type="number" min="1" class="form-control" onkeyup="amountPerfectMoney()" name="amount" id="amount_pm" autocomplete="off" required>
           @error('amount')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
+
+        <input hidden type="text" name="rate" class="form-control" id="dollar_franc" value="{{ $dollar_franc->valeur }}" readonly>
     
         <div class="form-group" id="div_perfect_money" style="display: block;">
-          <label for=""> Compte Récepteur </label>
+          <label id="label_perfect_money" for=""> Compte Récepteur </label>
           <input type="text" class="form-control" name="accountreceiver" id="account_receive_pm" value="0" autocomplete="off" required>
           @error('accountreceiver')
             <div style="color: red;"> {{ $message }} </div>
@@ -152,7 +160,8 @@
         </div>
 
         <div class="form-group">
-          <input hidden type="text" class="form-control" name="devise_enter_pm" id="devise_enter_pm" readonly>
+          <input hidden type="text" class="form-control" name="devise_enter_pm" id="devise_enter_pm" value="USD" readonly>
+          <input hidden type="text" class="form-control" name="devise_out_pm" id="devise_out_pm" readonly>
         </div>
 
         <div class="form-group" hidden>
@@ -163,24 +172,79 @@
         </div>
 
         <div class="form-group">
-          <label for=""> Devise sortante </label>
-          <select class="form-control" onchange="choixDeviseSortantePerfectMoney()" name="devise_out_pm" id="devise_out_pm" required>
-            <option value=""> Choisir </option>
-            <option value="EUR"> Euro </option>
-            <option value="USD"> Dollar </option>
-            <option value="XOF"> F CFA </option>
-          </select>
-        </div>
-
-        <div class="form-group">
           <label for=""> Montant à reçevoir </label>
           <input type="number" class="form-control" name="having_amount" id="montant_total_pm" readonly>
-          @error('total')
+          @error('having_amount')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
 
         <button id="operation_pm" type="submit" class="btn btn-primary btn-block mr-2"> Valider </button>
+      </form>
+
+
+      <form class="forms-sample" action="{{ route('action_waiting_payeer') }}" method="POST" id="sendPayeer" style="display: none">
+        @csrf
+        <div class="form-group" hidden>
+          <input id="input_enter_payeer" class="form-control" type="text" name="coin_enter_payeer" required>
+          <input id="input_out_payeer" class="form-control" type="text" name="coin_out_payeer" required>
+        </div>
+
+        <span class="badge badge-primary text-wrap">
+          Veuillez effectuer un dépot sur le compte ci-dessous :
+        </span> <br>
+        <label for=""> Adresse Payeer</label>
+        <div class="form-inline">
+          <input type="text" class="form-control" name="myaccount" size="40" id="copyMe" value="P1040648631" readonly>
+        <button class="bg-blue-500 hover:bg-blue-700 text-dark font-bold py-2 px-4 border border-blue-700 rounded" onclick="copyMeOnClipboard()">
+          Copier
+        </button>
+          @error('myaccount')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group">
+          <label for=""> Saisir le montant </label>
+          <input type="number" min="2" class="form-control" name="amount" onkeyup="amountPayeer()" id="amount_payeer" value="{{ old('montant') }}" required>
+          @error('montant')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+          <span class="text-danger"> Montant minimal : 2$ </span>
+        </div>
+
+        <div class="form-group" hidden>
+          <input type="text" class="form-control" name="devise_enter_payeer" value="USD" readonly>
+          <input type="text" class="form-control" name="devise_out" id="devise_out_payeer" readonly>
+        </div>
+
+        <input hidden type="text" name="rate" class="form-control" id="dollar_franc" value="{{ $dollar_franc->valeur }}" readonly>
+
+        <div class="form-group" id="div_payeer" style="display: block;">
+          <label id="label_payeer" for=""> Compte Récepteur </label>
+          <input type="text" class="form-control" name="account_receiver" id="account_receive_pm" value="0" autocomplete="off" required>
+          @error('accountreceiver')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group">
+          <label for=""> Id de la transaction </label>
+          <input type="number" class="form-control" name="id_transaction" autocomplete="off" required>
+          @error('id_transaction')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group">
+          <label for=""> Montant à reçevoir </label>
+          <input type="number" class="form-control" name="having_amount" id="montant_total_payeer" readonly>
+          @error('having_amount')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <button id="operation_payeer" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
       </form>
 
 
@@ -193,7 +257,7 @@
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="500" class="form-control" name="amount" id="amount_mtn" value="{{ old('montant') }}" required>
+          <input type="number" min="500" class="form-control" onkeyup="amountMtn()" name="amount" id="amount_mtn" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -201,11 +265,15 @@
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_mtn" value="XOF" readonly>
+          <input hidden type="text" class="form-control" name="devise_out" id="devise_out_mtn" readonly>
         </div>
 
-        <div class="form-group">
+        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $franc_dollar->valeur }}" readonly>
+
+
+        <div class="form-group" id="div_mtn" style="display: block;">
           <label for=""> Adresse receptrice </label>
-          <input type="text" class="form-control" name="account_receiver" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
+          <input type="text" class="form-control" name="account_receiver" value="0" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
           @error('account_receiver')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -216,15 +284,6 @@
           @error('id_transaction')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
-        </div>
-
-        <div class="form-group">
-          <label for=""> Devise sortante </label>
-          <select class="form-control" onchange="choixDeviseSortanteMtn()" name="devise_out" id="devise_out_mtn" required>
-            <option value=""> Choisir  </option>
-            <option value="EUR"> Euro </option>
-            <option value="USD"> Dollar </option>
-          </select>
         </div>
 
         <div class="form-group">
@@ -248,19 +307,22 @@
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="500" class="form-control" name="amount" id="amount_flooz" value="{{ old('montant') }}" required>
+          <input type="number" min="500" class="form-control" onkeyup="amountFlooz()" name="amount" id="amount_flooz" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
 
         <div class="form-group">
-          <input hidden type="text" class="form-control" name="devise_enter_flooz" value="XOF" readonly>
+          <input hidden type="text" class="form-control" name="devise_enter_flooz"  value="XOF" readonly>
+          <input hidden type="text" class="form-control" name="devise_out" id="devise_out_flooz" value="XOF" readonly>
         </div>
 
-        <div class="form-group">
-          <label for=""> Adresse receptrice </label>
-          <input type="text" class="form-control" name="account_receiver" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
+        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $franc_dollar->valeur }}" readonly>
+
+        <div class="form-group" id="div_flooz" style="display: block;">
+          <label id="label_flooz" for=""> Adresse receptrice </label>
+          <input type="text" class="form-control" name="account_receiver" value="0" id="account_receive" autocomplete="off" required>
           @error('account_receiver')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -271,15 +333,6 @@
           @error('id_transaction')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
-        </div>
-
-        <div class="form-group">
-          <label for=""> Devise sortante </label>
-          <select class="form-control" onchange="choixDeviseSortanteFlooz()" name="devise_out" id="devise_out_flooz" required>
-            <option value=""> Choisir  </option>
-            <option value="EUR"> Euro </option>
-            <option value="USD"> Dollar </option>
-          </select>
         </div>
 
         <div class="form-group">
@@ -303,7 +356,7 @@
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="500" class="form-control" name="amount" id="amount_tm" value="{{ old('montant') }}" required>
+          <input type="number" min="500" class="form-control" onkeyup="amountTMoney()" name="amount" id="amount_tm" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -311,11 +364,14 @@
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_tm" value="XOF" readonly>
+          <input hidden type="text" class="form-control" name="devise_out" id="devise_out_tm" readonly>
         </div>
 
-        <div class="form-group">
-          <label for=""> Adresse receptrice </label>
-          <input type="text" class="form-control" name="account_receiver" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
+        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $franc_dollar->valeur }}" readonly>
+
+        <div class="form-group" id="div_t_money" style="display: block;">
+          <label id="label_t_money" for=""> Adresse receptrice </label>
+          <input type="text" class="form-control" name="account_receiver" value="0" id="account_receive" autocomplete="off" required>
           @error('account_receiver')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
@@ -329,119 +385,36 @@
         </div>
 
         <div class="form-group">
-          <label for=""> Devise sortante </label>
-          <select class="form-control" onchange="choixDeviseSortanteTMoney()" name="devise_out" id="devise_out_tm" required>
-            <option value=""> Choisir  </option>
-            <option value="EUR"> Euro </option>
-            <option value="USD"> Dollar </option>
-          </select>
-        </div>
-
-        <div class="form-group">
           <label for=""> Montant à reçevoir </label>
           <input type="number" class="form-control" name="having_amount" id="montant_total_tm" readonly>
-          @error('total')
+          @error('having_amount')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
 
         <button id="operation_tm" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
       </form>
+      
 
-
-
-      <form class="forms-sample" action="{{ route('action_waiting_payeer') }}" method="POST" id="sendPayeer" style="display: none">
+      <form class="forms-sample" action="{{ route('action_waiting_bitcoin') }}" method="POST" id="sendBitcoin" style="display: none">
         @csrf
         <div class="form-group" hidden>
-          <input id="input_enter_payeer" class="form-control" type="text" name="coin_enter_payeer" required>
-          <input id="input_out_payeer" class="form-control" type="text" name="coin_out_payeer" required>
-        </div>
-
-        <span class="badge badge-primary text-wrap">
-          Veuillez effectuer un dépot sur le compte ci-dessous :
-        </span> <br>
-        <label id="label_payeer" for=""> Adresse Payeer</label>
-        <div class="form-inline">
-          <input type="text" class="form-control" name="myaccount" size="40" id="copyMe" value="P1040648631" readonly>
-        <button class="bg-blue-500 hover:bg-blue-700 text-dark font-bold py-2 px-4 border border-blue-700 rounded" onclick="copyMeOnClipboard()">
-          Copier
-        </button>
-          @error('myaccount')
-            <div style="color: red;"> {{ $message }} </div>
-          @enderror
+          <input id="input_enter_btc" class="form-control" type="text" name="coin_enter_btc" required>
+          <input id="input_out_btc" class="form-control" type="text" name="coin_out_btc" required>
         </div>
 
         <div class="form-group">
-          <label for=""> Saisir le montant </label>
-          <input type="number" min="2" class="form-control" name="amount" onkeyup="amountPayeer()" id="amount_payeer" value="{{ old('montant') }}" required>
-          @error('montant')
-            <div style="color: red;"> {{ $message }} </div>
-          @enderror
-          <span class="text-danger"> Montant minimal : 2$ </span>
-        </div>
-
-        <div class="form-group" hidden>
-          <input type="text" class="form-control" name="devise_enter_payeer" value="USD" readonly>
-        </div>
-
-        <div class="form-group">
-          <label for=""> Id de la transaction </label>
-          <input type="number" class="form-control" name="id_transaction" autocomplete="off" required>
-          @error('id_transaction')
-            <div style="color: red;"> {{ $message }} </div>
-          @enderror
-        </div>
-
-        <div class="form-group" hidden>
-          <label for=""> Devise sortante </label>
-          <input type="text" class="form-control" name="devise_out" id="devise_out_payeer" readonly>
-        </div>
-
-        <div class="form-group">
-          <label for=""> Montant à reçevoir </label>
-          <input type="number" class="form-control" name="having_amount" id="montant_total_payeer" readonly>
-          @error('total')
-            <div style="color: red;"> {{ $message }} </div>
-          @enderror
-        </div>
-
-        <button id="operation_payeer" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
-      </form>
-
-
-      <form class="forms-sample" action="{{ route('action_waiting_adv_cash') }}" method="POST" id="sendAdvCash" style="display: none">
-        @csrf
-        <div class="form-group" hidden>
-          <input id="input_enter_adv" class="form-control" type="text" name="coin_enter_adv" required>
-          <input id="input_out_adv" class="form-control" type="text" name="coin_out_adv" required>
-        </div>
-
-        <div class="form-group">
-          <label for=""> Votre Compte Advcash</label>
-          <input type="text" class="form-control" name="myaccount" id="myaccount_adv" autocomplete="off" required>
-          @error('myaccount')
-            <div style="color: red;"> {{ $message }} </div>
-          @enderror
-        </div>
-
-        <div class="form-group">
-          <label for=""> Saisir le montant </label>
-          <input type="number" min="1" class="form-control" name="amount" id="amount_adv" value="{{ old('montant') }}" required>
+          <label for=""> Saisir le montant ( en dollar ) </label>
+          <input type="number" step="any" class="form-control" name="amount" onkeyup="amountBitcoin()" id="amount_btc" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
 
-        <div class="form-group">
-          <input hidden type="text" class="form-control" name="devise_enter_adv" id="devise_enter_adv" value="USD" readonly>
-        </div>
+        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $dollar_franc->valeur }}" readonly>
 
         <div class="form-group">
-          <label for=""> Adresse receptrice </label>
-          <input type="text" class="form-control" name="account_receiver" id="account_receive" placeholder="ex: P6872131 ou U4514252" autocomplete="off" required>
-          @error('account_receiver')
-            <div style="color: red;"> {{ $message }} </div>
-          @enderror
+          <input hidden type="text" class="form-control" name="devise_enter_btc" id="devise_enter_btc" value="USD" readonly>
         </div>
 
         <div class="form-group">
@@ -452,24 +425,72 @@
           @enderror
         </div>
 
-        <div class="form-group">
+        <div class="form-group" hidden>
           <label for=""> Devise sortante </label>
-          <select class="form-control" onchange="choixDeviseSortanteAdvCash()" name="devise_out" id="devise_out_adv" required>
-            <option value=""> Choisir  </option>
-            <option value="EUR"> Euro </option>
-            <option value="USD"> Dollar </option>
-          </select>
+          <input type="text" class="form-control" name="devise_out" id="devise_out_btc" readonly>
         </div>
 
         <div class="form-group">
           <label for=""> Montant à reçevoir </label>
-          <input type="number" class="form-control" name="total" id="montant_total_adv" readonly>
-          @error('total')
+          <input type="number" class="form-control" name="having_amount" id="montant_total_btc" readonly>
+          @error('having_amount')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
         </div>
 
-        <button id="operation_adv" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
+        <button id="operation_btc" class="btn btn-success btn-block mr-2"> Opérer </button>
+      </form>
+
+      <form class="forms-sample" action="{{ route('action_waiting_advcash') }}" method="POST" id="sendAdvcash" style="display: none">
+        @csrf
+        <div class="form-group" hidden>
+          <input id="input_enter_advcash" class="form-control" type="text" name="coin_enter_advcash" required>
+          <input id="input_out_advcash" class="form-control" type="text" name="coin_out_advcash" required>
+        </div>
+
+  
+        <span class="badge badge-primary text-wrap">
+          Veuillez effectuer un dépot sur le compte ci-dessous :
+        </span> <br>
+        <label for=""> Votre compte Advcash </label>
+        <div class="form-group">
+          <input type="text" class="form-control" value="U033816068648" size="40" id="copyMe" name="myaccount" readonly>
+          @error('myaccount')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group">
+          <label for=""> Saisir le montant </label>
+          <input type="number" min="2" class="form-control" name="amount" onkeyup="amountAdvcash()" id="amount_advcash" value="{{ old('montant') }}" required>
+          @error('montant')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+          <span class="text-danger"> Montant minimal : 2$ </span>
+        </div>
+
+        <div class="form-group" hidden>
+          <input type="text" class="form-control" name="devise_enter_advcash" value="USD" readonly>
+          <input type="text" class="form-control" name="devise_out" id="devise_out_advcash" readonly>
+        </div>
+
+        <div class="form-group" id="div_advcash" style="display: block;">
+          <label id="label_advcash" for=""> Compte Récepteur </label>
+          <input type="text" class="form-control" name="account_receiver" id="account_receive_advcash" value="0" autocomplete="off" required>
+          @error('accountreceiver')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group">
+          <label for=""> Montant à reçevoir </label>
+          <input type="number" class="form-control" name="having_amount" id="montant_total_advcash" readonly>
+          @error('having_amount')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <button id="operation_advcash" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
       </form>
 
 
@@ -492,126 +513,102 @@
       }, 1000)
     }
 
-  function choixDeviseSortanteMtn(){
-    devise_out = document.getElementById('devise_out_mtn').value;
-    var amount_mtn = document.getElementById('amount_mtn').value;
-    if (devise_out == 'EUR'){
-      var mt =  amount_mtn*0.0015 + amount_mtn*0.0015*0.02
-      document.getElementById('montant_total_mtn').value = mt;
-    }else if(devise_out == 'USD'){
-      var mt =  amount_mtn*0.0019 + amount_mtn*0.0019*0.02
-      document.getElementById('montant_total_mtn').value = mt;
+
+    function amountPerfectMoney(){
+    var devise_sortie_pm = document.getElementById('devise_out_pm').value;
+    var taux = document.getElementById('dollar_franc').value;
+    var amount_pm = document.getElementById('amount_pm').value;
+    var mt_receive_pm = document.getElementById('montant_total_pm').value;
+    
+    if (devise_sortie_pm === 'USD') {
+      document.getElementById('montant_total_pm').value = amount_pm;
     }
-  }
-
-
-  function choixDeviseSortanteFlooz(){
-    devise_out = document.getElementById('devise_out_flooz').value;
-    var amount_flooz = document.getElementById('amount_flooz').value;
-    if (devise_out == 'EUR'){
-      var mt =  amount_flooz*0.0015 + amount_flooz*0.0015*0.02
-      document.getElementById('montant_total_flooz').value = mt;
-    }else if(devise_out == 'USD'){
-      var mt =  amount_flooz*0.0019 + amount_flooz*0.0019*0.02
-      document.getElementById('montant_total_flooz').value = mt;
-    }
-  }
-
-  function choixDeviseSortanteTMoney(){
-    devise_out = document.getElementById('devise_out_tm').value;
-    var amount_tm = document.getElementById('amount_tm').value;
-    if (devise_out == 'EUR'){
-      var mt =  amount_tm*0.0015 + amount_tm*0.0015*0.02
-      document.getElementById('montant_total_tm').value = mt;
-    }else if(devise_out == 'USD'){
-      var mt =  amount_tm*0.0019 + amount_tm*0.0019*0.02
-      document.getElementById('montant_total_tm').value = mt;
-    }
-  }
-
- 
-  function choixDeviseSortanteAdvCash(){
-    var account_sender = document.getElementById('myaccount_adv').value;
-    var first_letter_account_sender =  account_sender.substr(account_sender,1);
-    if (first_letter_account_sender == 'U') {
-      var devise_enter_adv = document.getElementById('devise_enter_adv').value = 'USD';
-      devise_out = document.getElementById('devise_out_adv').value
-      if (devise_out == 'EUR'){
-        var amount_adv = document.getElementById('amount_adv').value;
-        var mt =  (amount_adv*0.82 + amount_adv*0.82*0.02);
-        document.getElementById('montant_total_adv').value = mt;
-      }else if(devise_out == 'USD'){
-        var amount_adv = document.getElementById('amount_adv').value;
-        var mt =  amount_adv*1 + amount_adv*0.02
-        document.getElementById('montant_total_adv').value = mt;
-      }
-    }else if(first_letter_account_sender == 'E'){
-      var devise_enter_adv = document.getElementById('devise_enter_adv').value = 'USD';
-      devise_out = document.getElementById('devise_out_adv').value
-      if (devise_out == 'EUR'){
-        var amount_adv = document.getElementById('amount_adv').value;
-        var mt = amount_adv*1 + amount_adv*0.02;
-        document.getElementById('montant_total_adv').value = mt;
-        alert(document.getElementById('montant_total_adv').value);
-      }else if(devise_out == 'USD'){
-        var mt = amount_adv*1.22 + amount_adv*1.22*0.02
-        document.getElementById('montant_total_adv').value = mt;
-      }
-      else if(devise_out == 'XOF'){
-        var mt = amount_adv*656.43 + amount_adv*656.43*0.02
-        document.getElementById('montant_total_adv').value = mt;
-      }
-    }
-  }
-
-  function choixDeviseSortantePerfectMoney(){
-    var account_sender = document.getElementById('myaccount').value;
-    var first_letter_account_sender =  account_sender.substr(account_sender,1);
-    if (first_letter_account_sender == 'U') {
-      var devise_enter_pm = document.getElementById('devise_enter_pm').value = 'USD';
-      devise_out = document.getElementById('devise_out_pm').value
-      if (devise_out == 'EUR'){
-        var amount_pm = document.getElementById('amount_pm').value;
-        var mt = amount_pm*0.82 + amount_pm*0.82*0.02;
-        document.getElementById('montant_total_pm').value = mt;
-      }else if(devise_out == 'USD'){
-        var amount_pm = document.getElementById('amount_pm').value;
-        var mt =  amount_pm*1 + amount_pm*0.02
-        document.getElementById('montant_total_pm').value = mt;
-      }
-      else if(devise_out == 'XOF'){
-        var amount_pm = document.getElementById('amount_pm').value;
-        var mt = amount_pm*539.22 + amount_pm*539.22*0.02
-        document.getElementById('montant_total_pm').value = mt;
-      }
-    }else if(first_letter_account_sender == 'E'){
-      var devise_enter_pm = document.getElementById('devise_enter_pm').value = 'EUR';
-      devise_out = document.getElementById('devise_out_pm').value
-      if (devise_out == 'EUR'){
-        var amount_pm = document.getElementById('amount_pm').value;
-        var mt = amount_pm*1 + amount_pm*0.02;
-        document.getElementById('montant_total_pm').value = mt;
-        alert(document.getElementById('montant_total_pm').value);
-      }else if(devise_out == 'USD'){
-        var mt =  amount_pm*1.22 + amount_pm*1.22*0.02
-        document.getElementById('montant_total_pm').value = mt;
-      }
-      else if(devise_out == 'XOF'){
-        var mt =  amount_pm*656.43 + amount_pm*656.43*0.02
-        document.getElementById('montant_total_pm').value = mt;
-      }
+    else if(devise_sortie_pm === 'XOF'){
+      document.getElementById('montant_total_pm').value = amount_pm*taux;
     }
   }
 
   function amountPayeer(){
-    if (document.getElementById('devise_out_payeer').value === 'XOF') {
+    var taux = document.getElementById('dollar_franc').value;
+    var devise_sortie_payeer = document.getElementById('devise_out_payeer').value;
+    if (devise_sortie_payeer === 'USD') {
       var amount_payeer = document.getElementById('amount_payeer').value;
-      var mt =  amount_payeer*545 + amount_payeer*545*0.02;
+      var mt =  amount_payeer;
       document.getElementById('montant_total_payeer').value = mt;
-    }else if(document.getElementById('devise_out_payeer').value === 'USD'){
+    }else if(devise_sortie_payeer === 'XOF'){
       var amount_payeer = document.getElementById('amount_payeer').value;
-      var mt = amount_payeer*1 + amount_payeer*0.02;
+      var mt = amount_payeer*taux;
       document.getElementById('montant_total_payeer').value = mt;
+    }
+  }
+
+  function amountMtn(){
+    var devise_sortie_mtn = document.getElementById('devise_out_mtn').value;
+    var amount_mtn = document.getElementById('amount_mtn').value;
+    var taux = document.getElementById('franc_dollar').value;
+    
+    if (devise_sortie_mtn == 'USD'){
+      var mt =  amount_mtn*taux;
+      document.getElementById('montant_total_mtn').value = mt;
+    }else if(devise_sortie_mtn == 'XOF'){
+      var mt =  amount_mtn;
+      document.getElementById('montant_total_mtn').value = mt;
+    }
+  }
+
+
+  function amountFlooz(){
+    var devise_sortie_flooz = document.getElementById('devise_out_flooz').value;
+    var taux = document.getElementById('franc_dollar').value;
+    var amount_pm = document.getElementById('amount_pm').value;
+    var amount_flooz = document.getElementById('amount_flooz').value;
+    var mt_receive_flooz  = document.getElementById('montant_total_flooz').value; 
+    
+    if (devise_sortie_flooz == 'USD'){
+      var mt =  amount_flooz*taux ;
+      document.getElementById('montant_total_flooz').value = mt;
+    }else if(devise_sortie_flooz == 'XOF'){
+      var mt =  amount_flooz;
+      document.getElementById('montant_total_flooz').value = mt;
+    }
+  }
+
+  function amountTMoney(){
+    devise_sortie_tm = document.getElementById('devise_out_tm').value;
+    var amount_tm = document.getElementById('amount_tm').value;
+    var taux = document.getElementById('franc_dollar').value;
+    if (devise_sortie_tm == 'USD'){
+      var mt =  amount_tm*taux;
+      document.getElementById('montant_total_tm').value = mt;
+    }else if(devise_sortie_tm == 'XOF'){
+      var mt =  amount_tm;
+      document.getElementById('montant_total_tm').value = mt;
+    }
+  }
+ 
+  function amountBitcoin(){
+    var taux = document.getElementById('dollar_franc').value ;
+    if (document.getElementById('devise_out_btc').value === 'XOF') {
+      var amount_btc = document.getElementById('amount_btc').value;
+      var mt =  amount_btc*taux;
+      document.getElementById('montant_total_btc').value = mt;
+    }else if(document.getElementById('devise_out_btc').value === 'USD'){
+      var amount_btc = document.getElementById('amount_btc').value;
+      var mt = amount_btc
+      document.getElementById('montant_total_btc').value = mt;
+    }
+  }
+
+  function amountAdvcash(){
+    var taux = document.getElementById('dollar_franc').value ;
+    if (document.getElementById('devise_out_advcash').value === 'USD') {
+      var amount_advcash = document.getElementById('amount_advcash').value;
+      var mt =  amount_advcash;
+      document.getElementById('montant_total_advcash').value = mt;
+    }else if(document.getElementById('devise_out_advcash').value === 'XOF'){
+      var amount_advcash = document.getElementById('amount_advcash').value;
+      var mt = amount_advcash*taux
+      document.getElementById('montant_total_advcash').value = mt;
     }
   }
 
@@ -623,13 +620,60 @@
       element.value.toLowerCase() === 'tmoney' || element.value.toLowerCase() === 'mtn' ||
       element.value.toLowerCase() === 'mtn money' || element.value.toLowerCase() === 'mtn mobile money') 
       {
+        document.getElementById('devise_out_pm').value = 'XOF';
+        document.getElementById('devise_out_tm').value = 'XOF';
+        document.getElementById('div_t_money').style.display='none';
         document.getElementById('div_perfect_money').style.display='none';
+        document.getElementById('div_flooz').style.display='none';
+        document.getElementById('div_mtn').style.display='none';
+        document.getElementById('devise_out_flooz').value = 'XOF';
+        document.getElementById('div_payeer').style.display='none';
         document.getElementById('devise_out_payeer').value = 'XOF';
+        document.getElementById('devise_out_mtn').value = 'XOF';
+        document.getElementById('devise_out_btc').value = 'XOF';
+        document.getElementById('div_advcash').style.display='none';
+        document.getElementById('devise_out_advcash').value = 'XOF';
+      }
+      else if(element.value.toLowerCase() === 'bitcoin' || element.value.toLowerCase() === 'bit coin')
+      {
+        document.getElementById('label_perfect_money').innerHTML = 'Votre adresse Bitcoin';
+        document.getElementById('devise_out_pm').value = 'USD';
+        document.getElementById('label_flooz').innerHTML = 'Votre adresse Bitcoin';
+        document.getElementById('label_t_money').innerHTML = 'Votre adresse Bitcoin';
+        document.getElementById('div_t_money').style.display='block';
+        document.getElementById('devise_out_tm').value = 'USD';
+        document.getElementById('div_perfect_money').style.display='block';
+        document.getElementById('div_flooz').style.display='block';
+        document.getElementById('devise_out_flooz').value = 'USD';
+        document.getElementById('div_payeer').style.display='block';
+        document.getElementById('label_payeer').innerHTML = 'Votre adresse Bitcoin';
+        document.getElementById('devise_out_payeer').value = 'USD';
+        document.getElementById('div_mtn').style.display='block';
+        document.getElementById('devise_out_mtn').value = 'USD';
+        document.getElementById('div_advcash').style.display='block';
+        document.getElementById('label_advcash').innerHTML = 'Votre adresse Bitcoin';
+        document.getElementById('devise_out_advcash').value = 'USD';
       }
       else
       {
+        document.getElementById('label_perfect_money').innerHTML = 'Compte Récepteur';
+        document.getElementById('devise_out_pm').value = 'USD';
+        document.getElementById('label_flooz').innerHTML = 'Compte Récepteur';
+        document.getElementById('label_t_money').innerHTML = 'Compte Récepteur';
+        document.getElementById('div_t_money').style.display='block';
         document.getElementById('div_perfect_money').style.display='block';
+        document.getElementById('div_flooz').style.display='block';
+        document.getElementById('devise_out_flooz').value = 'USD';
+        document.getElementById('div_payeer').style.display='block';
+        document.getElementById('label_payeer').innerHTML = 'Compte Récepteur';
         document.getElementById('devise_out_payeer').value = 'USD';
+        document.getElementById('devise_out_btc').value = 'USD';
+        document.getElementById('devise_out_tm').value = 'USD';
+        document.getElementById('div_mtn').style.display='block';
+        document.getElementById('devise_out_mtn').value = 'USD';
+        document.getElementById('div_advcash').style.display='block';
+        document.getElementById('devise_out_advcash').value = 'USD';
+        document.getElementById('label_advcash').innerHTML = 'Compte Récepteur';
       }
     }
     //Fin
@@ -689,13 +733,22 @@
 
       /* *** Formulaire Payeer *** */
 
-      /* *** Formulaire AdvCash *** */
 
-      // Atribution de id_button_enter a la l'input coin_enter_adv
-      var input_enter_adv = document.getElementById('input_enter_adv').value;
-      document.getElementById('input_enter_adv').value = id_button_enter;
+      /* *** Formulaire Bitcoin *** */
 
-      /* *** Formulaire AdvCash *** */
+      // Atribution de id_button_enter a la l'input coin_enter_btc
+      var input_enter_btc = document.getElementById('input_enter_btc').value;
+      document.getElementById('input_enter_btc').value = id_button_enter;
+
+      /* *** Formulaire Bitcoin *** */
+
+      /* *** Formulaire Advcash *** */
+
+      // Atribution de id_button_enter a la l'input coin_enter_advcash
+      var input_enter_advcash = document.getElementById('input_enter_advcash').value;
+      document.getElementById('input_enter_advcash').value = id_button_enter;
+
+      /* *** Formulaire Advcash *** */
     }
     else if(element.name == 'coin_out'){
       //Recuperation du name du bouton
@@ -717,14 +770,21 @@
 
       /* *** Fin  Formulaire Perfect Money *** */
 
-       /* *** Formulaire Mtn *** */
+      /* *** Formulaire Payeer *** */
+
+      // Atribution de id_button_out a la l'input coin_out_payeer 
+      var input_out_payeer = document.getElementById('input_out_payeer').value;
+      document.getElementById('input_out_payeer').value = id_button_out;
+
+      /* *** Formulaire Payeer *** */
+
+      /* *** Formulaire Mtn *** */
 
       // Atribution de id_button_out a la l'input coin_out_mtn 
       var input_out_mtn = document.getElementById('input_out_mtn').value;
       document.getElementById('input_out_mtn').value = id_button_out;
 
       /* *** Formulaire Mtn *** */
-
 
       /* *** Formulaire Flooz *** */
 
@@ -742,53 +802,59 @@
 
        /* *** Formulaire TMoney *** */
 
-      /* *** Formulaire Payeer *** */
+      /* *** Formulaire Bitcoin *** */
 
-      // Atribution de id_button_out a la l'input coin_out_tm 
-      var input_out_payeer = document.getElementById('input_out_payeer').value;
-      document.getElementById('input_out_payeer').value = id_button_out;
+      // Atribution de id_button_out a la l'input coin_out_btc
+      var input_out_btc = document.getElementById('input_out_btc').value;
+      document.getElementById('input_out_btc').value = id_button_out;
 
-      /* *** Formulaire Payeer *** */
+      /* *** Formulaire Bitcoin *** */
 
-      /* *** Formulaire AdvCash *** */
+       /* *** Formulaire Advcash *** */
 
-      // Atribution de id_button_out a la l'input coin_out_adv
-      var input_out_adv = document.getElementById('input_out_adv').value;
-      document.getElementById('input_out_adv').value = id_button_out;
+      // Atribution de id_button_out a la l'input coin_out_advcash
+      var input_out_advcash = document.getElementById('input_out_advcash').value;
+      document.getElementById('input_out_advcash').value = id_button_out;
 
-      /* *** Formulaire AdvCash *** */
+      /* *** Formulaire Advcash *** */
       
     }
 
     //Si on a les meme valeur , la transaction est impossible
-    if (document.getElementById('input_enter_pm').value == document.getElementById('input_out_pm').value){
+    if (document.getElementById('input_enter_pm').value == document.getElementById('input_out_pm').value)
+    {
       document.getElementById('etat').innerHTML = "<span style='color:red;'> Transaction impossible </span>"
       document.getElementById('operation_pm').disabled = true;
       document.getElementById('operation_mtn').disabled = true;
       document.getElementById('operation_flooz').disabled = true;
       document.getElementById('operation_tm').disabled = true;
       document.getElementById('operation_payeer').disabled = true;
-      document.getElementById('operation_adv').disabled = true;
+      document.getElementById('operation_btc').disabled = true;
+      document.getElementById('operation_advcash').disabled = true;
     }
-    else{
+    else
+    {
         document.getElementById('etat').innerHTML = " "
         document.getElementById('operation_pm').disabled = false;
         document.getElementById('operation_mtn').disabled = false;
         document.getElementById('operation_flooz').disabled = false;
         document.getElementById('operation_tm').disabled = false;
         document.getElementById('operation_payeer').disabled = false;
-        document.getElementById('operation_adv').disabled = false;
+        document.getElementById('operation_btc').disabled = false;
+        document.getElementById('operation_advcash').disabled = false;
       }
     //Fsi
 
     //Afficher ce formulaire si seulement on envoie  du Perfect Money
-    if (value_button_enter == 'PerfectMoney' || value_button_enter === 'Perfect money' || value_button_enter.toLowerCase() === 'perfect money') {
+    if (value_button_enter == 'PerfectMoney' || value_button_enter === 'Perfect money' || 
+      value_button_enter.toLowerCase() === 'perfect money') {
       document.getElementById('sendPerfectMoney').style.display='block';
       document.getElementById('sendMtn').style.display='none';
       document.getElementById('sendFlooz').style.display='none';
       document.getElementById('sendTMoney').style.display='none';
       document.getElementById('sendPayeer').style.display='none';
-      document.getElementById('sendAdvCash').style.display='none';
+      document.getElementById('sendBitcoin').style.display='none';
+      document.getElementById('sendAdvcash').style.display='none';
     }
     else if(value_button_enter.toLowerCase() == 'mtn' || value_button_enter.toLowerCase() == 'mtn mobile money' 
     || value_button_enter.toLowerCase() == 'mtn money') {
@@ -797,7 +863,8 @@
       document.getElementById('sendPerfectMoney').style.display='none';
       document.getElementById('sendTMoney').style.display='none';
       document.getElementById('sendPayeer').style.display='none';
-      document.getElementById('sendAdvCash').style.display='none';
+      document.getElementById('sendBitcoin').style.display='none';
+      document.getElementById('sendAdvcash').style.display='none';
     }
     else if(value_button_enter.toLowerCase() == 'flooz') {
       document.getElementById('sendFlooz').style.display='block';
@@ -805,7 +872,8 @@
       document.getElementById('sendMtn').style.display='none';
       document.getElementById('sendTMoney').style.display='none';
       document.getElementById('sendPayeer').style.display='none';
-      document.getElementById('sendAdvCash').style.display='none';
+      document.getElementById('sendBitcoin').style.display='none';
+      document.getElementById('sendAdvcash').style.display='none';
     }
     else if(value_button_enter.toLowerCase() == 'tmoney' || value_button_enter.toLowerCase() == 't money') {
       document.getElementById('sendTMoney').style.display='block';
@@ -813,7 +881,8 @@
       document.getElementById('sendFlooz').style.display='none';
       document.getElementById('sendPerfectMoney').style.display='none';
       document.getElementById('sendPayeer').style.display='none';
-      document.getElementById('sendAdvCash').style.display='none';
+      document.getElementById('sendBitcoin').style.display='none';
+      document.getElementById('sendAdvcash').style.display='none';
     }
     else if(value_button_enter == 'Payeer' || value_button_enter.toLowerCase() == 'payeer') {
       document.getElementById('sendPayeer').style.display='block';
@@ -821,10 +890,22 @@
       document.getElementById('sendMtn').style.display='none';
       document.getElementById('sendFlooz').style.display='none';
       document.getElementById('sendTMoney').style.display='none';
-      document.getElementById('sendAdvCash').style.display='none';
+      document.getElementById('sendBitcoin').style.display='none';
+      document.getElementById('sendAdvcash').style.display='none';
     }
-    else if(value_button_enter == 'AdvCash' || value_button_enter.toLowerCase() == 'advcash' || value_button_enter.toLowerCase() == 'Advcach' || value_button_enter.toLowerCase() == 'adv cash') {
-      document.getElementById('sendAdvCash').style.display='block';
+    else if(value_button_enter.toLowerCase() == 'bitcoin' || value_button_enter.toLowerCase() == 'bit coin' || value_button_enter.toLowerCase() == 'btc') {
+      document.getElementById('sendBitcoin').style.display='block';
+      document.getElementById('sendPayeer').style.display='none';
+      document.getElementById('sendPerfectMoney').style.display='none';
+      document.getElementById('sendMtn').style.display='none';
+      document.getElementById('sendFlooz').style.display='none';
+      document.getElementById('sendTMoney').style.display='none';
+      document.getElementById('sendAdvcash').style.display='none';
+    }
+    else if(value_button_enter == 'Advcash' || value_button_enter.toLowerCase() == 'advcash' || 
+    value_button_enter.toLowerCase() == 'adv cash') {
+      document.getElementById('sendAdvcash').style.display='block';
+      document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendPayeer').style.display='none';
       document.getElementById('sendPerfectMoney').style.display='none';
       document.getElementById('sendMtn').style.display='none';
@@ -837,7 +918,8 @@
       document.getElementById('sendTMoney').style.display='none';
       document.getElementById('sendPerfectMoney').style.display='none';
       document.getElementById('sendPayeer').style.display='none';
-      document.getElementById('sendAdvCash').style.display='none';
+      document.getElementById('sendBitcoin').style.display='none';
+      document.getElementById('sendAdvcash').style.display='none';
     }
   }
 

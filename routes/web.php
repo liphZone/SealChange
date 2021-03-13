@@ -4,6 +4,7 @@ use App\Http\Controllers\CoinController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PersonneController;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\TypeController;
@@ -22,15 +23,13 @@ use App\Http\Middleware\Connection;
 |
 */
 /*Les transaction
-PM->P,B,L,E,F,T,Adv,M 
- Pays (indicatif):
-    Cote d'ivoire ( +225 )
-    Mali ( + )
-    Cameroun ( + )
-    Senegal ( + )
-    Togo ( +228 )
-    Burkina ( + )
-
+Ordre de gestion :
+-Perfect money
+-Payeer
+-MTN
+-Flooz
+-TMoney
+-Bitcoin
 */
 //Page formulaire de connexion
 Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login');
@@ -38,7 +37,7 @@ Route::get('/',[PageController::class,'formulaireConnexion'])->name('form_login'
 //Action connexion
 Route::post('connexion',[PageController::class,'actionConnexion'])->name('action_login');
 
-//Page formulaire d'inscription
+//Page formulaire d'inscription 
 Route::get('Inscription',[PageController::class,'formulaireInscription'])->name('form_register');
 
 //Action inscription
@@ -104,13 +103,15 @@ Route::resource('coins',CoinController::class)->names(
     'edit'   => 'edit_coin',
 ]);
 
+//Resource taux
+Route::resource('rates',RateController::class)->names(
+    [
+        'index'  => 'list_rates',
+        'create' => 'add_rate',
+        'edit'   => 'edit_rate',
+    ]);
+
 /* ********************************* LES TRANSACTIONS ******************************** */
-
-//Action waiting Flooz : j'envoie les donnees passé dans l'URL vers la page commande
-Route::post('en attente flooz',[TransactionController::class,'actionWaitingSendFlooz'])->name('action_waiting_flooz');
-
-//Action waiting TMoney : j'envoie les donnees passé dans l'URL vers la page commande
-Route::post('en attente t money',[TransactionController::class,'actionWaitingSendTMoney'])->name('action_waiting_t_money');
 
 //Action waiting Perfect Money : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente perfect money',[TransactionController::class,'actionWaitingSendPerfectMoney'])->name('action_waiting_perfect_money');
@@ -118,11 +119,27 @@ Route::post('en attente perfect money',[TransactionController::class,'actionWait
 //Action waiting Payeer : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente payeer',[TransactionController::class,'actionWaitingSendPayeer'])->name('action_waiting_payeer');
 
-//Action waiting AdvCash : j'envoie les donnees passé dans l'URL vers la page commande
-Route::post('en attente advcash',[TransactionController::class,'actionWaitingSendAdvCash'])->name('action_waiting_adv_cash');
-
 //Action waiting mtn : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente mtn',[TransactionController::class,'actionWaitingSendMtn'])->name('action_waiting_mtn');
+
+//Action waiting Flooz : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente flooz',[TransactionController::class,'actionWaitingSendFlooz'])->name('action_waiting_flooz');
+
+//Action waiting TMoney : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente t money',[TransactionController::class,'actionWaitingSendTMoney'])->name('action_waiting_t_money');
+
+//Action waitin btc  : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente btc',[TransactionController::class,'actionWaitingSendBtc'])->name('action_waiting_bitcoin');
+
+//Action waiting AdvCash : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente advcash',[TransactionController::class,'actionWaitingSendAdvCash'])->name('action_waiting_advcash');
+
+
+//Page Perfect Money du serveur Perfect Money
+Route::post('perfect money payement',[TransactionController::class,'formulaireActionPerfectMoney'])->name('form_action_perfect_money');
+
+//Action envoie payeer
+Route::post('payeer payement',[TransactionController::class,'actionSendPayeer'])->name('action_payeer');
 
 //Action envoie flooz/Mtn
 Route::post('Mobile Money',[TransactionController::class,'actionSendMobileMoney'])->name('action_mobile_money');
@@ -130,14 +147,11 @@ Route::post('Mobile Money',[TransactionController::class,'actionSendMobileMoney'
 //Action envoie t money
 Route::post('t money',[TransactionController::class,'actionSendTMoney'])->name('action_t_money');
 
-//Page Perfect Money du serveur Perfect Money
-Route::post('perfect money payement',[TransactionController::class,'formulaireActionPerfectMoney'])->name('form_action_perfect_money');
-
-//Action envoie payeer
-Route::post('payeer payement',[TransactionController::class,'actionSendPayeer'])->name('action_send_payeer');
+//Action envoie Bitcoin
+Route::post('bitcoin payement',[TransactionController::class,'actionSendBitcoin'])->name('action_bitcoin');
 
 //Page AdvCash du serveur AdvCash
-Route::get('advCash',[TransactionController::class,'formulaireAdvCash'])->name('form_action_adv_cash');
+Route::post('advCash',[TransactionController::class,'actionSendAdvcash'])->name('action_advcash');
 
 //Confirmation payement Flooz
 Route::get('confirmer payement flooz',[TransactionController::class,'confirmationPayementFlooz'])->name('payment_confirmation');
@@ -148,16 +162,10 @@ Route::get('Choix',[TransactionController::class,'formulaireChoixHistorique'])->
 //Formulaire historique des transaction 
 Route::get('Historique/{id}',[TransactionController::class,'formulaireHistorique'])->name('form_historique');
 
-
-//Formulaire transaction
-Route::get('transaction',[TransactionController::class,'formulaireTransaction'])->name('form_transaction');
-
-
 //Action bouton valider transaction depuis la reception de mail
 Route::get('Valider transaction/{id_transaction}',[TransactionController::class,'actionValidateTransaction'])->name('action_validate_transaction');
 
 /* ********************************* FIN TRANSACTIONS ******************************** */
-
 
     
 //Page mon profil

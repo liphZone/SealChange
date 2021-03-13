@@ -15,7 +15,12 @@
             <p class="card-description"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }}  </p>
             <div class="template-demo">
                 <h1>
-                    Montant à reçevoir : {{ "$montant_a_recevoir $devise_out" }} 
+                    Montant à reçevoir : {{ "$montant_a_recevoir " }} 
+                    @if ($devise_out ==='USD')
+                        <i class="fa fa-dollar"></i>
+                    @else
+                        F CFA
+                    @endif
                 </h1>
                 @if ($transaction_en_cours->etat === 0)
                     <div id="etat">

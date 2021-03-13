@@ -52,6 +52,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ route('list_coins') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des monnaies </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('list_rates') }}"> <i class="fa fa-list-ul"></i> &nbsp; Taux </a>
+            </li>
           </ul>
         </div>
       </li>
