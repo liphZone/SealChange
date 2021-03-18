@@ -260,7 +260,7 @@ class TransactionController extends Controller
 
     /****************************** MTN *************************************/
     public function  actionWaitingSendMtn(){
-        $id_transaction     = rand();
+        $id_transaction     = Str::random(20);
         $montant            = request('amount');
         $montant_a_recevoir = request('having_amount');
         $coin_enter         = request('coin_enter_mtn');
@@ -343,8 +343,7 @@ class TransactionController extends Controller
         $monnaie_enter = Coin::where('id',$coin_enter)->first();
         $monnaie_out   = Coin::where('id',$coin_out)->first();
         $transaction   = Transaction::where('user',auth()->user()->id)->first();
-
-
+      
         if ($transaction === null) 
         {
             
@@ -366,7 +365,7 @@ class TransactionController extends Controller
             ]);
             if ($insertion) {
              
-                return view('transactions.mobile_money',compact('montant','user'));
+                return view('transactions.mobile_money',compact('montant','user','coin_enter','coin_out','telephone'));
             } else {
                 Flashy::error('Erreur');
                 return back();
@@ -394,7 +393,7 @@ class TransactionController extends Controller
             if ($insertion) {
              
                 Flashy::success('En cours de traitement ...');
-                return view('transactions.mobile_money',compact('montant','user'));
+                return view('transactions.mobile_money',compact('montant','user','coin_enter','coin_out','telephone'));
             } else {
                 Flashy::error('Erreur');
                 return back();
@@ -402,7 +401,7 @@ class TransactionController extends Controller
         }
         else
         {
-            return view('transactions.mobile_money',compact('montant','user'));
+            return view('transactions.mobile_money',compact('montant','user','coin_enter','coin_out','telephone'));
         }
     }
 
@@ -531,7 +530,7 @@ class TransactionController extends Controller
         $coin_out           = request('coin_out_btc');
         $devise_enter       = request('devise_enter_btc');
         $devise_out         = request('devise_out');
-        $id_transaction     = rand();
+        $id_transaction     = Str::random(20);
         $user               = auth()->user()->personne_id;
 
         $phone = array(
@@ -565,6 +564,7 @@ class TransactionController extends Controller
         $account_receiver   = request('account_receiver');
 
         $adresse_bitcoin    = request('ttc');
+        $adresse_limo    =  " ";
         
         $user          = Personne::where('id',auth()->user()->personne_id)->first();
         $monnaie_enter = Coin::where('id',$coin_enter)->first();
@@ -593,7 +593,8 @@ class TransactionController extends Controller
             ]);
             if ($insertion) {
                 // Flashy::success('En cours de traitement ...');
-                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','adresse_bitcoin'));
+                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out',
+                'devise_out','adresse_bitcoin','adresse_limo'));
             } else {
                 Flashy::error('Erreur');
                 return back();
@@ -620,7 +621,8 @@ class TransactionController extends Controller
             ]);
             if ($insertion) {
                 Flashy::success('En cours de traitement ...');
-                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction','adresse_bitcoin'));
+                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out',
+                'id_transaction','adresse_bitcoin','adresse_limo'));
             } else {
                 Flashy::error('Erreur');
                 return back();
@@ -628,7 +630,8 @@ class TransactionController extends Controller
         }
         else
         {
-            return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction','adresse_bitcoin'));
+            return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out',
+            'id_transaction','adresse_bitcoin','adresse_limo'));
         }
     }
     /**************************** FIN BITCOIN **********************************/
@@ -642,7 +645,7 @@ class TransactionController extends Controller
         $moncompte          = 'U033816068648';
         $devise_enter       = request('devise_enter_advcash');
         $devise_out         = request('devise_out');
-        $id_transaction     = rand();
+        $id_transaction     = Str::random(20);
         $account_receiver   = request('account_receiver');
         $user               = auth()->user()->personne_id;
 
@@ -732,7 +735,6 @@ class TransactionController extends Controller
                 'user'             => auth()->user()->id,
             ]);
             if ($insertion) {
-             
                 Flashy::success('En cours de traitement ...');
                 return view('transactions.transaction',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction'));
             } else {
@@ -746,6 +748,121 @@ class TransactionController extends Controller
         }
     }   
     /**************************** FIN ADVCASH ******************************/
+
+    /****************************  LIMO **********************************/
+    public function actionWaitingSendLimo(){
+        $montant            = request('amount');
+        $montant_a_recevoir = request('having_amount');
+        $coin_enter         = request('coin_enter_limo');
+        $coin_out           = request('coin_out_limo');
+        $moncompte          = 'VEJBHbqM';
+        $devise_enter       = request('devise_enter_limo');
+        $devise_out         = request('devise_out');
+        $id_transaction     = Str::random(20);
+        $account_receiver   = request('account_receiver');
+        $user               = auth()->user()->personne_id;
+
+        $phone = array(
+            "Sénégal"       => 221, 
+            "Mali"          => 223, 
+            "Guinée"        => 224, 
+            "Côte d'Ivoire" => 225, 
+            "Burkina Faso"  => 226, 
+            "Niger"         => 227, 
+            "Togo"          => 228, 
+            "Bénin"         => 229, 
+            "Ghana"         => 233, 
+            "Cameroun"      => 237, 
+            "Gabon"         => 241, 
+            ); 
+            $trie = ksort($phone);
+        return view('transactions.commande',compact('montant','montant_a_recevoir','coin_enter','coin_out','moncompte',
+        'devise_enter','devise_out','id_transaction','account_receiver','user','phone'));
+
+    }
+
+    public function actionSendLimo(){
+        $reference          = Str::random(10);
+        $montant            = request('amount');
+        $montant_a_recevoir = request('having_amount');
+        $id_transaction     = request('id_transaction');
+        $devise_enter       = request('devise_enter');
+        $devise_out         = request('devise_out');
+        $telephone          = request('telephone');
+        $coin_enter         = request('coin_enter');
+        $coin_out           = request('coin_out');
+        $account_receiver   = request('account_receiver');
+
+        $adresse_limo    = request('ttc');
+        $adresse_bitcoin    = " ";
+        
+        $user          = Personne::where('id',auth()->user()->personne_id)->first();
+        $monnaie_enter = Coin::where('id',$coin_enter)->first();
+        $monnaie_out   = Coin::where('id',$coin_out)->first();
+        //Je recupere les informations de l'utilisateur pour utiliser 'id_transaction'
+        $transaction   = Transaction::where('user',auth()->user()->id)->first();
+
+        if ($transaction === null) 
+        {
+            $insertion = Transaction::firstOrCreate([
+                'id_transaction' => $id_transaction,
+            ],
+            [
+                'reference'        => $reference,
+                'coin_enter'       => $coin_enter,
+                'coin_out'         => $coin_out,
+                'amount'           => $montant,
+                'having_amount'    => $montant_a_recevoir,
+                'devise_enter'     => $devise_enter,
+                'devise_out'       => $devise_out,
+                'telephone'        => $telephone,
+                'myaccount'        => $adresse_limo,
+                'account_receiver' => $account_receiver,
+                'etat'             => 0,
+                'user'             => auth()->user()->id,
+            ]);
+            if ($insertion) {
+                // Flashy::success('En cours de traitement ...');
+                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','adresse_limo','adresse_bitcoin'));
+            } else {
+                Flashy::error('Erreur');
+                return back();
+            }
+        }
+        elseif ($transaction->id_transaction != $id_transaction) 
+        {
+            $insertion = Transaction::firstOrCreate([
+                'id_transaction' => $id_transaction,
+            ],
+            [
+                'reference'        => $reference,
+                'coin_enter'       => $coin_enter,
+                'coin_out'         => $coin_out,
+                'amount'           => $montant,
+                'having_amount'    => $montant_a_recevoir,
+                'devise_enter'     => $devise_enter,
+                'devise_out'       => $devise_out,
+                'telephone'        => $telephone,
+                'myaccount'        => $adresse_limo,
+                'account_receiver' => $account_receiver,
+                'etat'             => 0,
+                'user'             => auth()->user()->id,
+            ]);
+            if ($insertion) {
+                Flashy::success('En cours de traitement ...');
+                return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction','adresse_limo','adresse_bitcoin'));
+            } else {
+                Flashy::error('Erreur');
+                return back();
+            }
+        }
+        else
+        {
+            return view('transactions.cryptocurrency',compact('montant','montant_a_recevoir','coin_enter','coin_out','devise_out','id_transaction','adresse_limo','adresse_bitcoin'));
+        }
+
+    }
+    /****************************  LIMO **********************************/
 
     public function confirmationPayementFlooz(Request $request){
         $utilisateur = Transaction::where('reference',request('identifier'))->first();

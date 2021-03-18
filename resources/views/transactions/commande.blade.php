@@ -87,7 +87,7 @@ strtolower($monnaie_entree->libelle) === 'perfet money')
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant $devise_enter" }} </li>
+                  <li> Vous allez envoyé : {{ "$montant $devise_enter" }} </li>
                   <li>
                     Vous reçevez :
                     @if ($devise_out === 'USD')
@@ -208,7 +208,7 @@ strtolower($monnaie_entree->libelle) === 'perfet money')
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} <i class="fa fa-dollar" aria-hidden="true"></i> </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar" aria-hidden="true"></i> </li>
                   <li>
                     Vous reçevez :
                       {{ $montant_a_recevoir }} <i class="fa fa-dollar"></i> de Bitcoin
@@ -306,7 +306,7 @@ strtolower($monnaie_entree->libelle) === 'perfet money')
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> </li> 
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> </li> 
                   <li>
                     Vous reçevez :
                       {{ $montant_a_recevoir }} <i class="fa fa-dollar"></i>
@@ -490,7 +490,7 @@ strtolower($monnaie_entree->libelle) === 'mtn money' || strtolower($monnaie_entr
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} F CFA </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} F CFA </li>
                   <li>
                     Vous reçevez :
                     {{ $montant_a_recevoir }} F CFA
@@ -610,7 +610,7 @@ strtolower($monnaie_entree->libelle) === 'mtn money' || strtolower($monnaie_entr
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant $devise_enter" }} </li>
+                  <li> Vous allez envoyé : {{ "$montant $devise_enter" }} </li>
                   <li>
                     Vous reçevez :
                     @if ($devise_out === 'EUR')
@@ -730,7 +730,7 @@ strtolower($monnaie_entree->libelle) === 'mtn money' || strtolower($monnaie_entr
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} F CFA </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} F CFA </li>
                   <li>
                     Vous reçevez :
                     @if ($devise_out === 'USD')
@@ -859,7 +859,7 @@ strtolower($monnaie_entree->libelle) === 'mtn money' || strtolower($monnaie_entr
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} F CFA </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} F CFA </li>
                   <li>
                     Vous reçevez :
                     @if ($devise_out === 'USD')
@@ -981,7 +981,7 @@ strtolower($monnaie_entree->libelle) === 'mtn money' || strtolower($monnaie_entr
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} F CFA </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} F CFA </li>
                   <li>
                     Vous reçevez :
                       {{ $montant_a_recevoir }} F CFA
@@ -1104,7 +1104,7 @@ strtolower($monnaie_entree->libelle) === 'mtn money' || strtolower($monnaie_entr
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} F CFA </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} F CFA </li>
                   <li>
                     Vous reçevez :
                     @if (strtolower($monnaie_sortie->libelle) === 'bitcoin')
@@ -1226,7 +1226,7 @@ strtolower($monnaie_entree->libelle) === 'btc')
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> de bitcoin </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> de bitcoin </li>
                   <li>
                     Vous reçevez :
                     @if ($devise_out === 'XOF')
@@ -1344,7 +1344,7 @@ strtolower($monnaie_entree->libelle) === 'btc')
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> de Bitcoin </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> de Bitcoin </li>
                   <li>
                     Vous reçevez :
                     @if ($devise_out === 'USD')
@@ -1478,7 +1478,7 @@ strtolower($monnaie_entree->libelle) === 'btc')
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} <i class="fa fa-dollar" aria-hidden="true"></i> </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar" aria-hidden="true"></i> </li>
                   <li>
                     Vous reçevez :
                       {{ $montant_a_recevoir }} F CFA
@@ -1647,7 +1647,7 @@ strtolower($monnaie_entree->libelle) === 'btc')
               <div class="col-md-12">
                 <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
                 <ul>
-                  <li> Vous avez envoyé : {{ "$montant" }} <i class="fa fa-dollar" aria-hidden="true"></i>  </li>
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar" aria-hidden="true"></i>  </li>
                   <li>
                     Vous reçevez :
                       {{ $montant_a_recevoir }}  <i class="fa fa-dollar" aria-hidden="true"></i>
@@ -1689,6 +1689,268 @@ strtolower($monnaie_entree->libelle) === 'btc')
 
   @endif
 
+
+@elseif(strtolower($monnaie_entree->libelle) === 'limo' || strtolower($monnaie_entree->libelle) === 'limo dollar' ||
+strtolower($monnaie_entree->libelle) === 'dollar limo')
+
+  @if (strtolower($monnaie_sortie->libelle) === 'flooz' || strtolower($monnaie_sortie->libelle) === 'tmoney' || 
+  strtolower($monnaie_sortie->libelle) === 't money' || strtolower($monnaie_sortie->libelle) === 'mtn' ||
+  strtolower($monnaie_sortie->libelle) === 'm t n' || strtolower($monnaie_sortie->libelle) === 'mtn money' ||
+  strtolower($monnaie_sortie->libelle) === 'mtn mobile money')
+
+    <div class="accordion" id="accordionExample">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            INFORMATIONS FACTURATION
+            </button>
+          </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Prénom(s) : {{ $personne->prenom }} </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Nom :  {{ $personne->nom }} </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Pays :  {{ $personne->pays }} </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Ville :  {{ $personne->ville }} </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Téléphone :  {{ $personne->contact }} </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Adresse :   {{ $personne->adresse }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <h2 class="mb-0">
+            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              DETAIL DE LA COMMANDE (cliquez pour dérouler) <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+            </button>
+          </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> PRODUIT </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> TOTAL </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
+                <ul>
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> de bitcoin </li>
+                  <li>
+                    Vous reçevez :
+                    @if ($devise_out === 'XOF')
+                      {{ $montant_a_recevoir }}   F CFA
+                    @elseif($devise_out === 'USD')
+                      {{ $montant_a_recevoir }} <i class="fa fa-dollar"></i>
+                    @endif
+                  </li>
+                  
+                </ul>
+                <div style="float: right">
+                  <p class="text-light bg-dark pl-1"> TOTAL :  @if ($devise_out === 'XOF')
+                    {{ $montant_a_recevoir }}  F CFA
+                  @elseif($devise_out === 'USD')
+                    {{ $montant_a_recevoir }} <i class="fa fa-dollar"></i>
+                  @endif </p>
+
+                  <form action="{{ route('action_limo') }}" method="POST">
+                    @csrf
+                    <label for=""> Votre numéro de téléphone </label>
+                    <div class="form-inline">
+                      <select class="form-control" onchange="choiceIndicatifPhone()" name="indicatif" id="indicatif_phone">
+                        <option value=""> Choisir </option>
+                        @foreach ($phone as $cle=>$valeur)
+                          <option value=" {{ "+".$valeur }}"> (+ {{ $valeur }}) </option>
+                        @endforeach
+                      </select>
+                      <input class="form-control" type="tel" name="telephone" id="phone" autocomplete="off" required>
+                      @error('telephone')
+                        <div style="color: red;"> {{ $message }} </div>
+                      @enderror
+                    </div>
+
+                    <div class="form-group" hidden>
+                      <input class="form-control" type="text" name="id_transaction" value="{{ $id_transaction }}" readonly>
+                      <input class="form-control" type="text" name="amount" value="{{ $montant }}" readonly>
+                      <input class="form-control" type="text" name="having_amount" value="{{ $montant_a_recevoir }}" readonly>
+                      <input class="form-control" type="text" name="coin_enter" value="{{ $coin_enter }}" readonly>
+                      <input class="form-control" type="text" name="coin_out" value="{{ $coin_out }}" readonly>
+                      <input class="form-control" type="text" name="devise_enter" value="{{ $devise_enter }}" readonly>
+                      <input class="form-control" type="text" name="devise_out" value="{{ $devise_out }}" readonly>
+                      <input class="form-control" type="text" name="ttc" value="VEJBHbqM" readonly>
+                    </div>
+                    <button class="btn btn-outline-primary btn-lg" type="submit" title="payement"> Echanger </button>
+                  </form>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  @else
+
+    <div class="accordion" id="accordionExample">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            INFORMATIONS FACTURATION 
+            </button>
+          </h2>
+        </div>
+    
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Prénom(s) : {{ $personne->prenom }} </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Nom :  {{ $personne->nom }} </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Pays :  {{ $personne->pays }} </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Ville :  {{ $personne->ville }} </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Téléphone :  {{ $personne->contact }} </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> Adresse :   {{ $personne->adresse }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <h2 class="mb-0">
+            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              DETAIL DE LA COMMANDE (cliquez pour dérouler) <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+            </button>
+          </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> PRODUIT </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-light bg-dark pl-1"> TOTAL </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p> <h3 class="text-center"> Transaction De {{ $monnaie_entree->libelle }} Vers {{ $monnaie_sortie->libelle }} </h3> </p>
+                <ul>
+                  <li> Vous allez envoyé : {{ "$montant" }} <i class="fa fa-dollar"></i> de Bitcoin </li>
+                  <li>
+                    Vous reçevez :
+                    @if ($devise_out === 'USD')
+                      {{ $montant_a_recevoir }} <i class="fa fa-dollar"></i>
+                    @endif
+                  </li>
+                  
+                </ul>
+                <div style="float: right">
+                  <p class="text-light bg-dark pl-1"> TOTAL :  
+                  @if ($devise_out === 'USD')
+                    {{ $montant_a_recevoir }}  <i class="fa fa-dollar" aria-hidden="true"></i>
+                  @endif </p>
+    
+                  <form action="{{ route('action_limo') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                      @if(strtolower($monnaie_sortie->libelle) === 'perfect money' || strtolower($monnaie_sortie->libelle) === 'perfectmoney')
+                        <div class="form-group">
+                          <label> Votre Adresse Perfect Money </label>
+                          <input  class="form-control" type="text" name="account_receiver" required>
+                          @error('account_receiver')
+                            <div class="text-danger"> {{ $message }} </div>
+                          @enderror
+                        </div>
+                      @elseif(strtolower($monnaie_sortie->libelle) === 'payeer' || strtolower($monnaie_sortie->libelle) === 'payer')
+                        <div class="form-group">
+                          <label> Votre Adresse Payeer </label>
+                          <input class="form-control" type="text" name="account_receiver" required>
+                          @error('account_receiver')
+                            <div class="text-danger"> {{ $message }} </div>
+                          @enderror
+                        </div>                    
+                      @elseif(strtolower($monnaie_sortie->libelle) === 'advcash' || strtolower($monnaie_sortie->libelle) === 'adv cash')
+                        <div class="form-group">
+                          <label> Votre Adresse Advcash </label>
+                          <input class="form-control" type="text" name="account_receiver" placeholder="ex: U13214511" required>
+                          @error('account_receiver')
+                            <div class="text-danger"> {{ $message }} </div>
+                          @enderror
+                        </div>
+                      @elseif(strtolower($monnaie_sortie->libelle) === 'bitcoin' || strtolower($monnaie_sortie->libelle) === 'bitcoin' || 
+                      strtolower($monnaie_sortie->libelle) === 'btc')
+                        <div class="form-group">
+                          <label> Votre Adresse Bitcoin </label>
+                          <input class="form-control" type="text" name="account_receiver" required>
+                          @error('account_receiver')
+                            <div class="text-danger"> {{ $message }} </div>
+                          @enderror
+                        </div>
+                      @endif
+                    </div>
+                    <div class="form-group" hidden>
+                      <input class="form-control" type="text" name="id_transaction" value="{{ $id_transaction }}" readonly>
+                      <input class="form-control" type="text" name="amount" value="{{ $montant }}" readonly>
+                      <input class="form-control" type="text" name="having_amount" value="{{ $montant_a_recevoir }}" readonly>
+                      <input class="form-control" type="text" name="coin_enter" value="{{ $coin_enter }}" readonly>
+                      <input class="form-control" type="text" name="coin_out" value="{{ $coin_out }}" readonly>
+                      <input class="form-control" type="text" name="devise_enter" value="{{ $devise_enter }}" readonly>
+                      <input class="form-control" type="text" name="devise_out" value="{{ $devise_out }}" readonly>
+                      <input class="form-control" type="text" name="ttc" value="VEJBHbqM" readonly>
+                    </div>
+                      <button class="btn btn-outline-warning btn-lg" type="submit" title="payement"> Echanger </button>
+                  </form>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
 
 
 @endif

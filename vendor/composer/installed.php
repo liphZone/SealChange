@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '6a58cc36b871fd3c1663ce9a1d4df71348d51e65',
+    'reference' => 'c10fc1b9657a576791be70c353e68087f33f76a3',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -132,6 +132,15 @@
       array (
       ),
       'reference' => 'ab3f5364d01f2c2c16113442fb987d26e4004913',
+    ),
+    'fedapay/fedapay-php' => 
+    array (
+      'pretty_version' => '0.3.4',
+      'version' => '0.3.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9e7540c9d0d1ed863177560fcdc5d37b885ed613',
     ),
     'fideloper/proxy' => 
     array (
@@ -454,7 +463,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '6a58cc36b871fd3c1663ce9a1d4df71348d51e65',
+      'reference' => 'c10fc1b9657a576791be70c353e68087f33f76a3',
     ),
     'laravel/sail' => 
     array (

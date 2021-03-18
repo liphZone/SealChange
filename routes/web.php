@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoinController;
+use App\Http\Controllers\FedaPayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PersonneController;
@@ -134,6 +135,8 @@ Route::post('en attente btc',[TransactionController::class,'actionWaitingSendBtc
 //Action waiting AdvCash : j'envoie les donnees passé dans l'URL vers la page commande
 Route::post('en attente advcash',[TransactionController::class,'actionWaitingSendAdvCash'])->name('action_waiting_advcash');
 
+//Action waiting Limo : j'envoie les donnees passé dans l'URL vers la page commande
+Route::post('en attente limo',[TransactionController::class,'actionWaitingSendLimo'])->name('action_waiting_limo');
 
 //Page Perfect Money du serveur Perfect Money
 Route::post('perfect money payement',[TransactionController::class,'formulaireActionPerfectMoney'])->name('form_action_perfect_money');
@@ -153,6 +156,9 @@ Route::post('bitcoin payement',[TransactionController::class,'actionSendBitcoin'
 //Page AdvCash du serveur AdvCash
 Route::post('advCash',[TransactionController::class,'actionSendAdvcash'])->name('action_advcash');
 
+//Page Limo 
+Route::post('Limo payement',[TransactionController::class,'actionSendLimo'])->name('action_limo');
+
 //Confirmation payement Flooz
 Route::get('confirmer payement flooz',[TransactionController::class,'confirmationPayementFlooz'])->name('payment_confirmation');
 
@@ -165,6 +171,11 @@ Route::get('Historique/{id}',[TransactionController::class,'formulaireHistorique
 //Action bouton valider transaction depuis la reception de mail
 Route::get('Valider transaction/{id_transaction}',[TransactionController::class,'actionValidateTransaction'])->name('action_validate_transaction');
 
+//Action FedaPay
+Route::post('transaction mobile money',[FedaPayController::class,'actionFedaPay'])->name('action_feda_pay');
+
+//Page Fade Pay :transaction finalisé
+// Route::get('Transaction compte mobile',[FedaPayController::class],'pageFedaPay')->name('form_feda_pay');
 /* ********************************* FIN TRANSACTIONS ******************************** */
 
     

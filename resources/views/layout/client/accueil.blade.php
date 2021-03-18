@@ -147,6 +147,7 @@
           @error('amount')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
+          <span class="text-danger"> Montant minimal : 2$ </span>
         </div>
 
         <input hidden type="text" name="rate" class="form-control" id="dollar_franc" value="{{ $dollar_franc->valeur }}" readonly>
@@ -311,6 +312,7 @@
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
+          <span class="text-danger"> Montant minimal : 500 F CFA </span>
         </div>
 
         <div class="form-group">
@@ -493,6 +495,51 @@
         <button id="operation_advcash" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
       </form>
 
+       <form class="forms-sample" action="{{ route('action_waiting_limo') }}" method="POST" id="sendLimo" style="display: none">
+        @csrf
+       <div class="form-group" hidden>
+          <input id="input_enter_limo" class="form-control" type="text" name="coin_enter_limo" required>
+          <input id="input_out_limo" class="form-control" type="text" name="coin_out_limo" required>
+        </div>
+
+        <div class="form-group">
+          <label for=""> Saisir le montant ( en dollar ) </label>
+          <input type="number" step="any" class="form-control" name="amount" onkeyup="amountLimo()" id="amount_limo" value="{{ old('montant') }}" required>
+          @error('montant')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $dollar_franc->valeur }}" readonly>
+
+        <div class="form-group">
+          <input hidden type="text" class="form-control" name="devise_enter_limo" id="devise_enter_limo" value="USD" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for=""> E mail </label>
+          <input type="email" class="form-control" name="email" autocomplete="off" required>
+          @error('email')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <div class="form-group" hidden>
+          <label for=""> Devise sortante </label>
+          <input type="text" class="form-control" name="devise_out" id="devise_out_limo" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for=""> Montant à reçevoir </label>
+          <input type="number" class="form-control" name="having_amount" id="montant_total_limo" readonly>
+          @error('having_amount')
+            <div style="color: red;"> {{ $message }} </div>
+          @enderror
+        </div>
+
+        <button id="operation_limo" type="submit" class="btn btn-success btn-block mr-2"> Opérer </button>
+      </form>
+
 
     </div>
   </div>
@@ -612,6 +659,19 @@
     }
   }
 
+  function amountLimo(){
+    var taux = document.getElementById('dollar_franc').value ;
+    if (document.getElementById('devise_out_limo').value === 'USD') {
+      var amount_limo = document.getElementById('amount_limo').value;
+      var mt =  amount_limo;
+      document.getElementById('montant_total_limo').value = mt;
+    }else if(document.getElementById('devise_out_limo').value === 'XOF'){
+      var amount_limo = document.getElementById('amount_limo').value;
+      var mt = amount_limo*taux
+      document.getElementById('montant_total_limo').value = mt;
+    }
+  }
+
   
   function choiceMoney(element){
     //Afficher adresse receptrice ou numero de telephone 
@@ -633,6 +693,7 @@
         document.getElementById('devise_out_btc').value = 'XOF';
         document.getElementById('div_advcash').style.display='none';
         document.getElementById('devise_out_advcash').value = 'XOF';
+        document.getElementById('devise_out_limo').value = 'XOF';
       }
       else if(element.value.toLowerCase() === 'bitcoin' || element.value.toLowerCase() === 'bit coin')
       {
@@ -653,6 +714,29 @@
         document.getElementById('div_advcash').style.display='block';
         document.getElementById('label_advcash').innerHTML = 'Votre adresse Bitcoin';
         document.getElementById('devise_out_advcash').value = 'USD';
+        document.getElementById('devise_out_limo').value = 'USD';
+      }
+      else if(element.value.toLowerCase() === 'limo' || element.value.toLowerCase() === 'limo dollar' ||
+       element.value.toLowerCase() === 'dollar limo')
+      {
+        document.getElementById('label_perfect_money').innerHTML = 'Votre adresse Limo';
+        document.getElementById('devise_out_pm').value = 'USD';
+        document.getElementById('label_flooz').innerHTML = 'Votre adresse Limo';
+        document.getElementById('label_t_money').innerHTML = 'Votre adresse Limo';
+        document.getElementById('div_t_money').style.display='block';
+        document.getElementById('devise_out_tm').value = 'USD';
+        document.getElementById('div_perfect_money').style.display='block';
+        document.getElementById('div_flooz').style.display='block';
+        document.getElementById('devise_out_flooz').value = 'USD';
+        document.getElementById('div_payeer').style.display='block';
+        document.getElementById('label_payeer').innerHTML = 'Votre adresse Limo';
+        document.getElementById('devise_out_payeer').value = 'USD';
+        document.getElementById('div_mtn').style.display='block';
+        document.getElementById('devise_out_mtn').value = 'USD';
+        document.getElementById('div_advcash').style.display='block';
+        document.getElementById('label_advcash').innerHTML = 'Votre adresse Limo';
+        document.getElementById('devise_out_advcash').value = 'USD';
+        document.getElementById('devise_out_limo').value = 'USD';
       }
       else
       {
@@ -674,6 +758,8 @@
         document.getElementById('div_advcash').style.display='block';
         document.getElementById('devise_out_advcash').value = 'USD';
         document.getElementById('label_advcash').innerHTML = 'Compte Récepteur';
+        document.getElementById('devise_out_limo').value = 'USD';
+
       }
     }
     //Fin
@@ -749,6 +835,22 @@
       document.getElementById('input_enter_advcash').value = id_button_enter;
 
       /* *** Formulaire Advcash *** */
+
+      /* *** Formulaire Advcash *** */
+
+      // Atribution de id_button_enter a la l'input coin_enter_advcash
+      var input_enter_advcash = document.getElementById('input_enter_advcash').value;
+      document.getElementById('input_enter_advcash').value = id_button_enter;
+
+      /* *** Formulaire Advcash *** */
+
+      /* *** Formulaire Limo *** */
+
+      // Atribution de id_button_enter a la l'input coin_enter_limo
+      var input_enter_limo = document.getElementById('input_enter_limo').value;
+      document.getElementById('input_enter_limo').value = id_button_enter;
+
+      /* *** Formulaire Limo *** */
     }
     else if(element.name == 'coin_out'){
       //Recuperation du name du bouton
@@ -810,13 +912,13 @@
 
       /* *** Formulaire Bitcoin *** */
 
-       /* *** Formulaire Advcash *** */
+       /* *** Formulaire Limo *** */
 
-      // Atribution de id_button_out a la l'input coin_out_advcash
-      var input_out_advcash = document.getElementById('input_out_advcash').value;
-      document.getElementById('input_out_advcash').value = id_button_out;
+      // Atribution de id_button_out a la l'input coin_out_limo
+      var input_out_limo = document.getElementById('input_out_limo').value;
+      document.getElementById('input_out_limo').value = id_button_out;
 
-      /* *** Formulaire Advcash *** */
+      /* *** Formulaire Limo *** */
       
     }
 
@@ -831,6 +933,7 @@
       document.getElementById('operation_payeer').disabled = true;
       document.getElementById('operation_btc').disabled = true;
       document.getElementById('operation_advcash').disabled = true;
+      document.getElementById('operation_limo').disabled = true;
     }
     else
     {
@@ -842,6 +945,7 @@
         document.getElementById('operation_payeer').disabled = false;
         document.getElementById('operation_btc').disabled = false;
         document.getElementById('operation_advcash').disabled = false;
+        document.getElementById('operation_limo').disabled = false;
       }
     //Fsi
 
@@ -855,6 +959,7 @@
       document.getElementById('sendPayeer').style.display='none';
       document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendAdvcash').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
     }
     else if(value_button_enter.toLowerCase() == 'mtn' || value_button_enter.toLowerCase() == 'mtn mobile money' 
     || value_button_enter.toLowerCase() == 'mtn money') {
@@ -865,6 +970,8 @@
       document.getElementById('sendPayeer').style.display='none';
       document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendAdvcash').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
     }
     else if(value_button_enter.toLowerCase() == 'flooz') {
       document.getElementById('sendFlooz').style.display='block';
@@ -874,6 +981,7 @@
       document.getElementById('sendPayeer').style.display='none';
       document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendAdvcash').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
     }
     else if(value_button_enter.toLowerCase() == 'tmoney' || value_button_enter.toLowerCase() == 't money') {
       document.getElementById('sendTMoney').style.display='block';
@@ -883,6 +991,7 @@
       document.getElementById('sendPayeer').style.display='none';
       document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendAdvcash').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
     }
     else if(value_button_enter == 'Payeer' || value_button_enter.toLowerCase() == 'payeer') {
       document.getElementById('sendPayeer').style.display='block';
@@ -892,6 +1001,7 @@
       document.getElementById('sendTMoney').style.display='none';
       document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendAdvcash').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
     }
     else if(value_button_enter.toLowerCase() == 'bitcoin' || value_button_enter.toLowerCase() == 'bit coin' || value_button_enter.toLowerCase() == 'btc') {
       document.getElementById('sendBitcoin').style.display='block';
@@ -901,10 +1011,23 @@
       document.getElementById('sendFlooz').style.display='none';
       document.getElementById('sendTMoney').style.display='none';
       document.getElementById('sendAdvcash').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
     }
     else if(value_button_enter == 'Advcash' || value_button_enter.toLowerCase() == 'advcash' || 
     value_button_enter.toLowerCase() == 'adv cash') {
       document.getElementById('sendAdvcash').style.display='block';
+      document.getElementById('sendBitcoin').style.display='none';
+      document.getElementById('sendPayeer').style.display='none';
+      document.getElementById('sendPerfectMoney').style.display='none';
+      document.getElementById('sendMtn').style.display='none';
+      document.getElementById('sendFlooz').style.display='none';
+      document.getElementById('sendTMoney').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
+    }
+    else if(value_button_enter == 'Limo' || value_button_enter.toLowerCase() == 'limo' || value_button_enter.toLowerCase() == 'dollar limo' ||
+    value_button_enter.toLowerCase() == 'limo dollar') {
+      document.getElementById('sendLimo').style.display='block';
+      document.getElementById('sendAdvcash').style.display='none';
       document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendPayeer').style.display='none';
       document.getElementById('sendPerfectMoney').style.display='none';
@@ -920,6 +1043,8 @@
       document.getElementById('sendPayeer').style.display='none';
       document.getElementById('sendBitcoin').style.display='none';
       document.getElementById('sendAdvcash').style.display='none';
+      document.getElementById('sendLimo').style.display='none';
+
     }
   }
 

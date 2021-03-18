@@ -14,6 +14,7 @@ use App\Http\Requests\PersonneFormRequest;
 use App\Http\Requests\InscriptionFormRequest;
 use App\Http\Requests\TransactionFormRequest;
 use App\Http\Requests\PasswordForgetFormRequest;
+use Illuminate\Support\Str;
 
 
 class PageController extends Controller
@@ -25,7 +26,7 @@ class PageController extends Controller
     public function accueil(){
         $categorie = Type::all();
         $monnaie = Coin::all();
-        $id_transaction = rand();
+        $id_transaction = Str::random(20);
         return view('layout.client.accueil',compact('categorie','monnaie','id_transaction'));
     }
 
