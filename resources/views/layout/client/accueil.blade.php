@@ -70,10 +70,27 @@
 </div>
 
 @php
-  $dollar_franc = \App\Models\Rate::where('monnaie_send','USD')->where('monnaie_receive','XOF')->first();
-  $franc_dollar = \App\Models\Rate::where('monnaie_send','XOF')->where('monnaie_receive','USD')->first();
-@endphp
+  $pm_vers_bank_online  = \App\Models\Rate::where('valeur_out',0.95)->first();
+  $pm_vers_mobile_money = \App\Models\Rate::where('valeur_out',530)->first();
+  $pm_vers_crypto       = \App\Models\Rate::where('valeur_out',0.00002)->first();
 
+  $payeer_vers_bank_online  = \App\Models\Rate::where('valeur_out',0.95)->first();
+  $payeer_vers_mobile_money = \App\Models\Rate::where('valeur_out',530)->first();
+  $payeer_vers_crypto       = \App\Models\Rate::where('valeur_out',0.00002)->first();
+
+  $adv_vers_bank_online  = \App\Models\Rate::where('valeur_out',0.95)->first();
+  $adv_vers_mobile_money = \App\Models\Rate::where('valeur_out',530)->first();
+  $adv_vers_crypto       = \App\Models\Rate::where('valeur_out',0.00002)->first();
+
+  $mm_vers_bank_online = \App\Models\Rate::where('valeur_out',1.61)->first();
+  $mm_vers_crypto      = \App\Models\Rate::where('valeur_out',0.00003)->first();
+
+  $btc_vers_bank_online  = \App\Models\Rate::where('valeur_out',0.52)->first();
+  $btc_vers_mobile_money = \App\Models\Rate::where('valeur_out',302)->first();
+  $btc_vers_crypto       = \App\Models\Rate::where('valeur_out',0.0003)->first();
+
+
+@endphp
 
   <div class="row">
 
@@ -129,9 +146,12 @@
       <form class="forms-sample" id="sendPerfectMoney" action="{{ route('action_waiting_perfect_money') }}" method="POST" style="display: none">
         @csrf
         <div class="form-group" hidden>
-          <input id="input_enter_pm" class="form-control" type="text" name="coin_enter_pm" placeholder="Entrer" required>
-          <input id="input_out_pm" class="form-control" type="text" name="coin_out_pm" placeholder="Sortie" required>
+          <input id="input_enter_pm" class="form-control" type="text" name="coin_enter_pm" placeholder="Entrer" readonly>
+          <input id="input_out_pm" class="form-control" type="text" name="coin_out_pm" placeholder="Sortie" readonly>
+          <input type="text" class="form-control" id="name_coin_out_pm" readonly>
         </div>
+       
+
 
         <div class="form-group">
           <label for=""> Votre Compte Perfect Money </label>
@@ -150,7 +170,9 @@
           <span class="text-danger"> Montant minimal : 2$ </span>
         </div>
 
-        <input hidden type="text" name="rate" class="form-control" id="dollar_franc" value="{{ $dollar_franc->valeur }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="bank_online_pm" value="{{ $pm_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="mobile_money_pm" value="{{ $pm_vers_mobile_money->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto_pm" value="{{ $pm_vers_crypto->valeur_out}}" readonly>
     
         <div class="form-group" id="div_perfect_money" style="display: block;">
           <label id="label_perfect_money" for=""> Compte Récepteur </label>
@@ -189,6 +211,7 @@
         <div class="form-group" hidden>
           <input id="input_enter_payeer" class="form-control" type="text" name="coin_enter_payeer" required>
           <input id="input_out_payeer" class="form-control" type="text" name="coin_out_payeer" required>
+          <input type="text" class="form-control" id="name_coin_out_payeer" readonly>
         </div>
 
         <span class="badge badge-primary text-wrap">
@@ -214,12 +237,16 @@
           <span class="text-danger"> Montant minimal : 2$ </span>
         </div>
 
+        <input hidden type="text" name="rate" class="form-control" id="bank_online_payeer" value="{{ $payeer_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="mobile_money_payeer" value="{{ $payeer_vers_mobile_money->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto_payeer" value="{{ $payeer_vers_crypto->valeur_out}}" readonly>
+
         <div class="form-group" hidden>
           <input type="text" class="form-control" name="devise_enter_payeer" value="USD" readonly>
           <input type="text" class="form-control" name="devise_out" id="devise_out_payeer" readonly>
         </div>
 
-        <input hidden type="text" name="rate" class="form-control" id="dollar_franc" value="{{ $dollar_franc->valeur }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="dollar_franc" value="" readonly>
 
         <div class="form-group" id="div_payeer" style="display: block;">
           <label id="label_payeer" for=""> Compte Récepteur </label>
@@ -254,23 +281,25 @@
         <div class="form-group" hidden>
           <input id="input_enter_mtn" class="form-control" type="text" name="coin_enter_mtn" required>
           <input id="input_out_mtn" class="form-control" type="text" name="coin_out_mtn" required>
+          <input type="text" class="form-control" id="name_coin_out_mtn" readonly>
         </div>
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="500" class="form-control" onkeyup="amountMtn()" name="amount" id="amount_mtn" value="{{ old('montant') }}" required>
+          <input type="number" min="2000" class="form-control" onkeyup="amountMtn()" name="amount" id="amount_mtn" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
+          <span class="text-danger"> Montant minimal : 2000 F CFA </span>
         </div>
+
+        <input hidden type="text" name="rate" class="form-control" id="bank_online_mtn" value="{{ $mm_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto_mtn" value="{{ $mm_vers_crypto->valeur_out}}" readonly>
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_mtn" value="XOF" readonly>
           <input hidden type="text" class="form-control" name="devise_out" id="devise_out_mtn" readonly>
         </div>
-
-        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $franc_dollar->valeur }}" readonly>
-
 
         <div class="form-group" id="div_mtn" style="display: block;">
           <label for=""> Adresse receptrice </label>
@@ -304,23 +333,26 @@
         <div class="form-group" hidden>
           <input id="input_enter_flooz" class="form-control" type="text" name="coin_enter_flooz" required>
           <input id="input_out_flooz" class="form-control" type="text" name="coin_out_flooz" required>
+          <input type="text" class="form-control" id="name_coin_out_flooz" readonly>
+
         </div>
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="500" class="form-control" onkeyup="amountFlooz()" name="amount" id="amount_flooz" value="{{ old('montant') }}" required>
+          <input type="number" min="2000" class="form-control" onkeyup="amountFlooz()" name="amount" id="amount_flooz" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
-          <span class="text-danger"> Montant minimal : 500 F CFA </span>
+          <span class="text-danger"> Montant minimal : 2000 F CFA </span>
         </div>
+
+        <input hidden type="text" name="rate" class="form-control" id="bank_online_flooz" value="{{ $mm_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto_flooz" value="{{ $mm_vers_crypto->valeur_out}}" readonly>
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_flooz"  value="XOF" readonly>
           <input hidden type="text" class="form-control" name="devise_out" id="devise_out_flooz" value="XOF" readonly>
         </div>
-
-        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $franc_dollar->valeur }}" readonly>
 
         <div class="form-group" id="div_flooz" style="display: block;">
           <label id="label_flooz" for=""> Adresse receptrice </label>
@@ -354,22 +386,26 @@
         <div class="form-group" hidden>
           <input id="input_enter_tm" class="form-control" type="text" name="coin_enter_tm" required>
           <input id="input_out_tm" class="form-control" type="text" name="coin_out_tm" required>
+          <input type="text" class="form-control" id="name_coin_out_tm" readonly>
+
         </div>
 
         <div class="form-group">
           <label for=""> Saisir le montant </label>
-          <input type="number" min="500" class="form-control" onkeyup="amountTMoney()" name="amount" id="amount_tm" value="{{ old('montant') }}" required>
+          <input type="number" min="2000" class="form-control" onkeyup="amountTMoney()" name="amount" id="amount_tm" value="{{ old('montant') }}" required>
           @error('montant')
             <div style="color: red;"> {{ $message }} </div>
           @enderror
+          <span class="text-danger"> Montant minimal : 2000 F CFA </span>
         </div>
+
+        <input hidden type="text" name="rate" class="form-control" id="bank_online_tm" value="{{ $mm_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto_tm" value="{{ $mm_vers_crypto->valeur_out}}" readonly>
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_tm" value="XOF" readonly>
           <input hidden type="text" class="form-control" name="devise_out" id="devise_out_tm" readonly>
         </div>
-
-        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $franc_dollar->valeur }}" readonly>
 
         <div class="form-group" id="div_t_money" style="display: block;">
           <label id="label_t_money" for=""> Adresse receptrice </label>
@@ -403,6 +439,8 @@
         <div class="form-group" hidden>
           <input id="input_enter_btc" class="form-control" type="text" name="coin_enter_btc" required>
           <input id="input_out_btc" class="form-control" type="text" name="coin_out_btc" required>
+          <input type="text" class="form-control" id="name_coin_out_btc" readonly>
+
         </div>
 
         <div class="form-group">
@@ -413,7 +451,9 @@
           @enderror
         </div>
 
-        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $dollar_franc->valeur }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="bank_online_btc" value="{{ $btc_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="mobile_money_btc" value="{{ $btc_vers_mobile_money->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto_btc" value="{{ $btc_vers_crypto->valeur_out}}" readonly>
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_btc" id="devise_enter_btc" value="USD" readonly>
@@ -448,13 +488,14 @@
         <div class="form-group" hidden>
           <input id="input_enter_advcash" class="form-control" type="text" name="coin_enter_advcash" required>
           <input id="input_out_advcash" class="form-control" type="text" name="coin_out_advcash" required>
+          <input type="text" class="form-control" id="name_coin_out_advcash" readonly>
         </div>
 
   
         <span class="badge badge-primary text-wrap">
           Veuillez effectuer un dépot sur le compte ci-dessous :
         </span> <br>
-        <label for=""> Votre compte Advcash </label>
+        <label for=""> Adresse Advcash </label>
         <div class="form-group">
           <input type="text" class="form-control" value="U033816068648" size="40" id="copyMe" name="myaccount" readonly>
           @error('myaccount')
@@ -470,6 +511,10 @@
           @enderror
           <span class="text-danger"> Montant minimal : 2$ </span>
         </div>
+
+        <input hidden type="text" name="rate" class="form-control" id="bank_online" value="{{ $adv_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="mobile_money" value="{{ $adv_vers_mobile_money->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto" value="{{ $adv_vers_crypto->valeur_out}}" readonly>
 
         <div class="form-group" hidden>
           <input type="text" class="form-control" name="devise_enter_advcash" value="USD" readonly>
@@ -500,6 +545,8 @@
        <div class="form-group" hidden>
           <input id="input_enter_limo" class="form-control" type="text" name="coin_enter_limo" required>
           <input id="input_out_limo" class="form-control" type="text" name="coin_out_limo" required>
+          <input type="text" class="form-control" id="name_coin_out_limo" readonly>
+
         </div>
 
         <div class="form-group">
@@ -510,7 +557,9 @@
           @enderror
         </div>
 
-        <input hidden type="text" name="rate" class="form-control" id="franc_dollar" value="{{ $dollar_franc->valeur }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="bank_online_limo" value="{{ $btc_vers_bank_online->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="mobile_money_limo" value="{{ $btc_vers_mobile_money->valeur_out }}" readonly>
+        <input hidden type="text" name="rate" class="form-control" id="crypto_limo" value="{{ $btc_vers_crypto->valeur_out}}" readonly>
 
         <div class="form-group">
           <input hidden type="text" class="form-control" name="devise_enter_limo" id="devise_enter_limo" value="USD" readonly>
@@ -560,60 +609,114 @@
       }, 1000)
     }
 
+    
 
     function amountPerfectMoney(){
-    var devise_sortie_pm = document.getElementById('devise_out_pm').value;
-    var taux = document.getElementById('dollar_franc').value;
-    var amount_pm = document.getElementById('amount_pm').value;
-    var mt_receive_pm = document.getElementById('montant_total_pm').value;
-    
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_pm').value = ce_que_je_recois.toLowerCase();
+
+    var devise_sortie_pm  = document.getElementById('devise_out_pm').value;
+    var taux_bank_online  = document.getElementById('bank_online_pm').value;
+    var taux_mobile_money = document.getElementById('mobile_money_pm').value;
+    var taux_crypto       = document.getElementById('crypto_pm').value;
+    var amount_pm         = document.getElementById('amount_pm').value;
+    var mt_receive_pm     = document.getElementById('montant_total_pm').value;
+
     if (devise_sortie_pm === 'USD') {
-      document.getElementById('montant_total_pm').value = amount_pm;
+      if (document.getElementById('name_coin_out_pm').value === 'bitcoin' || document.getElementById('name_coin_out_pm').value === 'bit coin' ||
+      document.getElementById('name_coin_out_pm').value === 'limo' || document.getElementById('name_coin_out_pm').value === 'limo dollar' || 
+      document.getElementById('name_coin_out_pm').value === 'dollar limo') 
+      {
+        document.getElementById('montant_total_pm').value = amount_pm*taux_crypto;
+      }
+      else{
+        document.getElementById('montant_total_pm').value = amount_pm*taux_bank_online;
+      }
     }
     else if(devise_sortie_pm === 'XOF'){
-      document.getElementById('montant_total_pm').value = amount_pm*taux;
+      document.getElementById('montant_total_pm').value = amount_pm*taux_mobile_money;
     }
   }
 
   function amountPayeer(){
-    var taux = document.getElementById('dollar_franc').value;
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_payeer').value = ce_que_je_recois.toLowerCase();
+
+    var taux_bank_online  = document.getElementById('bank_online_payeer').value;
+    var taux_mobile_money = document.getElementById('mobile_money_payeer').value;
+    var taux_crypto       = document.getElementById('crypto_payeer').value;
+
     var devise_sortie_payeer = document.getElementById('devise_out_payeer').value;
-    if (devise_sortie_payeer === 'USD') {
+    var amount_payeer = document.getElementById('amount_payeer').value;
+    var mt_receive_payeer = document.getElementById('montant_total_payeer').value;
+
+    if (devise_sortie_payeer === 'USD') 
+    {
+      if (document.getElementById('name_coin_out_payeer').value === 'bitcoin' || document.getElementById('name_coin_out_payeer').value === 'bit coin' ||
+      document.getElementById('name_coin_out_payeer').value === 'limo' || document.getElementById('name_coin_out_payeer').value === 'limo dollar' || 
+      document.getElementById('name_coin_out_payeer').value === 'dollar limo') 
+      {
+        document.getElementById('montant_total_payeer').value = amount_payeer*taux_crypto;
+      }
+      else{
+        document.getElementById('montant_total_payeer').value = amount_payeer*taux_bank_online;
+      }
+    }
+    else if(devise_sortie_payeer === 'XOF')
+    {
       var amount_payeer = document.getElementById('amount_payeer').value;
-      var mt =  amount_payeer;
-      document.getElementById('montant_total_payeer').value = mt;
-    }else if(devise_sortie_payeer === 'XOF'){
-      var amount_payeer = document.getElementById('amount_payeer').value;
-      var mt = amount_payeer*taux;
+      var mt = amount_payeer*taux_mobile_money;
       document.getElementById('montant_total_payeer').value = mt;
     }
   }
 
   function amountMtn(){
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_mtn').value = ce_que_je_recois.toLowerCase();
+
     var devise_sortie_mtn = document.getElementById('devise_out_mtn').value;
-    var amount_mtn = document.getElementById('amount_mtn').value;
-    var taux = document.getElementById('franc_dollar').value;
+    var amount_mtn        = document.getElementById('amount_mtn').value;
+
+    var taux_bank_online  = document.getElementById('bank_online_mtn').value;
+    var taux_crypto       = document.getElementById('crypto_mtn').value;
     
     if (devise_sortie_mtn == 'USD'){
-      var mt =  amount_mtn*taux;
-      document.getElementById('montant_total_mtn').value = mt;
+      if (document.getElementById('name_coin_out_mtn').value === 'bitcoin' || document.getElementById('name_coin_out_mtn').value === 'bit coin' ||
+      document.getElementById('name_coin_out_mtn').value === 'limo' || document.getElementById('name_coin_out_mtn').value === 'limo dollar' || 
+      document.getElementById('name_coin_out_mtn').value === 'dollar limo') 
+      {
+        document.getElementById('montant_total_mtn').value = (amount_mtn*taux_crypto)/(1000);
+      }
+      else{
+        document.getElementById('montant_total_mtn').value = (amount_mtn*taux_bank_online)/1000;
+      }
     }else if(devise_sortie_mtn == 'XOF'){
       var mt =  amount_mtn;
       document.getElementById('montant_total_mtn').value = mt;
     }
   }
 
-
   function amountFlooz(){
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_flooz').value = ce_que_je_recois.toLowerCase();
+
     var devise_sortie_flooz = document.getElementById('devise_out_flooz').value;
-    var taux = document.getElementById('franc_dollar').value;
+    var taux_bank_online  = document.getElementById('bank_online_flooz').value;
+    var taux_crypto       = document.getElementById('crypto_flooz').value;
     var amount_pm = document.getElementById('amount_pm').value;
     var amount_flooz = document.getElementById('amount_flooz').value;
     var mt_receive_flooz  = document.getElementById('montant_total_flooz').value; 
     
     if (devise_sortie_flooz == 'USD'){
-      var mt =  amount_flooz*taux ;
-      document.getElementById('montant_total_flooz').value = mt;
+      if (document.getElementById('name_coin_out_flooz').value === 'bitcoin' || document.getElementById('name_coin_out_flooz').value === 'bit coin' ||
+      document.getElementById('name_coin_out_flooz').value === 'limo' || document.getElementById('name_coin_out_flooz').value === 'limo dollar' || 
+      document.getElementById('name_coin_out_flooz').value === 'dollar limo') 
+      {
+        document.getElementById('montant_total_flooz').value = (amount_flooz*taux_crypto)/(1000);
+      }
+      else{
+        document.getElementById('montant_total_flooz').value = (amount_flooz*taux_bank_online)/1000;
+      }
     }else if(devise_sortie_flooz == 'XOF'){
       var mt =  amount_flooz;
       document.getElementById('montant_total_flooz').value = mt;
@@ -621,53 +724,107 @@
   }
 
   function amountTMoney(){
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_tm').value = ce_que_je_recois.toLowerCase();
+
+    var taux_bank_online  = document.getElementById('bank_online_tm').value;
+    var taux_crypto       = document.getElementById('crypto_tm').value;
+
     devise_sortie_tm = document.getElementById('devise_out_tm').value;
     var amount_tm = document.getElementById('amount_tm').value;
-    var taux = document.getElementById('franc_dollar').value;
+    var mt_amount_receive_tm = document.getElementById('montant_total_tm').value;
+
+
     if (devise_sortie_tm == 'USD'){
-      var mt =  amount_tm*taux;
-      document.getElementById('montant_total_tm').value = mt;
+      if (document.getElementById('name_coin_out_tm').value === 'bitcoin' || document.getElementById('name_coin_out_tm').value === 'bit coin' ||
+      document.getElementById('name_coin_out_tm').value === 'limo' || document.getElementById('name_coin_out_tm').value === 'limo dollar' || 
+      document.getElementById('name_coin_out_tm').value === 'dollar limo') 
+      {
+        document.getElementById('montant_total_tm').value = (amount_tm*taux_crypto)/(1000);
+      }
+      else{
+        document.getElementById('montant_total_tm').value = (amount_tm*taux_bank_online)/1000;
+      }
     }else if(devise_sortie_tm == 'XOF'){
-      var mt =  amount_tm;
-      document.getElementById('montant_total_tm').value = mt;
+      var mt_amount_receive_tm =  amount_tm;
+      document.getElementById('montant_total_tm').value = mt_amount_receive_tm;
     }
   }
  
   function amountBitcoin(){
-    var taux = document.getElementById('dollar_franc').value ;
-    if (document.getElementById('devise_out_btc').value === 'XOF') {
-      var amount_btc = document.getElementById('amount_btc').value;
-      var mt =  amount_btc*taux;
-      document.getElementById('montant_total_btc').value = mt;
-    }else if(document.getElementById('devise_out_btc').value === 'USD'){
-      var amount_btc = document.getElementById('amount_btc').value;
-      var mt = amount_btc
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_btc').value = ce_que_je_recois.toLowerCase();
+
+    var taux_bank_online  = document.getElementById('bank_online_btc').value;
+    var taux_mobile_money = document.getElementById('mobile_money_btc').value;
+    var taux_crypto       = document.getElementById('crypto_btc').value;
+    var amount_btc = document.getElementById('amount_btc').value;
+
+    if (document.getElementById('devise_out_btc').value === 'USD') 
+    {
+      if(document.getElementById('name_coin_out_btc').value === 'limo' || document.getElementById('name_coin_out_tm').value === 'limo dollar' || 
+      document.getElementById('name_coin_out_tm').value === 'dollar limo') 
+      {
+        document.getElementById('montant_total_btc').value = (amount_btc*taux_crypto)/(0.00001);
+      }
+      else
+      {
+        document.getElementById('montant_total_btc').value = (amount_btc*taux_bank_online)/(0.00001);
+      }
+    }
+    else if(document.getElementById('devise_out_btc').value === 'XOF'){
+      var mt = (amount_btc*taux_mobile_money)/(0.00001);
       document.getElementById('montant_total_btc').value = mt;
     }
   }
 
   function amountAdvcash(){
-    var taux = document.getElementById('dollar_franc').value ;
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_advcash').value = ce_que_je_recois.toLowerCase();
+
+    var taux_bank_online   = document.getElementById('bank_online').value;
+    var taux_mobile_money  = document.getElementById('mobile_money').value;
+    var taux_crypto        = document.getElementById('crypto').value;
+    var amount_advcash     = document.getElementById('amount_advcash').value;
+    var mt_receive_advcash = document.getElementById('montant_total_advcash').value;
+
     if (document.getElementById('devise_out_advcash').value === 'USD') {
-      var amount_advcash = document.getElementById('amount_advcash').value;
-      var mt =  amount_advcash;
-      document.getElementById('montant_total_advcash').value = mt;
+      if (document.getElementById('name_coin_out_advcash').value === 'bitcoin' || document.getElementById('name_coin_out_advcash').value === 'bit coin' ||
+      document.getElementById('name_coin_out_advcash').value === 'limo' || document.getElementById('name_coin_out_advcash').value === 'limo dollar' || 
+      document.getElementById('name_coin_out_advcash').value === 'dollar limo') 
+      {
+        document.getElementById('montant_total_advcash').value = amount_advcash*taux_crypto;
+      }
+      else{
+        document.getElementById('montant_total_advcash').value = amount_advcash*taux_bank_online;
+      }
     }else if(document.getElementById('devise_out_advcash').value === 'XOF'){
-      var amount_advcash = document.getElementById('amount_advcash').value;
-      var mt = amount_advcash*taux
-      document.getElementById('montant_total_advcash').value = mt;
+      var mt_receive_advcash = amount_advcash*taux_mobile_money
+      document.getElementById('montant_total_advcash').value = mt_receive_advcash;
     }
   }
 
   function amountLimo(){
-    var taux = document.getElementById('dollar_franc').value ;
+    var ce_que_je_recois = document.getElementById('ce_que_je_recois').innerText;
+    document.getElementById('name_coin_out_limo').value = ce_que_je_recois.toLowerCase();
+
+    var taux_bank_online  = document.getElementById('bank_online_limo').value;
+    var taux_mobile_money = document.getElementById('mobile_money_limo').value;
+    var taux_crypto       = document.getElementById('crypto_limo').value;
+    var amount_limo       = document.getElementById('amount_limo').value;
+    var mt_receive_limo   = document.getElementById('montant_total_limo').value;
+
     if (document.getElementById('devise_out_limo').value === 'USD') {
-      var amount_limo = document.getElementById('amount_limo').value;
-      var mt =  amount_limo;
-      document.getElementById('montant_total_limo').value = mt;
+      if (document.getElementById('name_coin_out_limo').value === 'bitcoin' || 
+      document.getElementById('name_coin_out_limo').value === 'bit coin') 
+      {
+        document.getElementById('montant_total_limo').value = (amount_limo*taux_crypto)/(0.00001);
+      }
+      else{
+        document.getElementById('montant_total_limo').value = (amount_limo*taux_bank_online)/(0.00001);
+      }
     }else if(document.getElementById('devise_out_limo').value === 'XOF'){
-      var amount_limo = document.getElementById('amount_limo').value;
-      var mt = amount_limo*taux
+      var mt = (amount_limo*taux_mobile_money)/(0.00001);
       document.getElementById('montant_total_limo').value = mt;
     }
   }
@@ -731,6 +888,7 @@
         document.getElementById('div_payeer').style.display='block';
         document.getElementById('label_payeer').innerHTML = 'Votre adresse Limo';
         document.getElementById('devise_out_payeer').value = 'USD';
+        document.getElementById('devise_out_btc').value = 'USD';
         document.getElementById('div_mtn').style.display='block';
         document.getElementById('devise_out_mtn').value = 'USD';
         document.getElementById('div_advcash').style.display='block';

@@ -56,7 +56,7 @@
 
 <script>
 
-    var counter = 100;
+    var counter = 300;
     var etat = document.getElementById('etat');
     var accueil = document.getElementById('accueil');
 

@@ -12,79 +12,84 @@
         </a>
       </li>
 
-      <li class="nav-item nav-category"> Menu Principal </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('list_coins') }}">
-          <i class="menu-icon typcn typcn-document-text"></i>
-          <span class="menu-title"> <i class="fa fa-dashboard"></i> Accueil </span> 
-        </a>
-      </li>
+      @can('create',\App\Models\User::class)
+        <li class="nav-item nav-category"> Menu Principal </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('list_coins') }}">
+            <i class="menu-icon typcn typcn-document-text"></i>
+            <span class="menu-title"> <i class="fa fa-dashboard"></i> Accueil </span> 
+          </a>
+        </li>
 
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#Utilisateurs" aria-expanded="false" aria-controls="Utilisateurs">
-          <i class="menu-icon typcn typcn-coffee"></i>
-          <span class="menu-title"> <i class="fa fa-users"></i> Utilisateurs </span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="Utilisateurs">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('list_persons') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des administrateurs </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('list_users') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des utilisateurs </a>
-            </li>
-          </ul>
-        </div>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#Utilisateurs" aria-expanded="false" aria-controls="Utilisateurs">
+            <i class="menu-icon typcn typcn-coffee"></i>
+            <span class="menu-title"> <i class="fa fa-users"></i> Utilisateurs </span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="Utilisateurs">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('list_persons') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des administrateurs </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('list_users') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des utilisateurs </a>
+              </li>
+            </ul>
+          </div>
+        </li>
 
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#Monnaies" aria-expanded="false" aria-controls="Monnaies">
-          <i class="menu-icon typcn typcn-coffee"></i>
-          <span class="menu-title"> <i class="fa fa-money"></i> Monnaies </span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="Monnaies">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('list_types') }}"> <i class="fa fa-list-ul"></i> &nbsp;  Liste des catégories </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('list_coins') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des monnaies </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('list_rates') }}"> <i class="fa fa-list-ul"></i> &nbsp; Taux </a>
-            </li>
-          </ul>
-        </div>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#Monnaies" aria-expanded="false" aria-controls="Monnaies">
+            <i class="menu-icon typcn typcn-coffee"></i>
+            <span class="menu-title"> <i class="fa fa-money"></i> Monnaies </span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="Monnaies">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('list_types') }}"> <i class="fa fa-list-ul"></i> &nbsp;  Liste des catégories </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('list_coins') }}"> <i class="fa fa-list-ul"></i> &nbsp; Liste des monnaies </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('list_rates') }}"> <i class="fa fa-list-ul"></i> &nbsp; Taux </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      @endcan
 
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="menu-icon typcn typcn-document-text"></i>
-          <span class="menu-title"> <i class="fa fa-history"></i> Historique </span>
-        </a>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('transaction_history') }}">
+            <i class="menu-icon typcn typcn-document-text"></i>
+            <span class="menu-title"> <i class="fa fa-history"></i> Historique </span>
+          </a>
+        </li>
 
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-          <i class="menu-icon typcn typcn-coffee"></i>
-          <span class="menu-title"> <i class="fa fa-check-square-o"></i> Mon compte </span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="ui-basic">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item">
-              <a class="nav-link" href="#"> <i class="fa fa-list-ul"></i> &nbsp;  Liste des opérations </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"> <i class="fa fa-address-card"></i> &nbsp; Bonus Referral </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('form_password_update_admin') }}"> <i class="fa fa-gear"></i> &nbsp; Sécurité </a>
-            </li>
-          </ul>
-        </div>
-      </li>
+      @can('create',\App\Models\User::class)
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <i class="menu-icon typcn typcn-coffee"></i>
+            <span class="menu-title"> <i class="fa fa-check-square-o"></i> Mon compte </span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="ui-basic">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="#"> <i class="fa fa-list-ul"></i> &nbsp;  Liste des opérations </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> <i class="fa fa-address-card"></i> &nbsp; Bonus Referral </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('form_password_update_admin') }}"> <i class="fa fa-gear"></i> &nbsp; Sécurité </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      @endcan
+      
     </ul>
   </nav>

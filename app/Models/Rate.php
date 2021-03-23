@@ -10,8 +10,11 @@ class Rate extends Model
     use HasFactory;
 
     protected $fillable = [
-        'monnaie_send',
-        'monnaie_receive',
-        'valeur',
+        'monnaie_enter',
+        'devise_enter',
+        'valeur_enter',
+        'monnaie_out',
+        'devise_out',
+        'valeur_out',
     ];
 }

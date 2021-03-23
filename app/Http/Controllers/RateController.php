@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RateFormRequest;
+use App\Models\Coin;
 use App\Models\Rate;
 use Illuminate\Http\Request;
 use MercurySeries\Flashy\Flashy;
@@ -16,7 +17,7 @@ class RateController extends Controller
      */
     public function index()
     {
-        $rate = Rate::all();
+        $rate = Rate::simplePaginate(15);
         return view('rates.list_rates',compact('rate'));
     }
 
@@ -27,7 +28,8 @@ class RateController extends Controller
      */
     public function create()
     {
-        return view('rates.add_rate');
+        $coin = Coin::orderBy('libelle','asc')->get();
+        return view('rates.add_rate',compact('coin'));
     }
 
     /**
@@ -39,11 +41,15 @@ class RateController extends Controller
     public function store(RateFormRequest $request)
     {
         $insertion = Rate::firstOrCreate([
-            'monnaie_send'    => $request->monnaie_send,
-            'monnaie_receive' => $request->monnaie_receive,
+            'monnaie_enter' => strtolower($request->monnaie_enter),
+            'monnaie_out'   => strtolower( $request->monnaie_out),
         ],
         [
-            'valeur'          => $request->valeur,
+            'devise_enter'  => $request->devise_enter,
+            'devise_out'    => $request->devise_out,
+            'valeur_enter' => $request->valeur_enter,
+            'valeur_out'   => $request->valeur_out,
+
         ]);
 
         if ($insertion) {
@@ -88,10 +94,15 @@ class RateController extends Controller
     public function update(RateFormRequest $request, $id)
     {
         $rate = Rate::findOrFail($id);
+
         $update = $rate->update([
-            'monnaie_send'    => $request->monnaie_send,
-            'monnaie_receive' => $request->monnaie_receive,
-            'valeur'          => $request->valeur,
+            'monnaie_enter' => strtolower($request->monnaie_enter),
+            'monnaie_enter' => strtolower($request->monnaie_enter),
+            'monnaie_out'   => strtolower( $request->monnaie_out),
+            'devise_enter'  => $request->devise_enter,
+            'devise_out'    => $request->devise_out,
+            'valeur_enter'  => $request->valeur_enter,
+            'valeur_out'    => $request->valeur_out,
         ]);
         if ($update) {
            Flashy::success('Modification réussie');

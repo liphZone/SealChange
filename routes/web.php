@@ -60,13 +60,6 @@ Route::get('Validation',[PageController::class,'formulaireValidationCompte'])->n
 Route::post('validation',[PageController::class,'actionValidationCompte'])->name('action_confirm_account');
 
 
-//Page Test
-Route::get('Test',[PageController::class,'formulaireTest'])->name('form_test');
-
-//Action test
-Route::post('test',[PageController::class,'actionTest'])->name('action_test');
-
-
 //GROUPE MIDDLEWARE **************************************
 Route::group(['middleware' => ['Connect']], function () {
     
@@ -162,20 +155,19 @@ Route::post('Limo payement',[TransactionController::class,'actionSendLimo'])->na
 //Confirmation payement Flooz
 Route::get('confirmer payement flooz',[TransactionController::class,'confirmationPayementFlooz'])->name('payment_confirmation');
 
-//Formulaire de choix Historique d'une transaction
-Route::get('Choix',[TransactionController::class,'formulaireChoixHistorique'])->name('form_choix_historique');
-
-//Formulaire historique des transaction 
-Route::get('Historique/{id}',[TransactionController::class,'formulaireHistorique'])->name('form_historique');
-
-//Action bouton valider transaction depuis la reception de mail
-Route::get('Valider transaction/{id_transaction}',[TransactionController::class,'actionValidateTransaction'])->name('action_validate_transaction');
-
 //Action FedaPay
 Route::post('transaction mobile money',[FedaPayController::class,'actionFedaPay'])->name('action_feda_pay');
 
-//Page Fade Pay :transaction finalisé
-// Route::get('Transaction compte mobile',[FedaPayController::class],'pageFedaPay')->name('form_feda_pay');
+//Page Historique 
+Route::get('Historique transaction',[TransactionController::class,'historiqueTransaction'])->name('transaction_history');
+
+//Page detail transaction 
+Route::get('Detail transaction/{reference}',[TransactionController::class,'detailTransaction'])->name('transaction_detail');
+
+//Validation de l'etat de la transaction sur la page historique
+Route::get('Valider transaction/{id_transaction}',[TransactionController::class,'actionValidateTransaction'])->name('action_validate_transaction');
+
+
 /* ********************************* FIN TRANSACTIONS ******************************** */
 
     

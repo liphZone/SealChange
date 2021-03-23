@@ -2,7 +2,6 @@
 @section('content')
 @section('title','Transaction')
 
-
 <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
     <div class="card-body">
@@ -12,7 +11,7 @@
                 TRANSFERT DE <span class="font-weight-bold"> {{ $entree }} </span> VERS <span class="font-weight-bold"> {{ $sortie }} </span>
             </h1>
             <form action="{{ $link }}" method="GET">
-                <button class="btn btn sucess" type="submit"> cliquez finaliser le payement <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> </button>
+                <button class="btn btn-success" type="submit"> cliquez finaliser le payement <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> </button>
             </form>
             
         </div>

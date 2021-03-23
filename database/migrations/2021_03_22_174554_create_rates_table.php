@@ -15,9 +15,12 @@ class CreateRatesTable extends Migration
     {
         Schema::create('rates', function (Blueprint $table) {
             $table->id();
-            $table->string('monnaie_send');
-            $table->string('monnaie_receive');
-            $table->double('valeur');
+            $table->string('monnaie_enter');
+            $table->string('devise_enter');
+            $table->double('valeur_enter');
+            $table->string('monnaie_out');
+            $table->string('devise_out');
+            $table->double('valeur_out');
             $table->timestamps();
         });
     }

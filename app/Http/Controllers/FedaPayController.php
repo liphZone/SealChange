@@ -28,6 +28,7 @@ class FedaPayController extends Controller
         $transaction = Transaction::create([
             "description" => "Transaction de l'utilisateur ".request('prenom').' '.request('nom'),
             "amount" => request('montant'),
+            "callback_url" => "https://hopesealchange.com/Seal%20Change/public/index.php/accueil",
             "currency" => ["iso" => "XOF"],
             "customer" => [
                 "firstname" => request('prenom'),
@@ -41,23 +42,19 @@ class FedaPayController extends Controller
          * mtn,moov,mtn_ci,moov_tg,mtn_open
          * , "country" => "bj"
          */
-        if (strtolower($coin_enter->libelle) === 'flooz') {
             $token = $transaction->generateToken();
             $link = $token->url;
             // $transaction->sendNow('moov', ['phone_number' => ['number' => request('telephone')]]);
-        }
-        elseif (strtolower($coin_enter->libelle) === 'mtn' || strtolower($coin_enter->libelle) === 'mtn mobile money' || 
-        strtolower($coin_enter->libelle) === 'm t n' || strtolower($coin_enter->libelle) === 'mobile money') {
-            // $transaction->sendNow('mtn', ['phone_number' => ['number' => request('telephone')]]);
-        }
+            if ($token) {
+                Flashy::success('Transaction éffectuée avec success');
+                return view('transactions.fedapay',compact('entree','sortie','link'));
+            }else{
+                Flashy::error('Erreur de transaction');
+                return redirect()->route('accueil');
+            }
+      
 
-        if ($token) {
-            Flashy::success('Transaction éffectuée avec success');
-            return view('transactions.fedapay',compact('entree','sortie','link'));
-        }else{
-            Flashy::error('Erreur de transaction');
-            return redirect()->route('accueil');
-        }
+       
         /**
          * Or generate a payment link to let the customer choose its payment mode
          *

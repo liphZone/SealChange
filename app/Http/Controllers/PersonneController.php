@@ -22,6 +22,8 @@ class PersonneController extends Controller
      */
     public function index()
     {
+        $this->authorize('create',User::class);
+
         //Liste des administrateurs
         $personne = DB::table('personnes')
         ->where('type_utilisateur','Super_admin')
@@ -38,6 +40,8 @@ class PersonneController extends Controller
      */
     public function create()
     {
+        $this->authorize('create',User::class);
+
         return view('personnes.add_person');
     }
 

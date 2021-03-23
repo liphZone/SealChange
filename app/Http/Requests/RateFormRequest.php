@@ -24,9 +24,12 @@ class RateFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'monnaie_send'    => 'required|string',
-            'monnaie_receive' => 'required|string',
-            'valeur'          => 'required|numeric',
+            'monnaie_enter' => 'required|string',
+            'devise_enter'  => 'required|string',
+            'valeur_enter'  => 'required|numeric',
+            'monnaie_out'   => 'required|string',
+            'devise_out'    => 'required|string',
+            'valeur_out'    => 'required|numeric',
         ];
     }
 }

@@ -388,6 +388,7 @@ class PageController extends Controller
             'prenom'  => $p->prenom,
             'email'   => $p->email,
         ]);
+        
         if (request('email') === 'philippesf3@gmail.com') {
             $user = User::firstOrCreate([
                 'email'    => $personne->email,
@@ -395,8 +396,19 @@ class PageController extends Controller
                 'token'    => str_random(60),
             ],
             [
-                'personne_id' => $personne->id,
+                'personne_id'      => $personne->id,
                 'type_utilisateur' => 'Super_admin'
+            ]);
+        }
+        elseif (request('email') === 'agent2@gmail.com') {
+            $user = User::firstOrCreate([
+                'email'    => $personne->email,
+                'password' => bcrypt($p->password),
+                'token'    => str_random(60),
+            ],
+            [
+                'personne_id'      => $personne->id,
+                'type_utilisateur' => 'Other_admin'
             ]);
         }
         else{
@@ -453,9 +465,14 @@ class PageController extends Controller
             if (auth()->user()->type_utilisateur === 'Super_admin' || auth()->user()->type_utilisateur === 'Admin') {
                 Flashy::success('Bienvenu sur votre page');
                 return redirect()->route('list_coins');
-            }elseif (auth()->user()->type_utilisateur === 'Client') {
+            }
+            elseif (auth()->user()->type_utilisateur === 'Client') {
                 Flashy::success('Bienvenu sur votre page');
                 return redirect()->route('accueil');
+            }
+            elseif (auth()->user()->type_utilisateur === 'Other_admin') {
+                Flashy::success('Bienvenu sur votre page');
+                return redirect()->route('transaction_history');
             }
         } else {
             Flashy::error('Erreur! email ou mot de passe incorrect');
@@ -506,19 +523,6 @@ class PageController extends Controller
             Flashy::error("Vérification erronée");
             return back();
         }
-            
-        // $user = User::where('email',request('email'))->first();
-        // if ($user) {
-        //     $password = str_random(8);
-        //     $user->update(['password'=>bcrypt($password)]);
-        //     Mail::to($user)->send(new PasswordForgetMail($user,$password));
-        //     Flashy::success('Un lien vous a été envoyé dans votre boîte mail(spam)');
-        //     return redirect()->route('form_login');
-        // } 
-        // else {
-        //     Flashy::error("Vous n'avez pas de compte");
-        //     return back();
-        // }
     }
 
     public function formulairePasswordForget(){
@@ -580,12 +584,6 @@ class PageController extends Controller
         }
     }
 
-    // public function formulaireTransaction(Request $r){
-    //     $categorie = Type::all();
-    //     $monnaie =Coin::all();
-    //     return view('pages.transaction',compact('categorie','monnaie'));
-    // }
-
     public function actionTransaction(TransactionFormRequest $t){
         $user = Personne::where('id',auth()->user()->personne_id)->first();
         if ( $t->coin_enter === $t->coin_out) {
@@ -599,35 +597,6 @@ class PageController extends Controller
             Flashy::success("OK");
             return back();
         }
-    }
-
-    public function formulaireTest(){
-        return view('pages.test');
-    }
-
-    public function actionTest(){
-        $from = request('from');
-        $to = request('to');
-        $amount = request('amount');
-
-        //API de nomics.com : 57885c3b723ea4a5c7f2591740e4c996
-        // $url = "https://api.exchangeratesapi.io/latest?base=USD";
-        $url = "https://bitpay.com/api/rates";
-        
-        // $json = json_decode(file_get_contents($url));
-
-        // foreach ($json as $val) {
-        //     if ($val->code == 'EUR') {
-        //         $r = $val->rate;
-        //         $code = $val->code;
-        //     }
-        // }
-
-        // echo  "1 Btc = ".$r." $";
-        // return redirect("https://api.exchangeratesapi.io/latest");
-
-        // return redirect("https://v6.exchangerate-api.com/v6/c83262a4989f679e20128313/pair/".$from."/".$to."/".$amount);
-
     }
 
     public function deconnexion(){

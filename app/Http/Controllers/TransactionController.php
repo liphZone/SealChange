@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 use App\Mail\TransactionMail;
 use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\Mail;
-use charlesassets\LaravelPerfectMoney\PerfectMoney;
 use Illuminate\Support\Facades\Redirect;
+use charlesassets\LaravelPerfectMoney\PerfectMoney;
 
 class TransactionController extends Controller
 {
@@ -878,22 +878,32 @@ class TransactionController extends Controller
         }
     }
 
-    public function actionValidateTransaction(Request $id_transaction){
-        $transaction_validate = Transaction::where('user',auth()->user()->personne_id)->where('id_transaction',request('id_transaction'))->first();
+    public function historiqueTransaction(){
+        $transaction = Transaction::simplePaginate(15);
+        $utilisateur = Personne::all();
+        return view('historiques.historique',compact('transaction','utilisateur'));
+    }
+
+    public function formulaireHistoriqueTransactionEnd(){
+
+    }
+
+    public function detailTransaction(Request $request){
+        $transaction = Transaction::where('reference',$request->reference)->first();
+        $coin_enter  = Coin::where('id',$transaction->coin_enter)->first();
+        $coin_out    = Coin::where('id',$transaction->coin_out)->first();
+        $user        = Personne::where('id',$transaction->user)->first();
+        return view('historiques.detail_transaction',compact('transaction','coin_enter','coin_out','user'));
+    }
+
+    public function actionValidateTransaction(Request $request){
+        $transaction_validate = Transaction::where('id_transaction',$request->id_transaction)->first();
         $validation = $transaction_validate->update([
             'etat' => 1
         ]);
-
-        return redirect()->route('accueil');
+        Flashy::success('Transaction validée');
+        return redirect()->route('form_historic');
+        
     }
 
-    public function formulaireChoixHistorique(){
-        $categorie = Type::all();
-        $monnaie =Coin::all();
-        return view('historiques.choix_historique',compact('categorie','monnaie'));
-    }
-
-    public function formulaireHistorique(){
-        return view('historiques.historique');
-    }
 }

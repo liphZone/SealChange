@@ -1,6 +1,12 @@
 @extends('layout.admin.index')
 @section('content')
 @section('title','Liste taux')
+
+{{-- @php
+    $pm = \App\Models\Rate::groupBy('monnaie_enter')->get();
+@endphp --}}
+
+
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
@@ -10,19 +16,24 @@
                 <thead>
                     <tr>
                     <th> Monnaie 1 </th>
+                    <th> Devise 1 </th>
+                    <th> Valeur 1 </th>
                     <th> Monnaie 2 </th>
-                    <th> Valeur </th>
+                    <th> Devise 2 </th>
+                    <th> Valeur 2 </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($rate as $rates)
                         <tr>
-                            <td> {{ $rates->monnaie_send }} </td>
-                            <td> {{ $rates->monnaie_receive }} </td>
-                            <td> {{ $rates->valeur }} </td>
+                            <td> {{ $rates->monnaie_enter }} </td>
+                            <td> {{ $rates->devise_enter }} </td>
+                            <td> {{ $rates->valeur_enter }} </td>
+                            <td> {{ $rates->monnaie_out }} </td>
+                            <td> {{ $rates->devise_out }} </td>
+                            <td> {{ $rates->valeur_out }} </td>
                             <td>
                                 <a href="{{ route('edit_rate',$rates->id) }}" class="btn btn-outline-success" title="modifier"> <i class="fa fa-edit" aria-hidden="true"></i>  </a> 
-                                {{-- <a href="#" title="retrogradrer" onclick="return Action()" class="btn btn-outline-info"> <i class="fa fa-angle-double-down" aria-hidden="true"></i>  </a> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -31,12 +42,10 @@
         </div>
     </div>
 </div>
-<script>            
-    function Action() {
-        var r = confirm("Vous allez destituer ce utilisateur au statut de simple administrateur,voulez-vous continuer?");
-        if (r == false) {
-        return false;
-        }
-    }
-</script>
+<div class="row">
+    <div class="col-12 text-center">
+       {{$rate->links()}}
+    </div>
+</div>
+
 @endsection
